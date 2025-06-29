@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import {
@@ -32,7 +33,10 @@ const projects = [
       'Responsive design'
     ],
     accentColor: 'bg-indigo-500',
-    liveLink: 'https://my-assignment-10-a4262.web.app/'
+    liveLink: 'https://my-assignment-10-a4262.web.app/',
+    gitLinkClient:'https://github.com/Tawhide16/Vibe-Circle',
+    gitLinkServer:'https://github.com/Tawhide16/Vibe-Circle-server',
+    image1 : '/public/vibe-cicale.png'
   },
   {
     id: 2,
@@ -46,7 +50,8 @@ const projects = [
       'Admin panel'
     ],
     accentColor: 'bg-emerald-500',
-    liveLink: 'https://my-hotel-a3994.web.app/'
+    liveLink: 'https://my-hotel-a3994.web.app/',
+    image1:'/public/hotel-booke.png'
   },
   {
     id: 3,
@@ -60,7 +65,8 @@ const projects = [
       'Dark/light mode'
     ],
     accentColor: 'bg-amber-500',
-    liveLink: 'https://tawhide16.github.io/assignment-5/'
+    liveLink: 'https://tawhide16.github.io/assignment-5/',
+    image1:'/public/DevBoard.png'
   },
   {
     id: 4,
@@ -74,7 +80,8 @@ const projects = [
       'User reviews'
     ],
     accentColor: 'bg-rose-500',
-    liveLink: 'https://curious-vacherin-0477fd.netlify.app/'
+    liveLink: 'https://strong-stroopwafel-a0fc21.netlify.app/',
+    image1:'/public/event.png'
   },
 ];
 
@@ -134,13 +141,14 @@ const ProjectCard = ({ project, index }) => (
           Live Demo
           <FaExternalLinkAlt className="ml-2 text-xs" />
         </a>
-        <a
-          href={`/projects/${project.id}`}
+        <Link
+          to={`/projects/${project.id}`}
+          state={{ project }}
           className="flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors"
         >
           Case Study
           <FaExternalLinkAlt className="ml-2 text-xs" />
-        </a>
+        </Link>
       </div>
     </div>
   </motion.div>
@@ -186,11 +194,11 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <a
-            href="#contact"
+          <Link
+            to="/projects"
             className="inline-flex items-center px-6 py-3 border border-gray-700 hover:border-indigo-500 rounded-lg text-white hover:text-indigo-300 transition-all duration-300 group"
           >
-            Want to see more? Contact me
+            View all projects
             <svg 
               className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" 
               fill="none" 
@@ -200,7 +208,7 @@ const Projects = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

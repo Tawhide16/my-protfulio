@@ -46,7 +46,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+    <section id="skills" className="pt-10 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-500 filter blur-3xl"></div>
@@ -107,16 +107,12 @@ const Skills = () => {
             </motion.div>
           ))}
         </motion.div>
-
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 1 }}
           className="mt-16 text-center"
         >
-          <button className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105">
-            View Full Tech Stack
-          </button>
         </motion.div>
       </div>
     </section>
