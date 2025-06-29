@@ -36,7 +36,7 @@ const projects = [
     liveLink: 'https://my-assignment-10-a4262.web.app/',
     gitLinkClient:'https://github.com/Tawhide16/Vibe-Circle',
     gitLinkServer:'https://github.com/Tawhide16/Vibe-Circle-server',
-    image1 : '/public/vibe-cicale.png'
+    image1 : '/vibe-cicale.png'
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ const projects = [
     ],
     accentColor: 'bg-emerald-500',
     liveLink: 'https://my-hotel-a3994.web.app/',
-    image1:'/public/hotel-booke.png'
+    image1:'/hotel-booke.png'
   },
   {
     id: 3,
@@ -66,7 +66,7 @@ const projects = [
     ],
     accentColor: 'bg-amber-500',
     liveLink: 'https://tawhide16.github.io/assignment-5/',
-    image1:'/public/DevBoard.png'
+    image1:'/DevBoard.png'
   },
   {
     id: 4,
@@ -81,7 +81,7 @@ const projects = [
     ],
     accentColor: 'bg-rose-500',
     liveLink: 'https://strong-stroopwafel-a0fc21.netlify.app/',
-    image1:'/public/event.png'
+    image1:'/event.png'
   },
 ];
 
