@@ -8,6 +8,7 @@ import {
 } from "react-router-dom"; // Fixed import - should be from 'react-router-dom'
 import Home from './Pages/Home.jsx';
 import ProjectDetails from './Pages/ProjectDetails.jsx';
+import Contact from './components/Contact.jsx';
 
 
 const router = createBrowserRouter([
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
       {
         path: "projects/:id",
         element: <ProjectDetails />,
-      },
+      }
     ],
   },
 ]);

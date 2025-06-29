@@ -39,9 +39,9 @@ const Hero = () => {
               sequence={[
                 'Diploma in Computer Science',
                 2000,
-                'Full Stack Developer',
+                'Frontend Developer',
                 2000,
-                'MERN Stack Specialist',
+                'Junior MERN Developer',
                 2000,
                 'React.js Expert',
                 2000
