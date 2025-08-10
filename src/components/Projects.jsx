@@ -20,7 +20,7 @@ const techIcons = {
   'Node.js': <SiNodedotjs className="text-green-600 text-lg" />,
 };
 
-const projects = [
+export const projects = [
   {
     id: 1,
     title: 'VibeCircle',
@@ -51,6 +51,7 @@ const projects = [
     ],
     accentColor: 'bg-emerald-500',
     liveLink: 'https://my-hotel-a3994.web.app/',
+    gitLinkClient:'https://github.com/Tawhide16/Hotel-booking-client',
     image1:'/hotel-booke.png'
   },
   {
@@ -81,6 +82,7 @@ const projects = [
     ],
     accentColor: 'bg-rose-500',
     liveLink: 'https://strong-stroopwafel-a0fc21.netlify.app/',
+    gitLinkClient:'https://github.com/Tawhide16/event-explorer-client',
     image1:'/event.png'
   },
 ];
@@ -160,7 +162,7 @@ const Projects = () => {
       id="projects" 
       className="py-24 bg-gradient-to-br from-gray-900 to-gray-950"
     >
-      <div className="container px-6 mx-auto max-w-6xl">
+      <div className="container px-6 mx-auto ">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

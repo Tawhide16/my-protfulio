@@ -50,36 +50,47 @@ const ProjectDetails = () => {
                 </ul>
               </div>
 
-              <div className="flex gap-4">
-                <a
+              <div className="flex flex-wrap gap-4">
+                <motion.a
                   href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm sm:text-base"
                 >
                   Live Demo <FaExternalLinkAlt className="ml-2" />
-                </a>
-                <a
-                  href={project.gitLinkClient}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  View Client <FaGithub className="ml-2" />
-                </a>
-                <a
-                  href={project.gitLinkServer}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  View Server <FaGithub className="ml-2" />
-                </a>
+                </motion.a>
+                
+                {project.gitLinkClient && (
+                  <motion.a
+                    href={project.gitLinkClient}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm sm:text-base"
+                  >
+                    Client Code <FaGithub className="ml-2" />
+                  </motion.a>
+                )}
+                
+                {project.gitLinkServer && (
+                  <motion.a
+                    href={project.gitLinkServer}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center px-4 py-2 sm:px-6 sm:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm sm:text-base"
+                  >
+                    Server Code <FaGithub className="ml-2" />
+                  </motion.a>
+                )}
               </div>
             </div>
 
             <div className="md:w-1/2">
-              {/* Add project screenshots or additional content here */}
               <div className="relative h-64 sm:h-80 md:h-96 lg:h-[400px] xl:h-[400px] w-full overflow-hidden rounded-t-lg lg:rounded-tr-none lg:rounded-l-lg">
                 <motion.img
                   src={project.image1}
@@ -90,8 +101,8 @@ const ProjectDetails = () => {
                   transition={{ duration: 0.5 }}
                 />
               </div>
-              </div>
             </div>
+          </div>
         </motion.div>
       </div>
     </section>

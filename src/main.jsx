@@ -9,6 +9,7 @@ import {
 import Home from './Pages/Home.jsx';
 import ProjectDetails from './Pages/ProjectDetails.jsx';
 import Contact from './components/Contact.jsx';
+import AllProjects from './Pages/AllProjects.jsx';
 
 
 const router = createBrowserRouter([
@@ -17,12 +18,16 @@ const router = createBrowserRouter([
     element: <App />, // Main app layout
     children: [
       {
-        index: true,
+        path:"/",
         element: <Home />,
       },
       {
         path: "projects/:id",
         element: <ProjectDetails />,
+      },
+      {
+        path:"/projects",
+        Component:AllProjects
       }
     ],
   },

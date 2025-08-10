@@ -5,22 +5,22 @@ import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaFileDownload } from 'rea
 
 const Hero = () => {
   const socialLinks = [
-    { 
+    {
       icon: <FaGithub className="text-xl text-white" />,
       url: "https://github.com/Tawhide16",
       name: "GitHub"
     },
-    { 
+    {
       icon: <FaTwitter className="text-xl text-white" />,
       url: "https://x.com/TawhideB64383",
       name: "Twitter"
     },
-    { 
+    {
       icon: <FaLinkedin className="text-xl text-white" />,
       url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/",
       name: "LinkedIn"
     },
-    { 
+    {
       icon: <FaFacebook className="text-xl text-white" />,
       url: "https://www.facebook.com/tawhide.hb",
       name: "Facebook"
@@ -30,7 +30,7 @@ const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden">
       {/* Animated background elements */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.3 }}
         transition={{ duration: 2 }}
@@ -70,13 +70,13 @@ const Hero = () => {
         </motion.div>
 
         {/* Text Content - Below image on mobile */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="lg:w-1/2 text-center lg:text-left order-2 lg:order-1 mt-0 lg:mt-0"
         >
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -110,7 +110,12 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start"
           >
-            <button className="px-6 py-2 sm:px-8 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-indigo-500/50 transform hover:-translate-y-1 text-sm sm:text-base">
+            <button
+              onClick={() => {
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-6 py-2 sm:px-8 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-indigo-500/50 transform hover:-translate-y-1 text-sm sm:text-base"
+            >
               View My Work
             </button>
             <a

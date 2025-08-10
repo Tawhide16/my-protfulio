@@ -1,33 +1,51 @@
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaPaperPlane } from 'react-icons/fa';
 import { SiGmail, SiMessenger } from 'react-icons/si';
+import { useRef, useState, useEffect } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
-  const socialLinks = [
-    {
-      icon: <FaGithub className="text-xl" />,
-      url: "https://github.com/yourusername",
-      name: "GitHub",
-      color: "hover:bg-gray-800"
-    },
-    {
-      icon: <FaLinkedin className="text-xl" />,
-      url: "https://linkedin.com/in/yourusername",
-      name: "LinkedIn",
-      color: "hover:bg-blue-600"
-    },
-    {
-      icon: <SiGmail className="text-xl" />,
-      url: "mailto:your.email@example.com",
-      name: "Gmail",
-      color: "hover:bg-red-500"
-    },
-    {
-      icon: <SiMessenger className="text-xl" />,
-      url: "https://m.me/yourusername",
-      name: "Messenger",
-      color: "hover:bg-blue-400"
+  const form = useRef();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
+  const [sentTime, setSentTime] = useState('');
+
+  useEffect(() => {
+    const now = new Date().toLocaleString();
+    setSentTime(now);
+  }, []);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(null);
+
+    const formData = new FormData(form.current);
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
     }
+
+    emailjs.sendForm(
+      'service_3sk77oe',   // Your EmailJS Service ID
+      'template_k3p7ldj',  // Your EmailJS Template ID
+      form.current,
+      'WBIqAMTB226Zt_NED'  // Your EmailJS Public Key
+    ).then(() => {
+      setLoading(false);
+      setSuccess(true);
+      e.target.reset();
+      setSentTime(new Date().toLocaleString()); // Reset time after send
+    }).catch(() => {
+      setLoading(false);
+      setSuccess(false);
+    });
+  };
+
+  const socialLinks = [
+    { icon: <FaGithub className="text-xl" />, url: "https://github.com/Tawhide16", name: "GitHub", color: "hover:bg-gray-800" },
+    { icon: <FaLinkedin className="text-xl" />, url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/", name: "LinkedIn", color: "hover:bg-blue-600" },
+    { icon: <SiGmail className="text-xl" />, url: "mailto:tawhideh.b10@gmail.com", name: "Gmail", color: "hover:bg-red-500" },
+    { icon: <SiMessenger className="text-xl" />, url: "https://www.facebook.com/tawhide.hb", name: "Messenger", color: "hover:bg-blue-400" }
   ];
 
   return (
@@ -40,9 +58,7 @@ const Contact = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="inline-block mb-4 text-sm font-medium text-indigo-400">
-            CONTACT
-          </span>
+          <span className="inline-block mb-4 text-sm font-medium text-indigo-400">CONTACT</span>
           <h2 className="text-4xl font-bold text-white">
             Get In <span className="text-indigo-400">Touch</span>
           </h2>
@@ -60,32 +76,23 @@ const Contact = () => {
           >
             <div className="bg-gray-800 rounded-xl shadow-2xl p-8 h-full border border-gray-700 hover:border-gray-600 transition-all">
               <h3 className="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
-                <span className="w-2 h-8 bg-indigo-500 rounded-full"></span>
-                Contact Information
+                <span className="w-2 h-8 bg-indigo-500 rounded-full"></span> Contact Information
               </h3>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-gray-700 rounded-lg text-indigo-400">
-                    <FaEnvelope className="text-xl" />
-                  </div>
+                  <div className="p-3 bg-gray-700 rounded-lg text-indigo-400"><FaEnvelope className="text-xl" /></div>
                   <div>
                     <h4 className="text-gray-400 text-sm font-medium">Email</h4>
-                    <a href="mailto:your.email@example.com" className="text-white hover:text-indigo-400 transition-colors">
-                      your.email@example.com
-                    </a>
+                    <a href="mailto:tawhideh.b10@gmail.com" className="text-white hover:text-indigo-400 transition-colors">tawhideh.b10@gmail.com</a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-gray-700 rounded-lg text-indigo-400">
-                    <FaPhone className="text-xl" />
-                  </div>
+                  <div className="p-3 bg-gray-700 rounded-lg text-indigo-400"><FaPhone className="text-xl" /></div>
                   <div>
                     <h4 className="text-gray-400 text-sm font-medium">Phone</h4>
-                    <a href="tel:+8801XXXXXXXXX" className="text-white hover:text-indigo-400 transition-colors">
-                      +880 1XXX XXXXXX
-                    </a>
+                    <a href="tel:+8801745413122" className="text-white hover:text-indigo-400 transition-colors">+880 1745413122</a>
                   </div>
                 </div>
 
@@ -121,18 +128,16 @@ const Contact = () => {
           >
             <div className="bg-gray-800 rounded-xl shadow-2xl p-8 h-full border border-gray-700 hover:border-gray-600 transition-all">
               <h3 className="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
-                <span className="w-2 h-8 bg-indigo-500 rounded-full"></span>
-                Send Me a Message
+                <span className="w-2 h-8 bg-indigo-500 rounded-full"></span> Send Me a Message
               </h3>
-              
-              <form className="space-y-5">
+
+              <form ref={form} onSubmit={sendEmail} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">
-                    Your Name
-                  </label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">Your Name</label>
                   <input
                     type="text"
                     id="name"
+                    name="name"
                     placeholder="John Doe"
                     className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white transition-all placeholder-gray-500"
                     required
@@ -140,12 +145,11 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">
-                    Your Email
-                  </label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Your Email</label>
                   <input
                     type="email"
                     id="email"
+                    name="email"
                     placeholder="john@example.com"
                     className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white transition-all placeholder-gray-500"
                     required
@@ -153,11 +157,10 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">
-                    Your Message
-                  </label>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Your Message</label>
                   <textarea
                     id="message"
+                    name="message"
                     rows="5"
                     placeholder="Hello, I would like to talk about..."
                     className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white transition-all placeholder-gray-500"
@@ -165,15 +168,22 @@ const Contact = () => {
                   ></textarea>
                 </div>
 
+                {/* Hidden input for sent_time */}
+                <input type="hidden" name="time" value={sentTime} />
+
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors shadow-md"
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors shadow-md disabled:opacity-50"
                 >
                   <FaPaperPlane />
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                 </motion.button>
+
+                {success === true && <p className="text-green-400 mt-3">Message sent successfully! 🎉</p>}
+                {success === false && <p className="text-red-500 mt-3">Oops! Something went wrong.</p>}
               </form>
             </div>
           </motion.div>

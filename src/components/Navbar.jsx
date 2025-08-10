@@ -4,6 +4,9 @@ import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 
+// Custom easing function for smooth scroll
+const easeInOutQuad = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +21,7 @@ const Navbar = () => {
   const socialLinks = [
     { url: "https://github.com/yourusername", icon: <FaGithub /> },
     { url: "https://linkedin.com/in/yourusername", icon: <FaLinkedin /> },
-    { url: "https://twitter.com/yourusername", icon: <FaTwitter /> }
+    { url: "https://twitter.com/yourusername", icon: <FaTwitter /> },
   ];
 
   return (
@@ -28,14 +31,14 @@ const Navbar = () => {
       transition={{ type: 'spring', stiffness: 300 }}
       className="sticky top-0 z-50 backdrop-blur-lg bg-white/5 border-b border-white/10 shadow-lg"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-30">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+          <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0 text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent cursor-pointer">
             Tawhid Hasan
           </motion.div>
 
-          {/* Centered Nav Items */}
+          {/* Desktop Nav Items */}
           <div className="hidden md:flex justify-center flex-1">
             <div className="flex space-x-6">
               {navItems.map((item, index) => (
@@ -47,7 +50,7 @@ const Navbar = () => {
                 >
                   <ScrollLink
                     to={item.to}
-                    smooth={true}
+                    smooth={easeInOutQuad}
                     duration={100}
                     offset={-70}
                     className="cursor-pointer group relative px-3 py-2 text-gray-300 hover:text-white transition-colors"
@@ -65,7 +68,7 @@ const Navbar = () => {
 
           {/* Resume Button */}
           <a
-            href="/Tawhide_hasan_bejoy_CV.doc"
+            href="/public/Tawhide-hasan-bejoy.pdf"
             download
             target="_blank"
             rel="noopener noreferrer"
@@ -79,6 +82,7 @@ const Navbar = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white focus:outline-none"
+              aria-label="Toggle menu"
             >
               {isOpen ? <HiX size={24} /> : <HiOutlineMenuAlt3 size={24} />}
             </button>
@@ -100,11 +104,11 @@ const Navbar = () => {
               <ScrollLink
                 key={item.to}
                 to={item.to}
-                smooth={true}
-                duration={500}
+                smooth={easeInOutQuad}
+                duration={100}
                 offset={-70}
                 onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors flex items-center cursor-pointer"
               >
                 <span className="mr-2">{item.icon}</span>
                 {item.text}
@@ -113,7 +117,7 @@ const Navbar = () => {
 
             {/* Resume Mobile */}
             <a
-              href="/Tawhide_hasan_bejoy_CV.doc"
+              href="/public/Tawhide-hasan-bejoy.pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
