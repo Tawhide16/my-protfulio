@@ -36,7 +36,7 @@ export const projects = [
     ],
     accentColor: 'bg-indigo-600',
     liveLink: 'https://my-school-b2c91.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
+    gitLinkClient: 'https://github.com/Tawhide16/Next-class-client',
     image1: '/public/NEXT-CLASS.png'
   },
   {
@@ -53,7 +53,6 @@ export const projects = [
     accentColor: 'bg-indigo-500',
     liveLink: 'https://my-assignment-10-a4262.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
-    gitLinkServer: 'https://github.com/Tawhide16/Vibe-Circle-server',
     image1: '/vibe-cicale.png'
   },
   {
