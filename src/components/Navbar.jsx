@@ -32,7 +32,7 @@ const Navbar = () => {
     if (location.pathname === "/") {
       // Already home → scroll immediately
       scroller.scrollTo(id, {
-        duration: 600,
+        duration: 100,
         delay: 0,
         smooth: 'easeInOutQuad',
         offset: -70
