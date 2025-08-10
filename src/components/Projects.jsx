@@ -22,6 +22,24 @@ const techIcons = {
 
 export const projects = [
   {
+    id: 3,
+    title: 'Next Class Project',
+    description: 'A full-stack MERN app for smooth class management, secure login, and seamless payments.',
+    technologies: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Firebase', 'Stripe'],
+    features: [
+      'Role-based dashboards',
+      'Real-time sweet alerts',
+      'Stripe-powered enrollments',
+      'Assignment creation & submission',
+      'Fully responsive design',
+      'JWT-secured private routes',
+    ],
+    accentColor: 'bg-indigo-600',
+    liveLink: 'https://my-school-b2c91.web.app/',
+    gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
+    image1: '/public/NEXT-CLASS.png'
+  },
+  {
     id: 1,
     title: 'VibeCircle',
     description: 'Social media platform for connecting with like-minded people and sharing experiences.',
@@ -34,9 +52,9 @@ export const projects = [
     ],
     accentColor: 'bg-indigo-500',
     liveLink: 'https://my-assignment-10-a4262.web.app/',
-    gitLinkClient:'https://github.com/Tawhide16/Vibe-Circle',
-    gitLinkServer:'https://github.com/Tawhide16/Vibe-Circle-server',
-    image1 : '/vibe-cicale.png'
+    gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
+    gitLinkServer: 'https://github.com/Tawhide16/Vibe-Circle-server',
+    image1: '/vibe-cicale.png'
   },
   {
     id: 2,
@@ -51,23 +69,8 @@ export const projects = [
     ],
     accentColor: 'bg-emerald-500',
     liveLink: 'https://my-hotel-a3994.web.app/',
-    gitLinkClient:'https://github.com/Tawhide16/Hotel-booking-client',
-    image1:'/hotel-booke.png'
-  },
-  {
-    id: 3,
-    title: 'Task Manager',
-    description: 'Productivity application for organizing and tracking daily tasks and projects.',
-    technologies: ['React', 'Firebase'],
-    features: [
-      'Drag-and-drop interface',
-      'Task categorization',
-      'Progress tracking',
-      'Dark/light mode'
-    ],
-    accentColor: 'bg-amber-500',
-    liveLink: 'https://tawhide16.github.io/assignment-5/',
-    image1:'/DevBoard.png'
+    gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
+    image1: '/hotel-booke.png'
   },
   {
     id: 4,
@@ -78,12 +81,14 @@ export const projects = [
       'Location-based search',
       'Event filtering',
       'Ticket purchasing',
-      'User reviews'
+      'User reviews',
+      'use react',
+      'firebase '
     ],
     accentColor: 'bg-rose-500',
-    liveLink: 'https://strong-stroopwafel-a0fc21.netlify.app/',
-    gitLinkClient:'https://github.com/Tawhide16/event-explorer-client',
-    image1:'/event.png'
+    liveLink: 'https://fluffy-clafoutis-ef0d5e.netlify.app/',
+    gitLinkClient: 'https://github.com/Tawhide16/event-explorer-client',
+    image1: '/event.png'
   },
 ];
 
@@ -91,18 +96,18 @@ const ProjectCard = ({ project, index }) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ 
-      duration: 0.6, 
+    transition={{
+      duration: 0.6,
       delay: index * 0.15,
       ease: [0.16, 1, 0.3, 1]
     }}
     viewport={{ once: true, margin: "-100px" }}
     className="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm border border-gray-800 hover:border-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
   >
-    <div 
+    <div
       className={`absolute inset-0 -z-10 ${project.accentColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
     />
-    
+
     <div className="p-6">
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-xl font-bold text-white">
@@ -158,8 +163,8 @@ const ProjectCard = ({ project, index }) => (
 
 const Projects = () => {
   return (
-    <section 
-      id="projects" 
+    <section
+      id="projects"
       className="py-24 bg-gradient-to-br from-gray-900 to-gray-950"
     >
       <div className="container px-6 mx-auto ">
@@ -181,10 +186,10 @@ const Projects = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              index={index} 
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
             />
           ))}
         </div>
@@ -201,11 +206,11 @@ const Projects = () => {
             className="inline-flex items-center px-6 py-3 border border-gray-700 hover:border-indigo-500 rounded-lg text-white hover:text-indigo-300 transition-all duration-300 group"
           >
             View all projects
-            <svg 
-              className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24" 
+            <svg
+              className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
