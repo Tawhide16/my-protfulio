@@ -98,7 +98,7 @@ const Navbar = () => {
 
           {/* Resume Button */}
           <a
-            href="/Tawhide-hasan-bejoy.pdf"
+            href="/Tawhide-hasan-bejoy -Resume.pdf"
             download
             target="_blank"
             rel="noopener noreferrer"

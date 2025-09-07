@@ -37,7 +37,7 @@ export const projects = [
     accentColor: 'bg-indigo-600',
     liveLink: 'https://my-school-b2c91.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Next-class-client',
-    image1: '/public/NEXT-CLASS.png'
+    image1: '/NEXT-CLASS.png'
   },
   {
     id: 1,
@@ -101,7 +101,7 @@ const ProjectCard = ({ project, index }) => (
       ease: [0.16, 1, 0.3, 1]
     }}
     viewport={{ once: true, margin: "-100px" }}
-    className="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm border border-gray-800 hover:border-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+    className="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm border border-gray-800 hover:border-gray-700 transition-all duration-300 shadow-lg hover:shadow-xl "
   >
     <div
       className={`absolute inset-0 -z-10 ${project.accentColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
@@ -150,9 +150,9 @@ const ProjectCard = ({ project, index }) => (
         <Link
           to={`/projects/${project.id}`}
           state={{ project }}
-          className="flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors"
+          className="flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors "
         >
-          Case Study
+          Details
           <FaExternalLinkAlt className="ml-2 text-xs" />
         </Link>
       </div>
@@ -188,7 +188,7 @@ const Projects = () => {
             <ProjectCard
               key={project.id}
               project={project}
-              index={index}
+              index={index} 
             />
           ))}
         </div>

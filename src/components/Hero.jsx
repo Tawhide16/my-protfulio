@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import profileImg from '../assets/Profile.jpg';
+import profileImg from '../assets/profile.jpg';
 import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaFileDownload } from 'react-icons/fa';
 
 const Hero = () => {
@@ -119,7 +119,7 @@ const Hero = () => {
               View My Work
             </button>
             <a
-              href="/Tawhide_hasan_bejoy_CV.doc"
+              href="/Tawhide-hasan-bejoy.pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
