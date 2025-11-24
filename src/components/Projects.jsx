@@ -93,6 +93,7 @@ export const projects = [
 
 const ProjectCard = ({ project, index }) => (
   <motion.div
+   id="projects"
     initial={{ opacity: 0, y: 50 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{
@@ -162,7 +163,9 @@ const ProjectCard = ({ project, index }) => (
 
 const Projects = () => {
    return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-950">
+    <section
+    id="projects"
+    className="py-20 bg-gradient-to-br from-gray-900 to-gray-950">
       <div className="container mx-auto px-6">
         <h1 className="text-4xl font-bold text-white mb-10 text-center">
           All <span className="text-indigo-400">Projects</span>
