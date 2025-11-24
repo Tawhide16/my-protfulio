@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import profileImg from '../assets/profile.jpg';
+import profileImg from '../assets/profile-img-2.jpg';
 import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaFileDownload } from 'react-icons/fa';
 
 const Hero = () => {

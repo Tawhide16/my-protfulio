@@ -4,7 +4,7 @@ import { TypeAnimation } from 'react-type-animation';
 
 const About = () => {
   return (
-    <section id="about" className="relative py-24 bg-gradient-to-b from-gray-900 to-gray-800 overflow-hidden">
+    <section id="about" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950">
       {/* Animated background elements */}
       <motion.div 
         initial={{ opacity: 0 }}

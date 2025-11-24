@@ -164,7 +164,7 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="py-24 bg-gradient-to-br from-gray-900 to-gray-950"
+      className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950"
     >
       <div className="container px-6 mx-auto ">
         <motion.div

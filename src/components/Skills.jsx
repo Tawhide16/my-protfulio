@@ -1,5 +1,5 @@
-import { FaReact, FaNodeJs, FaCode } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript } from 'react-icons/si';
+import { FaReact, FaNodeJs, FaCode,FaShopify } from 'react-icons/fa';
+import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript,SiNextdotjs} from 'react-icons/si';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -11,14 +11,17 @@ const Skills = () => {
 
   const skills = [
     { name: 'React', icon: <FaReact size={40} />, category: 'Frontend', color: 'text-cyan-400' },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss size={40} />, category: 'Frontend', color: 'text-sky-400' },
-    // { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
-    { name: 'DaisyUI', icon: <div className="text-4xl font-bold">D</div>, category: 'Frontend', color: 'text-purple-500' },
-    { name: 'React Hook Form', icon: <div className="text-4xl font-bold">RHF</div>, category: 'Frontend', color: 'text-pink-500' },
+    { name: 'Next.js', icon: <SiNextdotjs size={40} />, category: 'Frontend', color: 'text-gray-800 dark:text-white' },
+    { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
     { name: 'Firebase', icon: <SiFirebase size={40} />, category: 'Backend', color: 'text-amber-500' },
     { name: 'Node.js', icon: <FaNodeJs size={40} />, category: 'Backend', color: 'text-green-500' },
     { name: 'Express', icon: <SiExpress size={40} />, category: 'Backend', color: 'text-gray-400' },
     { name: 'MongoDB', icon: <SiMongodb size={40} />, category: 'Database', color: 'text-emerald-500' },
+    { name: 'React Hook Form', icon: <div className="text-4xl font-bold">RHF</div>, category: 'Frontend', color: 'text-pink-500' },
+    { name: 'Tailwind CSS', icon: <SiTailwindcss size={40} />, category: 'Frontend', color: 'text-sky-400' },
+    // { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
+    { name: 'DaisyUI', icon: <div className="text-4xl font-bold">D</div>, category: 'Frontend', color: 'text-purple-500' },
+    { name: 'Shopify', icon: <FaShopify size={40} />, category: 'E-commerce', color: 'text-green-600' }
   ];
 
   const containerVariants = {
@@ -46,7 +49,7 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="pt-10 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+    <section id="skills" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-500 filter blur-3xl"></div>
