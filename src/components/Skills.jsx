@@ -26,7 +26,19 @@ const Skills = () => {
     { name: 'Tailwind CSS', icon: <SiTailwindcss size={40} />, category: 'Frontend', color: 'text-sky-400' },
     // { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
     { name: 'DaisyUI', icon: <div className="text-4xl font-bold">D</div>, category: 'Frontend', color: 'text-purple-500' },
-    { name: 'Shopify', icon: <FaShopify size={40} />, category: 'E-commerce', color: 'text-green-600' }
+    { name: 'Shopify', icon: <FaShopify size={40} />, category: 'E-commerce', color: 'text-green-600' },
+    { name: 'TanStack Query', 
+  icon: <div className="text-4xl font-bold text-red-500">TQ</div>, 
+  category: 'Frontend', 
+  color: 'text-red-500' 
+},
+{ 
+  name: 'Axios', 
+  icon: <div className="text-4xl font-bold text-purple-600">AX</div>, 
+  category: 'Frontend', 
+  color: 'text-purple-600' 
+},
+
   ];
 
   const containerVariants = {
