@@ -1,5 +1,5 @@
 import { FaReact, FaNodeJs, FaCode,FaShopify } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript,SiNextdotjs} from 'react-icons/si';
+import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript,SiNextdotjs,SiJavascript} from 'react-icons/si';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -12,6 +12,11 @@ const Skills = () => {
   const skills = [
     { name: 'React', icon: <FaReact size={40} />, category: 'Frontend', color: 'text-cyan-400' },
     { name: 'Next.js', icon: <SiNextdotjs size={40} />, category: 'Frontend', color: 'text-gray-800 dark:text-white' },
+    { 
+    name: 'JavaScript', icon: <SiJavascript size={40} />, 
+    category: 'Frontend', 
+    color: 'text-yellow-400' 
+  },
     { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
     { name: 'Firebase', icon: <SiFirebase size={40} />, category: 'Backend', color: 'text-amber-500' },
     { name: 'Node.js', icon: <FaNodeJs size={40} />, category: 'Backend', color: 'text-green-500' },

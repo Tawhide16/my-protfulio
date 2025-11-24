@@ -29,15 +29,14 @@ const shopifyProjects = [
       'Fast loading performance'
     ],
     accentColor: 'bg-green-600',
-    liveLink: 'https://your-fashion-store.myshopify.com/',
-    gitLinkClient: '#',
-    image1: '/shopify-fashion.png',
+    liveLink: 'https://semilevi.com/',
+    image1: '/semilevi.png',
     type: 'shopify'
   },
   {
     id: 'shopify-2',
-    title: 'Electronics E-Commerce',
-    description: 'Shopify store for electronics with inventory management, variant handling, and integrated analytics.',
+    title: 'Ruby Art — Gallery',
+    description: 'Born from Nuances of the Night, this line reimagines the exhibition’s world of metal, desire and transformation into wearable contemporary pieces. ',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'Next.js'],
     features: [
       'Product variant management',
@@ -48,9 +47,8 @@ const shopifyProjects = [
       'Order fulfillment system'
     ],
     accentColor: 'bg-emerald-600',
-    liveLink: 'https://your-electronics-store.myshopify.com/',
-    gitLinkClient: '#',
-    image1: '/shopify-electronics.png',
+    liveLink: 'https://rubyart.gr/',
+    image1: '/rubyart.png',
     type: 'shopify'
   },
   {
@@ -67,9 +65,8 @@ const shopifyProjects = [
       'API integration'
     ],
     accentColor: 'bg-teal-600',
-    liveLink: 'https://apps.shopify.com/your-analytics-app',
-    gitLinkClient: '#',
-    image1: '/shopify-analytics.png',
+    liveLink: 'https://peradox-gamestore.myshopify.com/',
+    image1: '/peradox-gamestore.png',
     type: 'shopify'
   },
   {
@@ -86,9 +83,8 @@ const shopifyProjects = [
       'Social media integration'
     ],
     accentColor: 'bg-green-500',
-    liveLink: 'https://your-beauty-store.myshopify.com/',
-    gitLinkClient: '#',
-    image1: '/shopify-beauty.png',
+    liveLink: 'https://nutsabeauty.com/',
+    image1: '/nutsabeauty.png',
     type: 'shopify'
   }
 ];
@@ -104,23 +100,33 @@ const ShopifyProjectCard = ({ project, index }) => (
       ease: [0.16, 1, 0.3, 1]
     }}
     viewport={{ once: true, margin: "-100px" }}
-    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-900/20 to-emerald-900/10 backdrop-blur-sm border border-green-800/50 hover:border-green-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-900/20 to-emerald-900/10 backdrop-blur-sm border border-green-800/50 hover:border-green-400 transition-all duration-300 shadow-lg hover:shadow-green-500/10 "
   >
     {/* Shopify accent gradient */}
     <div className="absolute inset-0 bg-gradient-to-br from-green-600/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
+    {/* Project Image - Full visible with object-contain */}
+    <div className="relative h-70  bg-gray-800 flex  overflow-hidden ">
+      <img 
+        src={project.image1} 
+        alt={project.title}
+        className="w-full p-1 h-full object-contain  rounded-2xl"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+      <div className="absolute bottom-4 left-6">
+        <span className="px-3 py-1 text-sm font-medium bg-green-600 text-white rounded-full flex items-center w-fit">
+          <FaShopify className="mr-1" />
+          Shopify Store
+        </span>
+      </div>
+    </div>
+
     <div className="relative p-6">
-      {/* Shopify Badge */}
+      {/* Project Title and Technologies */}
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <h3 className="text-xl font-bold text-white">
-            {project.title}
-          </h3>
-          <span className="px-2 py-1 text-xs font-medium bg-green-600 text-white rounded-full flex items-center">
-            <FaShopify className="mr-1" />
-            Shopify
-          </span>
-        </div>
+        <h3 className="text-xl font-bold text-white">
+          {project.title}
+        </h3>
         <div className="flex space-x-2">
           {project.technologies.map(tech => (
             <span key={tech} className="text-lg" title={tech}>
@@ -146,23 +152,15 @@ const ShopifyProjectCard = ({ project, index }) => (
         </ul>
       </div>
 
-      <div className="flex justify-end space-x-4">
+      {/* Live Store Button Only - View Code Removed */}
+      <div className="flex justify-end">
         <a
           href={project.liveLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center text-sm font-medium text-green-400 hover:text-green-300 transition-colors px-4 py-2 border border-green-600/50 hover:border-green-400 rounded-lg"
+          className="flex items-center text-sm font-medium text-green-400 hover:text-green-300 transition-colors px-6 py-3 border border-green-600/50 hover:border-green-400 rounded-lg bg-green-900/20 hover:bg-green-900/30"
         >
-          Live Store
-          <FaExternalLinkAlt className="ml-2 text-xs" />
-        </a>
-        <a
-          href={project.gitLinkClient}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 border border-gray-600/50 hover:border-gray-400 rounded-lg"
-        >
-          View Code
+          Visit Live Store
           <FaExternalLinkAlt className="ml-2 text-xs" />
         </a>
       </div>
@@ -190,7 +188,7 @@ const ShopifyProjects = () => {
             E-COMMERCE SPECIALTY
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4">
-            Shopify <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Store Portfolio</span>
+            Shopify <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">Store Projects</span>
           </h2>
           <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
             Custom e-commerce solutions built on Shopify platform with seamless integrations, 
@@ -199,7 +197,7 @@ const ShopifyProjects = () => {
           <div className="w-32 h-1 mx-auto mt-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full" />
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8  mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-auto">
           {shopifyProjects.map((project, index) => (
             <ShopifyProjectCard
               key={project.id}
@@ -216,30 +214,7 @@ const ShopifyProjects = () => {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/20 border border-green-700/30 rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Ready to Build Your Shopify Store?
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Let's create a custom e-commerce solution that drives sales and grows your business.
-            </p>
-            <button
-              onClick={() => window.open('mailto:your-email@example.com?subject=Shopify Project Inquiry')}
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 border border-green-500 hover:border-green-400 rounded-lg text-white font-semibold transition-all duration-300 group shadow-lg hover:shadow-green-500/25"
-            >
-              <FaShopify className="mr-3 text-xl" />
-              Start Your Shopify Project
-              <svg
-                className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </button>
-          </div>
+          {/* CTA section commented out as per your request */}
         </motion.div>
       </div>
     </section>

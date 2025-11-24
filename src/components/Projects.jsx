@@ -225,14 +225,29 @@ const Projects = () => {
           ))}
         </div>
 
-        <div className="text-center mt-10">
+         <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
           <Link
-            to="/"
-            className="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 transition"
+            to="/projects"
+            className="inline-flex items-center px-6 py-3 border border-gray-700 hover:border-indigo-500 rounded-lg text-white hover:text-indigo-300 transition-all duration-300 group"
           >
-            Back to Home
+            View all projects
+            <svg
+              className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
