@@ -53,7 +53,7 @@ export const projects = [
     accentColor: 'bg-indigo-500',
     liveLink: 'https://my-assignment-10-a4262.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
-    image1: '/vibe-cicale.png'
+    image1: '/vibe.png'
   },
   {
     id: 2,
@@ -161,64 +161,81 @@ const ProjectCard = ({ project, index }) => (
 );
 
 const Projects = () => {
-  return (
-    <section
-      id="projects"
-      className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950"
-    >
-      <div className="container px-6 mx-auto ">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block mb-4 text-sm font-medium text-indigo-400">
-            MY WORK
-          </span>
-          <h2 className="text-4xl font-bold text-white">
-            Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-500">Projects</span>
-          </h2>
-          <div className="w-24 h-1 mx-auto mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full" />
-        </motion.div>
+   return (
+    <section className="py-20 bg-gradient-to-br from-gray-900 to-gray-950">
+      <div className="container mx-auto px-6">
+        <h1 className="text-4xl font-bold text-white mb-10 text-center">
+          All <span className="text-indigo-400">Projects</span>
+        </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {projects.map((project, index) => (
-            <ProjectCard
+            <motion.div
               key={project.id}
-              project={project}
-              index={index} 
-            />
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white/5 rounded-xl border border-gray-800 p-6 hover:border-indigo-500 transition-all"
+            >
+              <img
+                src={project.image1}
+                alt={project.title}
+                className="w-full h-60 object-cover rounded-lg mb-5"
+              />
+              <h2 className="text-2xl font-semibold text-white mb-3">{project.title}</h2>
+              <p className="text-gray-400 mb-4">{project.description}</p>
+
+              <ul className="mb-4 list-disc list-inside text-gray-300 text-sm">
+                {project.features.map((feature, i) => (
+                  <li key={i}>{feature}</li>
+                ))}
+              </ul>
+
+              <div className="flex space-x-4">
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-indigo-400 hover:text-indigo-300"
+                >
+                  Live Demo <FaExternalLinkAlt className="ml-2" />
+                </a>
+                {project.gitLinkClient && (
+                  <a
+                    href={project.gitLinkClient}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white"
+                  >
+                    GitHub Client
+                  </a>
+                )}
+                {project.gitLinkServer && (
+                  <a
+                    href={project.gitLinkServer}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white"
+                  >
+                    GitHub Server
+                  </a>
+                )}
+              </div>
+            </motion.div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
+        <div className="text-center mt-10">
           <Link
-            to="/projects"
-            className="inline-flex items-center px-6 py-3 border border-gray-700 hover:border-indigo-500 rounded-lg text-white hover:text-indigo-300 transition-all duration-300 group"
+            to="/"
+            className="px-6 py-3 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 transition"
           >
-            View all projects
-            <svg
-              className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+            Back to Home
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
-  );
+  )
 };
 
 export default Projects;
