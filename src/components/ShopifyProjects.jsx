@@ -1,6 +1,7 @@
 // components/ShopifyProjects.js
-import { FaExternalLinkAlt, FaShopify } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SiShopify, SiReact, SiNodedotjs } from 'react-icons/si';
 
 // Shopify specific tech icons
@@ -13,7 +14,7 @@ const shopifyTechIcons = {
   'Next.js': <div className="text-lg font-bold">▲</div>,
 };
 
-// Shopify Projects Array
+// Shopify Projects Array - এখন আরো প্রোজেক্ট যোগ করা হলো
 const shopifyProjects = [
   {
     id: 'shopify-1',
@@ -36,7 +37,7 @@ const shopifyProjects = [
   {
     id: 'shopify-2',
     title: 'Ruby Art — Gallery',
-    description: 'Born from Nuances of the Night, this line reimagines the exhibition’s world of metal, desire and transformation into wearable contemporary pieces. ',
+    description: 'Born from Nuances of the Night, this line reimagines the exhibition\'s world of metal, desire and transformation into wearable contemporary pieces.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'Next.js'],
     features: [
       'Product variant management',
@@ -86,6 +87,79 @@ const shopifyProjects = [
     liveLink: 'https://nutsabeauty.com/',
     image1: '/nutsabeauty.png',
     type: 'shopify'
+  },
+
+  {
+    id: 'shopify-5',
+    title: 'Tech Gadgets Store',
+    description: 'A modern Shopify store for tech gadgets with 3D product views, AR preview, and smart search functionality.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'React'],
+    features: [
+      '3D product visualization',
+      'AR preview capability',
+      'Smart search with filters',
+      'Wishlist functionality',
+      'Cross-selling recommendations',
+      'One-click checkout'
+    ],
+    accentColor: 'bg-blue-600',
+    liveLink: 'https://exn1yf-er.myshopify.com/',
+    image1: '/tech-store.png',
+    type: 'shopify'
+  },
+  {
+    id: 'shopify-6',
+    title: 'Organic Food Market',
+    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+    features: [
+      'Recipe integration with ingredients',
+      'Meal planning tools',
+      'Delivery scheduling system',
+      'Nutrition information display',
+      'Subscription for weekly boxes',
+      'Farm-to-table tracking'
+    ],
+    accentColor: 'bg-lime-600',
+    liveLink: 'https://example-organic.com/',
+    image1: '/organic-store.png',
+    type: 'shopify'
+  },
+  {
+    id: 'shopify-7',
+    title: 'Fitness Equipment Store',
+    description: 'Complete fitness equipment Shopify store with workout plans, trainer videos, and progress tracking.',
+    technologies: ['Shopify', 'Shopify API', 'React', 'Node.js'],
+    features: [
+      'Workout plan integration',
+      'Trainer video library',
+      'Progress tracking dashboard',
+      'Equipment assembly guides',
+      'Community forum integration',
+      'Personalized recommendations'
+    ],
+    accentColor: 'bg-orange-600',
+    liveLink: 'https://example-fitness.com/',
+    image1: '/fitness-store.png',
+    type: 'shopify'
+  },
+  {
+    id: 'shopify-8',
+    title: 'Bookstore with Reading Community',
+    description: 'Shopify bookstore with book clubs, author events, and reading challenge features.',
+    technologies: ['Shopify', 'Liquid Template', 'Next.js'],
+    features: [
+      'Book club management',
+      'Author event calendar',
+      'Reading challenges',
+      'Book recommendation engine',
+      'E-book integration',
+      'Community reviews system'
+    ],
+    accentColor: 'bg-purple-600',
+    liveLink: 'https://example-bookstore.com/',
+    image1: '/bookstore.png',
+    type: 'shopify'
   }
 ];
 
@@ -106,11 +180,11 @@ const ShopifyProjectCard = ({ project, index }) => (
     <div className="absolute inset-0 bg-gradient-to-br from-green-600/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
     {/* Project Image - Full visible with object-contain */}
-    <div className="relative h-70  bg-gray-800 flex  overflow-hidden ">
+    <div className="relative h-70 bg-gray-800 flex overflow-hidden ">
       <img 
         src={project.image1} 
         alt={project.title}
-        className="w-full p-1 h-full object-contain  rounded-2xl"
+        className="w-full p-1 h-full object-contain rounded-2xl"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
       <div className="absolute bottom-4 left-6">
@@ -170,6 +244,13 @@ const ShopifyProjectCard = ({ project, index }) => (
 
 // Main Shopify Projects Section Component
 const ShopifyProjects = () => {
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  
+  // প্রথম ৪টি প্রোজেক্ট শো করবে, বাকিগুলো View All এ ক্লিক করলে
+  const displayedProjects = showAllProjects 
+    ? shopifyProjects 
+    : shopifyProjects.slice(0, 4);
+
   return (
     <section
       id="shopify-projects"
@@ -195,17 +276,58 @@ const ShopifyProjects = () => {
             optimized user experiences, and proven conversion rates.
           </p>
           <div className="w-32 h-1 mx-auto mt-6 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full" />
+          
+          {/* প্রোজেক্ট কাউন্টার */}
+          <div className="mt-4 text-gray-400">
+            Showing {displayedProjects.length} of {shopifyProjects.length} projects
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mx-auto">
-          {shopifyProjects.map((project, index) => (
-            <ShopifyProjectCard
-              key={project.id}
-              project={project}
-              index={index}
-            />
-          ))}
+          <AnimatePresence>
+            {displayedProjects.map((project, index) => (
+              <ShopifyProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+              />
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* View All Button Section */}
+        {shopifyProjects.length > 4 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <button
+              onClick={() => setShowAllProjects(!showAllProjects)}
+              className="group inline-flex items-center gap-3 px-8 py-4 text-lg font-medium text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-green-500/25  border-1 border-green-600 hover:border-green-400 bg-green-900/20 hover:bg-green-900/30"
+            >
+              {showAllProjects ? (
+                <>
+                  Show Less
+                  <FaChevronUp className="group-hover:translate-y-[-2px] transition-transform" />
+                </>
+              ) : (
+                <>
+                  View All Projects
+                  <FaChevronDown className="group-hover:translate-y-[2px] transition-transform" />
+                </>
+              )}
+            </button>
+            
+            {!showAllProjects && (
+              <p className="text-gray-400 mt-4">
+                Click to see {shopifyProjects.length - 4} more Shopify projects
+              </p>
+            )}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0 }}
