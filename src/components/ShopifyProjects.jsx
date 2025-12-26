@@ -108,7 +108,7 @@ const shopifyProjects = [
     type: 'shopify'
   },
   {
-    id: 'shopify-6',
+    id: 'shopify-7',
     title: 'Organic Food Market',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
@@ -121,44 +121,62 @@ const shopifyProjects = [
       'Farm-to-table tracking'
     ],
     accentColor: 'bg-lime-600',
-    liveLink: 'https://example-organic.com/',
+    liveLink: 'https://peekaboopr.net/',
     image1: '/organic-store.png',
     type: 'shopify'
   },
   {
-    id: 'shopify-7',
-    title: 'Fitness Equipment Store',
-    description: 'Complete fitness equipment Shopify store with workout plans, trainer videos, and progress tracking.',
-    technologies: ['Shopify', 'Shopify API', 'React', 'Node.js'],
+    id: 'shopify-8',
+    title: 'Organic Food Market',
+    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
     features: [
-      'Workout plan integration',
-      'Trainer video library',
-      'Progress tracking dashboard',
-      'Equipment assembly guides',
-      'Community forum integration',
-      'Personalized recommendations'
+      'Recipe integration with ingredients',
+      'Meal planning tools',
+      'Delivery scheduling system',
+      'Nutrition information display',
+      'Subscription for weekly boxes',
+      'Farm-to-table tracking'
     ],
-    accentColor: 'bg-orange-600',
-    liveLink: 'https://example-fitness.com/',
-    image1: '/fitness-store.png',
+    accentColor: 'bg-lime-600',
+    liveLink: 'https://merrynest.net/',
+    image1: '/organic-store.png',
     type: 'shopify'
   },
   {
-    id: 'shopify-8',
-    title: 'Bookstore with Reading Community',
-    description: 'Shopify bookstore with book clubs, author events, and reading challenge features.',
-    technologies: ['Shopify', 'Liquid Template', 'Next.js'],
+    id: 'shopify-9',
+    title: 'Organic Food Market',
+    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
     features: [
-      'Book club management',
-      'Author event calendar',
-      'Reading challenges',
-      'Book recommendation engine',
-      'E-book integration',
-      'Community reviews system'
+      'Recipe integration with ingredients',
+      'Meal planning tools',
+      'Delivery scheduling system',
+      'Nutrition information display',
+      'Subscription for weekly boxes',
+      'Farm-to-table tracking'
     ],
-    accentColor: 'bg-purple-600',
-    liveLink: 'https://example-bookstore.com/',
-    image1: '/bookstore.png',
+    accentColor: 'bg-lime-600',
+    liveLink: 'https://1ecd07-06.myshopify.com/',
+    image1: '/organic-store.png',
+    type: 'shopify'
+  },
+  {
+    id: 'shopify-10',
+    title: 'Organic Food Market',
+    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+    features: [
+      'Recipe integration with ingredients',
+      'Meal planning tools',
+      'Delivery scheduling system',
+      'Nutrition information display',
+      'Subscription for weekly boxes',
+      'Farm-to-table tracking'
+    ],
+    accentColor: 'bg-lime-600',
+    liveLink: 'https://bigshop247.com/',
+    image1: '/organic-store.png',
     type: 'shopify'
   }
 ];
