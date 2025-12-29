@@ -182,8 +182,6 @@ const shopifyProjects = [
 ];
 
 // Shopify Project Card Component
-// Shopify Project Card Component
-
 const ShopifyProjectCard = ({ project, index }) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
