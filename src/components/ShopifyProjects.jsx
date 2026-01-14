@@ -53,7 +53,7 @@ const shopifyProjects = [
     type: 'shopify'
   },
   {
-    id: 'shopify-5',
+    id: 'shopify-3',
     title: 'Clothing Brand Store',
     description: 'A modern Shopify store for tech gadgets with 3D product views, AR preview, and smart search functionality.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
@@ -66,11 +66,11 @@ const shopifyProjects = [
     ],
     accentColor: 'bg-blue-600',
     liveLink: 'https://uma-7769023412.myshopify.com/',
-    image1: '/public/clothing brand.png',
+    image1: '/clothing brand.png',
     type: 'shopify'
   },
   {
-    id: 'shopify-6',
+    id: 'shopify-4',
     title: 'Living Furniture Store',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
@@ -88,7 +88,7 @@ const shopifyProjects = [
     type: 'shopify'
   },
   {
-    id: 'shopify-7',
+    id: 'shopify-5',
     title: 'Health Care Products Store',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
@@ -106,7 +106,7 @@ const shopifyProjects = [
     type: 'shopify'
   },
   {
-    id: 'shopify-8',
+    id: 'shopify-6',
     title: 'Child Gaming Store',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
