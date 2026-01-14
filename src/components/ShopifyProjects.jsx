@@ -53,49 +53,11 @@ const shopifyProjects = [
     type: 'shopify'
   },
   {
-    id: 'shopify-3',
-    title: 'Custom Shopify App - Analytics',
-    description: 'A custom Shopify app that provides advanced analytics and sales reporting for store owners.',
-    technologies: ['Shopify', 'Shopify API', 'React', 'Node.js'],
-    features: [
-      'Sales performance dashboard',
-      'Customer behavior analytics',
-      'Inventory forecasting',
-      'Custom report generation',
-      'Real-time notifications',
-      'API integration'
-    ],
-    accentColor: 'bg-teal-600',
-    liveLink: 'https://peradox-gamestore.myshopify.com/',
-    image1: '/peradox-gamestore.png',
-    type: 'shopify'
-  },
-  {
-    id: 'shopify-4',
-    title: 'Beauty & Cosmetics Store',
-    description: 'Shopify store for beauty products with subscription service, product recommendations, and loyalty program.',
+    id: 'shopify-5',
+    title: 'Clothing Brand Store',
+    description: 'A modern Shopify store for tech gadgets with 3D product views, AR preview, and smart search functionality.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
     features: [
-      'Subscription box system',
-      'Product recommendation engine',
-      'Loyalty points program',
-      'Gift card integration',
-      'Blog and content marketing',
-      'Social media integration'
-    ],
-    accentColor: 'bg-green-500',
-    liveLink: 'https://nutsabeauty.com/',
-    image1: '/nutsabeauty.png',
-    type: 'shopify'
-  },
-
-  {
-    id: 'shopify-5',
-    title: 'Tech Gadgets Store',
-    description: 'A modern Shopify store for tech gadgets with 3D product views, AR preview, and smart search functionality.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'React'],
-    features: [
-      '3D product visualization',
       'AR preview capability',
       'Smart search with filters',
       'Wishlist functionality',
@@ -103,13 +65,31 @@ const shopifyProjects = [
       'One-click checkout'
     ],
     accentColor: 'bg-blue-600',
-    liveLink: 'https://exn1yf-er.myshopify.com/',
-    image1: '/tech-store.png',
+    liveLink: 'https://uma-7769023412.myshopify.com/',
+    image1: '/public/clothing brand.png',
+    type: 'shopify'
+  },
+  {
+    id: 'shopify-6',
+    title: 'Living Furniture Store',
+    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+    features: [
+      'Recipe integration with ingredients',
+      'Meal planning tools',
+      'Delivery scheduling system',
+      'Nutrition information display',
+      'Subscription for weekly boxes',
+      'Farm-to-table tracking'
+    ],
+    accentColor: 'bg-lime-600',
+    liveLink: 'https://01living.ae/',
+    image1: '/Living-Furniture.png',
     type: 'shopify'
   },
   {
     id: 'shopify-7',
-    title: 'Organic Food Market',
+    title: 'Health Care Products Store',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
     features: [
@@ -121,13 +101,13 @@ const shopifyProjects = [
       'Farm-to-table tracking'
     ],
     accentColor: 'bg-lime-600',
-    liveLink: 'https://peekaboopr.net/',
-    image1: '/organic-store.png',
+    liveLink: 'https://0skuy4-v5.myshopify.com/',
+    image1: '/Health-Care.png',
     type: 'shopify'
   },
   {
     id: 'shopify-8',
-    title: 'Organic Food Market',
+    title: 'Child Gaming Store',
     description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
     technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
     features: [
@@ -139,46 +119,10 @@ const shopifyProjects = [
       'Farm-to-table tracking'
     ],
     accentColor: 'bg-lime-600',
-    liveLink: 'https://merrynest.net/',
-    image1: '/organic-store.png',
+    liveLink: 'https://etiano.myshopify.com/en',
+    image1: '/child-gamming.png',
     type: 'shopify'
   },
-  {
-    id: 'shopify-9',
-    title: 'Organic Food Market',
-    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: [
-      'Recipe integration with ingredients',
-      'Meal planning tools',
-      'Delivery scheduling system',
-      'Nutrition information display',
-      'Subscription for weekly boxes',
-      'Farm-to-table tracking'
-    ],
-    accentColor: 'bg-lime-600',
-    liveLink: 'https://1ecd07-06.myshopify.com/',
-    image1: '/organic-store.png',
-    type: 'shopify'
-  },
-  {
-    id: 'shopify-10',
-    title: 'Organic Food Market',
-    description: 'Shopify store for organic foods with recipe integration, meal planning, and delivery scheduling.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: [
-      'Recipe integration with ingredients',
-      'Meal planning tools',
-      'Delivery scheduling system',
-      'Nutrition information display',
-      'Subscription for weekly boxes',
-      'Farm-to-table tracking'
-    ],
-    accentColor: 'bg-lime-600',
-    liveLink: 'https://bigshop247.com/',
-    image1: '/organic-store.png',
-    type: 'shopify'
-  }
 ];
 
 // Shopify Project Card Component

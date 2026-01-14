@@ -119,7 +119,7 @@ const Hero = () => {
               View My Work
             </button>
             <a
-              href="/Tawhide-hasan-bejoy -Resume.pdf"
+              href="/Tawhide-hasan-bejoy-official(5).pdf"
               download
               target="_blank"
               rel="noopener noreferrer"
