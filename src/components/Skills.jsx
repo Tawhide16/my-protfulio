@@ -1,138 +1,375 @@
-import { FaReact, FaNodeJs, FaCode,FaShopify } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript,SiNextdotjs,SiJavascript} from 'react-icons/si';
-import { motion } from 'framer-motion';
+import { FaReact, FaNodeJs, FaCode, FaShopify } from 'react-icons/fa';
+import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript } from 'react-icons/si';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { useRef, useState } from 'react';
 
-const Skills = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+/* ── Floating orb ── */
+const FloatingOrb = ({ color, style }) => (
+  <motion.div
+    className="absolute rounded-full blur-3xl opacity-[0.08] pointer-events-none"
+    style={{ background: color, ...style }}
+    animate={{ y: [0, -28, 0], scale: [1, 1.06, 1] }}
+    transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+  />
+);
 
-  const skills = [
-    { name: 'React', icon: <FaReact size={40} />, category: 'Frontend', color: 'text-cyan-400' },
-    { name: 'Next.js', icon: <SiNextdotjs size={40} />, category: 'Frontend', color: 'text-gray-800 dark:text-white' },
-    { 
-    name: 'JavaScript', icon: <SiJavascript size={40} />, 
-    category: 'Frontend', 
-    color: 'text-yellow-400' 
+const skills = [
+  {
+    name: 'React',
+    icon: <FaReact size={38} />,
+    category: 'Frontend',
+    color: '#22d3ee',
+    accentRgb: '34, 211, 238',
+    level: 90,
   },
-    { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
-    { name: 'Firebase', icon: <SiFirebase size={40} />, category: 'Backend', color: 'text-amber-500' },
-    { name: 'Node.js', icon: <FaNodeJs size={40} />, category: 'Backend', color: 'text-green-500' },
-    { name: 'Express', icon: <SiExpress size={40} />, category: 'Backend', color: 'text-gray-400' },
-    { name: 'MongoDB', icon: <SiMongodb size={40} />, category: 'Database', color: 'text-emerald-500' },
-    { name: 'React Hook Form', icon: <div className="text-4xl font-bold">RHF</div>, category: 'Frontend', color: 'text-pink-500' },
-    { name: 'Tailwind CSS', icon: <SiTailwindcss size={40} />, category: 'Frontend', color: 'text-sky-400' },
-    // { name: 'TypeScript', icon: <SiTypescript size={40} />, category: 'Frontend', color: 'text-blue-600' },
-    { name: 'DaisyUI', icon: <div className="text-4xl font-bold">D</div>, category: 'Frontend', color: 'text-purple-500' },
-    { name: 'Shopify', icon: <FaShopify size={40} />, category: 'E-commerce', color: 'text-green-600' },
-    { name: 'TanStack Query', 
-  icon: <div className="text-4xl font-bold text-red-500">TQ</div>, 
-  category: 'Frontend', 
-  color: 'text-red-500' 
-},
-{ 
-  name: 'Axios', 
-  icon: <div className="text-4xl font-bold text-purple-600">AX</div>, 
-  category: 'Frontend', 
-  color: 'text-purple-600' 
-},
+  {
+    name: 'Next.js',
+    icon: <SiNextdotjs size={38} />,
+    category: 'Frontend',
+    color: '#ffffff',
+    accentRgb: '255, 255, 255',
+    level: 80,
+  },
+  {
+    name: 'JavaScript',
+    icon: <SiJavascript size={38} />,
+    category: 'Frontend',
+    color: '#facc15',
+    accentRgb: '250, 204, 21',
+    level: 92,
+  },
+  {
+    name: 'TypeScript',
+    icon: <SiTypescript size={38} />,
+    category: 'Frontend',
+    color: '#3b82f6',
+    accentRgb: '59, 130, 246',
+    level: 75,
+  },
+  {
+    name: 'Tailwind CSS',
+    icon: <SiTailwindcss size={38} />,
+    category: 'Frontend',
+    color: '#38bdf8',
+    accentRgb: '56, 189, 248',
+    level: 95,
+  },
+  {
+    name: 'Firebase',
+    icon: <SiFirebase size={38} />,
+    category: 'Backend',
+    color: '#f59e0b',
+    accentRgb: '245, 158, 11',
+    level: 82,
+  },
+  {
+    name: 'Node.js',
+    icon: <FaNodeJs size={38} />,
+    category: 'Backend',
+    color: '#22c55e',
+    accentRgb: '34, 197, 94',
+    level: 78,
+  },
+  {
+    name: 'Express',
+    icon: <SiExpress size={38} />,
+    category: 'Backend',
+    color: '#9ca3af',
+    accentRgb: '156, 163, 175',
+    level: 80,
+  },
+  {
+    name: 'MongoDB',
+    icon: <SiMongodb size={38} />,
+    category: 'Database',
+    color: '#10b981',
+    accentRgb: '16, 185, 129',
+    level: 85,
+  },
+  {
+    name: 'Shopify',
+    icon: <FaShopify size={38} />,
+    category: 'E-commerce',
+    color: '#95bf47',
+    accentRgb: '149, 191, 71',
+    level: 88,
+  },
+  {
+    name: 'TanStack Query',
+    icon: <span className="text-3xl font-black leading-none">TQ</span>,
+    category: 'Frontend',
+    color: '#ef4444',
+    accentRgb: '239, 68, 68',
+    level: 78,
+  },
+  {
+    name: 'Axios',
+    icon: <span className="text-3xl font-black leading-none">AX</span>,
+    category: 'Frontend',
+    color: '#a855f7',
+    accentRgb: '168, 85, 247',
+    level: 88,
+  },
+  {
+    name: 'React Hook Form',
+    icon: <span className="text-2xl font-black leading-none">RHF</span>,
+    category: 'Frontend',
+    color: '#ec4899',
+    accentRgb: '236, 72, 153',
+    level: 85,
+  },
+  {
+    name: 'DaisyUI',
+    icon: <span className="text-3xl font-black leading-none">D</span>,
+    category: 'Frontend',
+    color: '#c084fc',
+    accentRgb: '192, 132, 252',
+    level: 90,
+  },
+];
 
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  };
+/* ── Skill Card ── */
+const SkillCard = ({ skill, index }) => {
+  const [hovered, setHovered] = useState(false);
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section id="skills" className="relative py-24 bg-gradient-to-br from-gray-900 to-gray-950">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-purple-500 filter blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-cyan-500 filter blur-3xl"></div>
-      </div>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      className="relative group"
+    >
+      {/* Glow border */}
+      <motion.div
+        className="absolute -inset-px rounded-2xl pointer-events-none"
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          background: `linear-gradient(135deg, ${skill.color}50, transparent 65%)`,
+          borderRadius: '1rem',
+        }}
+      />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <motion.div
+        className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md p-6 flex flex-col items-center gap-4 cursor-default"
+        animate={{
+          y: hovered ? -6 : 0,
+          boxShadow: hovered
+            ? `0 12px 28px rgba(${skill.accentRgb}, 0.12)`
+            : '0 4px 20px rgba(0,0,0,0.3)',
+        }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+      >
+        {/* Top accent line */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          ref={ref}
-          className="text-center mb-16"
+          className="absolute top-0 left-0 h-0.5 rounded-t-2xl"
+          style={{ background: `linear-gradient(90deg, ${skill.color}, transparent)` }}
+          initial={{ width: 0 }}
+          animate={inView ? { width: '100%' } : {}}
+          transition={{ duration: 0.7, delay: index * 0.07 + 0.2 }}
+        />
+
+        {/* Category badge */}
+        <span
+          className="absolute top-3 right-3 text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
+          style={{
+            color: skill.color,
+            background: `rgba(${skill.accentRgb}, 0.12)`,
+            border: `1px solid rgba(${skill.accentRgb}, 0.25)`,
+          }}
         >
-          <div className="inline-flex items-center justify-center mb-4">
-            <FaCode className="text-3xl text-cyan-400 mr-3" />
-            <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
-              My Skills
-            </h2>
-          </div>
-          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-            Technologies I've worked with and mastered throughout my development journey
-          </p>
+          {skill.category}
+        </span>
+
+        {/* Icon */}
+        <motion.div
+          className="flex items-center justify-center w-16 h-16 rounded-2xl"
+          style={{ background: `rgba(${skill.accentRgb}, 0.1)`, color: skill.color }}
+          animate={{ rotate: hovered ? [0, -6, 6, 0] : 0, scale: hovered ? 1.1 : 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          {skill.icon}
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-        >
-          {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ y: -10, scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group perspective-1000"
-            >
-              <div className="relative h-full transform-style-preserve-3d group-hover:rotate-y-180 transition-transform duration-500 ease-in-out">
-                {/* Front of card */}
-                <div className="backface-hidden bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-xl p-6 shadow-lg border border-gray-700 flex flex-col items-center justify-center h-full">
-                  <div className={`${skill.color} mb-4`}>{skill.icon}</div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{skill.name}</h3>
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-700 text-gray-300">
-                    {skill.category}
-                  </span>
-                </div>
+        {/* Name */}
+        <h3 className="text-base font-bold text-white text-center leading-tight">{skill.name}</h3>
+      </motion.div>
+    </motion.div>
+  );
+};
 
-                {/* Back of card */}
-                <div className="absolute inset-0 backface-hidden bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 rotate-y-180 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-4xl mb-3">💡</div>
-                    <p className="text-sm text-gray-300">Click to see projects using {skill.name}</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+/* ── Category filter tabs ── */
+const categories = ['All', 'Frontend', 'Backend', 'Database', 'E-commerce'];
+
+/* ── Main Section ── */
+const Skills = () => {
+  const sectionRef = useRef(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+
+  const filtered = activeCategory === 'All'
+    ? skills
+    : skills.filter(s => s.category === activeCategory);
+
+  return (
+    <section
+      id="skills"
+      ref={sectionRef}
+      className="relative py-28 overflow-hidden"
+      style={{ background: 'linear-gradient(180deg, #0b0b0f 0%, #0f0b1a 50%, #0b0b0f 100%)' }}
+    >
+      {/* Background orbs */}
+      <motion.div className="absolute inset-0 pointer-events-none" style={{ y: bgY }}>
+        <FloatingOrb color="#6366f1" style={{ width: 450, height: 450, top: -80, left: -120 }} />
+        <FloatingOrb color="#22d3ee" style={{ width: 350, height: 350, bottom: 0, right: -80 }} />
+        <FloatingOrb color="#a855f7" style={{ width: 280, height: 280, top: '45%', left: '50%' }} />
+      </motion.div>
+
+      {/* Grid texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.025]"
+        style={{
+          backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      <div className="relative mx-auto px-6" style={{ maxWidth: '1515px' }}>
+
+        {/* ── Header ── */}
+        <div ref={headerRef} className="text-center mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="text-indigo-400 text-sm font-semibold tracking-[0.3em] uppercase mb-4"
+          >
+            Tech Stack
+          </motion.p>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-5xl md:text-6xl font-black text-white mb-5 leading-tight"
+          >
+            My{' '}
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #6366f1, #a855f7, #22d3ee)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              Skills
+            </span>
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed"
+          >
+            Technologies I've worked with and mastered throughout my development journey.
+          </motion.p>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={headerInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mx-auto mt-6 h-px w-24 origin-center"
+            style={{ background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }}
+          />
+
+          {/* ── Category filter tabs ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-2 mt-10"
+          >
+            {categories.map((cat) => (
+              <motion.button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+                className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border"
+                style={
+                  activeCategory === cat
+                    ? {
+                        background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                        color: '#fff',
+                        borderColor: 'transparent',
+                        boxShadow: '0 0 20px rgba(99,102,241,0.4)',
+                      }
+                    : {
+                        background: 'rgba(255,255,255,0.04)',
+                        color: '#9ca3af',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                      }
+                }
+              >
+                {cat}
+              </motion.button>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── Skills grid ── */}
+        <motion.div
+          layout
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"
+        >
+          {filtered.map((skill, index) => (
+            <SkillCard key={skill.name} skill={skill} index={index} />
           ))}
         </motion.div>
+
+        {/* ── Bottom stat strip ── */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 1 }}
-          className="mt-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
+          {[
+            { label: 'Technologies', value: `${skills.length}+` },
+            { label: 'Projects Built', value: '10+' },
+            { label: 'Shopify Stores', value: '6+' },
+            { label: 'Years Learning', value: '2+' },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + i * 0.1 }}
+              viewport={{ once: true }}
+              className="text-center p-5 rounded-2xl border border-white/10 bg-white/[0.03]"
+            >
+              <p
+                className="text-3xl font-black mb-1"
+                style={{
+                  background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                {stat.value}
+              </p>
+              <p className="text-gray-500 text-sm font-medium">{stat.label}</p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>
