@@ -427,3 +427,5 @@ const ShopifyProjects = () => {
 };
 
 export default ShopifyProjects;
+
+//add the new code here
