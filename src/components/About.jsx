@@ -184,7 +184,7 @@ const About = () => {
             <CardLabel icon={<FaGraduationCap size={18} />} label="Education" color="#a855f7" colorRgb="168,85,247" />
             <div className="pl-1 space-y-3">
               <p className="text-gray-400 text-sm leading-relaxed">
-                Pursuing <span className="text-indigo-300 font-semibold">Diploma in Computer Science</span> at Borak Polytechnic Institute — currently in 5th Semester.
+                Pursuing <span className="text-indigo-300 font-semibold">Diploma in Computer Science</span> at Borak Polytechnic Institute — currently in 7th Semester.
               </p>
               <ul className="space-y-2 mt-3">
                 <Bullet text="CGPA: 3.85 / 4.00 — Top 5% of class" color="#a855f7" />
