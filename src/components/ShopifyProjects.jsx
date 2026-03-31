@@ -122,7 +122,7 @@ const shopifyProjects = [
   title: 'Pop - Soda & Energy Drink Store',
   subtitle: 'Beverages & Soft Drinks',
   description: 'A vibrant Shopify store for a modern soda brand, featuring high-energy branding, subscription-based savings, and a clean product showcase.',
-  technologies: ['Shopify', 'Liquid', 'CSS/Tailwind', 'JavaScript'],
+  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
   features: ['Product Subscriptions', 'Variant Selectors', 'Interactive Grid Layout', 'Newsletter Integration'],
   accentColor: '#9d174d',
   accentRgb: '157, 23, 77',
