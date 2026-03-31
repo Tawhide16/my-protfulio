@@ -127,10 +127,9 @@ const shopifyProjects = [
   accentColor: '#9d174d',
   accentRgb: '157, 23, 77',
   liveLink: 'https://www.fmcgfuture.com/', // Screenshot-er URL mathay rekhe
-  image1: '/pop-soda-store.png',
+  image1: '/por.png',
   number: '09',
 }
-
 ];
 
 /* ── Floating orb ── */
