@@ -91,6 +91,46 @@ const shopifyProjects = [
     image1: '/child-gamming.png',
     number: '06',
   },
+    {
+    id: 'shopify-7',
+    title: 'Gym Clothing Store (Men & Women)',
+    subtitle: 'FITNESS & APPAREL',
+    description: 'A modern Shopify-based gym clothing store designed for both men and women. Built with a clean UI, fast performance, and a smooth shopping experience using custom Liquid development.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+    features: ['Responsive design for all devices', 'Product filtering & clean shop layout', 'Size guide for better user experience', 'Contact page with user-friendly form','Optimized product pages for conversions','Fast loading & smooth navigation'],
+    accentColor: 'rgb(146, 59, 246)',
+    accentRgb: '146, 59, 246',
+    liveLink: 'https://dan-mass1.myshopify.com/',
+    image1: '/dan_mass.png',
+    number: '07',
+  },
+    {
+    id: 'shopify-8',
+    title: 'Northern Projects – Cycling Clothing Store',
+    subtitle: 'SPORTS & CYCLING APPAREL',
+    description: 'A high-performance cycling clothing website built with Shopify, focused on delivering a smooth and engaging shopping experience. Designed for cyclists with modern UI, structured navigation, and optimized product browsing.',
+    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+    features: ['Fully responsive and mobile-friendly design', 'Advanced product organization for cycling gear', 'Clean and minimal UI for better user experience', 'Multi-page structured navigation','Optimized product display with detailed information','Smooth browsing and fast performance'],
+    accentColor: '#C8102E',
+    accentRgb: '200, 16, 46',
+    liveLink: 'https://northernprojects.cc/',
+    image1: '/northern-projects.png',
+    number: '08',
+  },
+  {
+  id: 'shopify-9', // Sequence onusare id set kora hoyeche
+  title: 'Pop - Soda & Energy Drink Store',
+  subtitle: 'Beverages & Soft Drinks',
+  description: 'A vibrant Shopify store for a modern soda brand, featuring high-energy branding, subscription-based savings, and a clean product showcase.',
+  technologies: ['Shopify', 'Liquid', 'CSS/Tailwind', 'JavaScript'],
+  features: ['Product Subscriptions', 'Variant Selectors', 'Interactive Grid Layout', 'Newsletter Integration'],
+  accentColor: '#9d174d',
+  accentRgb: '157, 23, 77',
+  liveLink: 'https://www.fmcgfuture.com/', // Screenshot-er URL mathay rekhe
+  image1: '/pop-soda-store.png',
+  number: '09',
+}
+
 ];
 
 /* ── Floating orb ── */
