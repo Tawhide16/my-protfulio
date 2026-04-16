@@ -129,6 +129,19 @@ const shopifyProjects = [
   liveLink: 'https://www.fmcgfuture.com/', // Screenshot-er URL mathay rekhe
   image1: '/por.png',
   number: '09',
+},
+  {
+  id: 'shopify-10',
+  title: 'FreshMart - Grocery & Daily Essentials Store',
+  subtitle: 'Groceries & Daily Needs',
+  description: 'A modern Shopify grocery store offering fresh produce, pantry essentials, and daily household items with a smooth shopping experience, smart categorization, and fast checkout.',
+  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
+  features: ['Smart Product Categories', 'Quick Add to Cart', 'Discount & Coupon System', 'Mobile-Friendly Design'],
+  accentColor: '#2d5a3a',
+  accentRgb: '45, 90, 58',
+  liveLink: 'https://europeanfoodstore.net/',
+  image1: '/europe.png',
+  number: '10',
 }
 ];
 
