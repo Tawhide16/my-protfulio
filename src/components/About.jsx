@@ -1,9 +1,25 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaGraduationCap, FaHeart, FaLaptopCode, FaBriefcase, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
-import { SiReact, SiNextdotjs, SiNodedotjs, SiMongodb, SiShopify } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiNodedotjs, SiMongodb, SiShopify, SiJavascript, SiTypescript, SiTailwindcss, SiFirebase, SiExpress } from 'react-icons/si';
 import { TypeAnimation } from 'react-type-animation';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { defaultSiteContent } from '@/data/defaultContent';
+
+const techIconMap = {
+  React: <SiReact className="text-cyan-400" />,
+  'Next.js': <SiNextdotjs className="text-white" />,
+  'Node.js': <SiNodedotjs className="text-green-500" />,
+  MongoDB: <SiMongodb className="text-emerald-400" />,
+  Shopify: <SiShopify className="text-green-400" />,
+  JavaScript: <SiJavascript className="text-yellow-400" />,
+  TypeScript: <SiTypescript className="text-blue-400" />,
+  'Tailwind CSS': <SiTailwindcss className="text-sky-400" />,
+  Firebase: <SiFirebase className="text-amber-400" />,
+  Express: <SiExpress className="text-gray-300" />,
+};
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -55,8 +71,49 @@ const Bullet = ({ text, color = '#6366f1' }) => (
 const About = () => {
   const sectionRef = useRef(null);
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [content, setContent] = useState(defaultSiteContent.about);
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.data?.about) {
+          setContent((prev) => ({ ...prev, ...data.data.about }));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+
+  const techAtWork = content.techAtWork && content.techAtWork.length > 0
+    ? content.techAtWork
+    : defaultSiteContent.about.techAtWork;
+
+  const educationPoints = content.educationPoints && content.educationPoints.length > 0
+    ? content.educationPoints
+    : defaultSiteContent.about.educationPoints;
+
+  const techJourneyPoints = content.techJourneyPoints && content.techJourneyPoints.length > 0
+    ? content.techJourneyPoints
+    : defaultSiteContent.about.techJourneyPoints;
+
+  const cleanCodePoints = content.cleanCodePoints && content.cleanCodePoints.length > 0
+    ? content.cleanCodePoints
+    : defaultSiteContent.about.cleanCodePoints;
+
+  const performancePoints = content.performancePoints && content.performancePoints.length > 0
+    ? content.performancePoints
+    : defaultSiteContent.about.performancePoints;
+
+  const collaborationPoints = content.collaborationPoints && content.collaborationPoints.length > 0
+    ? content.collaborationPoints
+    : defaultSiteContent.about.collaborationPoints;
+
+  const growthPoints = content.growthPoints && content.growthPoints.length > 0
+    ? content.growthPoints
+    : defaultSiteContent.about.growthPoints;
 
   return (
     <section
@@ -135,23 +192,22 @@ const About = () => {
               <CardLabel icon={<FaBriefcase size={18} />} label="Current Position" color="#6366f1" colorRgb="99,102,241" />
               <div className="pl-1">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h4 className="text-xl font-bold text-white">Web Developer</h4>
+                  <h4 className="text-xl font-bold text-white">{content.currentRoleTitle || 'Web Developer'}</h4>
                   <span
                     className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
                     style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.25)' }}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    Currently Working
+                    {content.currentWorkStatus || 'Currently Working'}
                   </span>
                 </div>
-                <p className="text-indigo-300 font-semibold mb-1">Softvence Agency</p>
+                <p className="text-indigo-300 font-semibold mb-1">{content.currentCompany || 'Softvence Agency'}</p>
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
-                  <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="text-indigo-400" /> On-Site, Dhaka, BD</span>
-                  <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-indigo-400" /> 2025 – Present</span>
+                  <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="text-indigo-400" /> {content.workType || 'On-Site, Dhaka, BD'}</span>
+                  <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-indigo-400" /> {content.workDuration || '2025 – Present'}</span>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed max-w-2xl">
-                  Working as a professional web developer at Softvence, building and delivering high-quality client projects — 
-                  including custom Shopify stores, full-stack MERN applications, and responsive UI/UX implementations.
+                  {content.workDescription || defaultSiteContent.about.workDescription}
                 </p>
               </div>
             </div>
@@ -160,15 +216,9 @@ const About = () => {
             <div className="lg:border-l lg:border-white/10 lg:pl-8 flex-shrink-0">
               <p className="text-xs font-semibold tracking-widest uppercase text-gray-600 mb-3">Tech at Work</p>
               <div className="flex flex-wrap gap-2">
-                {[
-                  { icon: <SiReact className="text-cyan-400" />, name: 'React' },
-                  { icon: <SiNextdotjs className="text-white" />, name: 'Next.js' },
-                  { icon: <SiNodedotjs className="text-green-500" />, name: 'Node.js' },
-                  { icon: <SiMongodb className="text-emerald-400" />, name: 'MongoDB' },
-                  { icon: <SiShopify className="text-green-400" />, name: 'Shopify' },
-                ].map(t => (
-                  <span key={t.name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-300 text-xs font-medium">
-                    {t.icon} {t.name}
+                {techAtWork.map((techName) => (
+                  <span key={techName} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-300 text-xs font-medium">
+                    {techIconMap[techName] || <SiReact className="text-indigo-400" />} {techName}
                   </span>
                 ))}
               </div>
@@ -184,12 +234,12 @@ const About = () => {
             <CardLabel icon={<FaGraduationCap size={18} />} label="Education" color="#a855f7" colorRgb="168,85,247" />
             <div className="pl-1 space-y-3">
               <p className="text-gray-400 text-sm leading-relaxed">
-                Pursuing <span className="text-indigo-300 font-semibold">Diploma in Computer Science</span> at Borak Polytechnic Institute — currently in 7th Semester.
+                Pursuing <span className="text-indigo-300 font-semibold">{content.educationDegree || 'Diploma in Computer Science'}</span> at {content.educationInstitute || 'Borak Polytechnic Institute — currently in 7th Semester.'}
               </p>
               <ul className="space-y-2 mt-3">
-                <Bullet text="CGPA: 3.85 / 4.00 — Top 5% of class" color="#a855f7" />
-                <Bullet text="Expected Graduation: December 2026" color="#a855f7" />
-                <Bullet text="Core subjects: DSA, Networking, Web Technology" color="#a855f7" />
+                {educationPoints.map((pt, i) => (
+                  <Bullet key={i} text={pt} color="#a855f7" />
+                ))}
               </ul>
             </div>
           </Card>
@@ -199,24 +249,12 @@ const About = () => {
             <CardLabel icon={<FaLaptopCode size={18} />} label="Tech Journey" color="#22d3ee" colorRgb="34,211,238" />
             <div className="pl-1 space-y-3">
               <p className="text-gray-400 text-sm leading-relaxed">
-                Passionate about building{' '}
-                <TypeAnimation
-                  sequence={[
-                    'web applications', 2000,
-                    'responsive UIs', 2000,
-                    'full-stack projects', 2000,
-                    'Shopify stores', 2000,
-                  ]}
-                  wrapper="span"
-                  cursor={true}
-                  repeat={Infinity}
-                  style={{ color: '#22d3ee', fontWeight: 600 }}
-                />
+                {content.techJourneyText || defaultSiteContent.about.techJourneyText}
               </p>
               <ul className="space-y-2 mt-3">
-                <Bullet text="500+ hours of coding in 2024–2025" color="#22d3ee" />
-                <Bullet text="10+ full-stack & e-commerce projects delivered" color="#22d3ee" />
-                <Bullet text="Worked with international clients via Softvence" color="#22d3ee" />
+                {techJourneyPoints.map((pt, i) => (
+                  <Bullet key={i} text={pt} color="#22d3ee" />
+                ))}
               </ul>
             </div>
           </Card>
@@ -232,25 +270,25 @@ const About = () => {
                 title: 'Clean Code',
                 color: '#6366f1',
                 colorRgb: '99,102,241',
-                points: ['Readable & maintainable', 'Component-driven design', 'DRY principles'],
+                points: cleanCodePoints,
               },
               {
                 title: 'Performance',
                 color: '#22c55e',
                 colorRgb: '34,197,94',
-                points: ['Optimized rendering', 'Lazy loading', 'Fast load times'],
+                points: performancePoints,
               },
               {
                 title: 'Collaboration',
                 color: '#f59e0b',
                 colorRgb: '245,158,11',
-                points: ['Git & version control', 'Team communication', 'On-time delivery'],
+                points: collaborationPoints,
               },
               {
                 title: 'Growth Mindset',
                 color: '#a855f7',
                 colorRgb: '168,85,247',
-                points: ['Constantly learning', 'Adapts to new tech', 'Open to feedback'],
+                points: growthPoints,
               },
             ].map((col) => (
               <div key={col.title}>
@@ -261,7 +299,7 @@ const About = () => {
                   {col.title}
                 </p>
                 <ul className="space-y-2">
-                  {col.points.map(p => <Bullet key={p} text={p} color={col.color} />)}
+                  {col.points.map((p, i) => <Bullet key={i} text={p} color={col.color} />)}
                 </ul>
               </div>
             ))}

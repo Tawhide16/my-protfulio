@@ -1,10 +1,15 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { FaExternalLinkAlt, FaGithub, FaArrowRight } from 'react-icons/fa';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   SiReact, SiExpress, SiMongodb, SiFirebase, SiTailwindcss, SiNodedotjs,
 } from 'react-icons/si';
+import { projects } from '@/data/projectsData';
+
+export { projects };
 
 const techIcons = {
   React: <SiReact className="text-sky-400" />,
@@ -15,65 +20,6 @@ const techIcons = {
   'Tailwind CSS': <SiTailwindcss className="text-cyan-400" />,
   'Node.js': <SiNodedotjs className="text-green-500" />,
 };
-
-export const projects = [
-  {
-    id: 3,
-    title: 'Next Class',
-    subtitle: 'Education Management Platform',
-    description: 'A full-stack MERN app for smooth class management, secure login, and seamless payments.',
-    technologies: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Firebase'],
-    features: ['Role-based dashboards', 'Stripe-powered enrollments', 'Assignment creation & submission', 'JWT-secured private routes'],
-    accentColor: '#6366f1',
-    accentRgb: '99, 102, 241',
-    liveLink: 'https://my-school-b2c91.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Next-class-client',
-    image1: '/NEXT-CLASS.png',
-    number: '01',
-  },
-  {
-    id: 1,
-    title: 'VibeCircle',
-    subtitle: 'Social Media Platform',
-    description: 'Social media platform for connecting with like-minded people and sharing experiences.',
-    technologies: ['React', 'Firebase', 'Tailwind CSS'],
-    features: ['User authentication', 'Real-time posts', 'Like and comment system', 'Responsive design'],
-    accentColor: '#8b5cf6',
-    accentRgb: '139, 92, 246',
-    liveLink: 'https://my-assignment-10-a4262.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
-    image1: '/vibe.png',
-    number: '02',
-  },
-  {
-    id: 2,
-    title: 'Hotel Booking',
-    subtitle: 'Reservation System',
-    description: 'Complete hotel reservation system with room selection and booking management.',
-    technologies: ['React', 'Node.js', 'MongoDB'],
-    features: ['Room availability calendar', 'User dashboard', 'Booking history', 'Admin panel'],
-    accentColor: '#10b981',
-    accentRgb: '16, 185, 129',
-    liveLink: 'https://my-hotel-a3994.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
-    image1: '/hotel-booke.png',
-    number: '03',
-  },
-  {
-    id: 4,
-    title: 'Event Explorer',
-    subtitle: 'Event Discovery Platform',
-    description: 'Platform for discovering and registering for local events and activities.',
-    technologies: ['React', 'Express', 'MongoDB', 'Firebase'],
-    features: ['Location-based search', 'Event filtering', 'Ticket purchasing', 'User reviews'],
-    accentColor: '#f43f5e',
-    accentRgb: '244, 63, 94',
-    liveLink: 'https://fluffy-clafoutis-ef0d5e.netlify.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/event-explorer-client',
-    image1: '/event.png',
-    number: '04',
-  },
-];
 
 /* ── Floating orb background ── */
 const FloatingOrb = ({ color, style }) => (
@@ -89,7 +35,6 @@ const FloatingOrb = ({ color, style }) => (
 const ProjectCard = ({ project, index }) => {
   const [hovered, setHovered] = useState(false);
   const cardRef = useRef(null);
-
   const isEven = index % 2 === 0;
 
   return (
@@ -103,7 +48,7 @@ const ProjectCard = ({ project, index }) => {
       onHoverEnd={() => setHovered(false)}
       className="relative group"
     >
-      {/* Glow border */}
+      {/* Glow border on hover */}
       <motion.div
         className="absolute -inset-px rounded-2xl pointer-events-none"
         animate={{ opacity: hovered ? 1 : 0 }}
@@ -116,149 +61,169 @@ const ProjectCard = ({ project, index }) => {
 
       <div
         className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/60 backdrop-blur-md"
-        style={{ boxShadow: hovered ? `0 0 60px 0 rgba(${project.accentRgb}, 0.2)` : '0 4px 24px rgba(0,0,0,0.4)', transition: 'box-shadow 0.4s' }}
+        style={{
+          boxShadow: hovered
+            ? `0 0 60px 0 rgba(${project.accentRgb || '99, 102, 241'}, 0.2)`
+            : '0 4px 24px rgba(0,0,0,0.4)',
+          transition: 'box-shadow 0.4s',
+        }}
       >
         {/* Top accent line */}
         <motion.div
-          className="absolute top-0 left-0 h-0.5 rounded-t-2xl"
+          className="absolute top-0 left-0 h-0.5 rounded-t-2xl z-10"
           style={{ background: `linear-gradient(90deg, ${project.accentColor}, transparent)` }}
           initial={{ width: 0 }}
           whileInView={{ width: '100%' }}
-          transition={{ duration: 0.8, delay: index * 0.12 + 0.3 }}
+          transition={{ duration: 0.8, delay: index * 0.15 + 0.3 }}
           viewport={{ once: true }}
         />
 
-        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+        <div className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-stretch`}>
 
           {/* ── Image side ── */}
-          <div className="relative lg:w-1/2 overflow-hidden">
-            <motion.div
-              className="absolute inset-0 z-10"
-              style={{
-                background: isEven
-                  ? `linear-gradient(to right, transparent 60%, rgb(17,24,39))`
-                  : `linear-gradient(to left, transparent 60%, rgb(17,24,39))`,
-              }}
-            />
-            {/* Overlay on hover */}
+          <div className="lg:w-1/2 relative overflow-hidden bg-gray-800/80 min-h-[400px]">
+            {/* Hover overlay with Live Preview button */}
             <motion.div
               className="absolute inset-0 z-20 flex items-center justify-center"
               animate={{ opacity: hovered ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              style={{ background: `rgba(${project.accentRgb}, 0.15)` }}
+              transition={{ duration: 0.25 }}
+              style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(2px)' }}
             >
-              <motion.a
-                href={project.liveLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: hovered ? 1 : 0.8, opacity: hovered ? 1 : 0 }}
-                transition={{ duration: 0.25 }}
-                className="flex items-center gap-2 px-6 py-3 rounded-full text-white font-bold text-sm shadow-xl"
-                style={{ background: project.accentColor }}
-              >
-                Live Preview <FaExternalLinkAlt className="text-xs" />
-              </motion.a>
+              {project.liveLink && (
+                <motion.a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  animate={{ scale: hovered ? 1 : 0.85, opacity: hovered ? 1 : 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm text-white shadow-xl"
+                  style={{ background: project.accentColor }}
+                >
+                  Live Preview <FaExternalLinkAlt className="text-xs" />
+                </motion.a>
+              )}
             </motion.div>
 
+            {/* Gradient overlay bottom */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-transparent to-transparent z-10 pointer-events-none" />
+
+            {/* Project image */}
             <motion.img
               src={project.image1}
               alt={project.title}
-              className="w-full h-64 lg:h-full object-cover object-top"
-              animate={{ scale: hovered ? 1.06 : 1 }}
+              className="w-full h-full object-cover object-top"
+              animate={{ scale: hovered ? 1.05 : 1 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             />
           </div>
 
           {/* ── Content side ── */}
-          <div className="lg:w-1/2 p-8 flex flex-col justify-between">
+          <div className="lg:w-1/2 p-8 lg:p-10 flex flex-col justify-between relative z-10">
             <div>
-              {/* Number + subtitle */}
-              <div className="flex items-center gap-3 mb-3">
+              {/* Category badge */}
+              <p
+                className="text-[10px] font-bold tracking-[0.25em] uppercase mb-3"
+                style={{ color: project.accentColor }}
+              >
+                {project.subtitle}
+              </p>
+
+              {/* Number + Title row */}
+              <div className="flex items-start gap-4 mb-4">
                 <span
-                  className="text-5xl font-black leading-none select-none"
-                  style={{ color: `rgba(${project.accentRgb}, 0.18)` }}
+                  className="text-5xl lg:text-6xl font-black leading-none select-none opacity-90 tabular-nums"
+                  style={{ color: project.accentColor }}
                 >
-                  {project.number}
+                  {String(index + 1).padStart(2, '0')}
                 </span>
-                <div>
-                  <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: project.accentColor }}>
-                    {project.subtitle}
-                  </p>
-                  <h3 className="text-2xl font-bold text-white mt-0.5">{project.title}</h3>
-                </div>
+                <h3 className="text-2xl lg:text-3xl font-black text-white leading-tight pt-1">
+                  {project.title}
+                </h3>
               </div>
 
-              <p className="text-gray-400 text-sm leading-relaxed mb-5">{project.description}</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-5">
+                {project.description}
+              </p>
 
-              {/* Tech stack */}
+              {/* Tech badges */}
               <div className="flex flex-wrap gap-2 mb-5">
-                {project.technologies.map(tech => (
+                {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-gray-300"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border border-white/10 bg-white/5 text-gray-300"
                   >
-                    {techIcons[tech]}
+                    {techIcons[tech] || null}
                     {tech}
                   </span>
                 ))}
               </div>
 
-              {/* Features */}
-              <ul className="space-y-1.5 mb-6">
-                {project.features.map((f, i) => (
-                  <motion.li
+              {/* Feature highlights */}
+              <ul className="space-y-1.5">
+                {project.features.map((feat, i) => (
+                  <li
                     key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 + i * 0.06 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-2 text-sm text-gray-400"
+                    className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-400"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: project.accentColor }} />
-                    {f}
-                  </motion.li>
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: project.accentColor }}
+                    />
+                    {feat}
+                  </li>
                 ))}
               </ul>
             </div>
 
-            {/* CTA links */}
-            <div className="flex items-center gap-4 pt-2 border-t border-white/10">
-              <a
-                href={project.liveLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-semibold text-white hover:opacity-80 transition-opacity"
-              >
-                <span
-                  className="w-8 h-8 rounded-full flex items-center justify-center"
-                  style={{ background: `rgba(${project.accentRgb}, 0.2)` }}
+            {/* Action bar */}
+            <div className="flex flex-wrap items-center gap-3 pt-5 mt-6 border-t border-white/10">
+              {project.liveLink && (
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
                 >
-                  <FaExternalLinkAlt style={{ color: project.accentColor }} className="text-xs" />
-                </span>
-                Live Demo
-              </a>
-              <a
-                href={project.gitLinkClient}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm font-semibold text-gray-400 hover:text-white transition-colors"
-              >
-                <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <FaGithub className="text-xs" />
-                </span>
-                GitHub
-              </a>
+                  <FaExternalLinkAlt className="text-[10px]" style={{ color: project.accentColor }} />
+                  Live Demo
+                </a>
+              )}
+
+              {project.gitLinkClient && (
+                <a
+                  href={project.gitLinkClient}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+                >
+                  <FaGithub />
+                  GitHub
+                </a>
+              )}
+
+              {project.gitLinkServer && (
+                <a
+                  href={project.gitLinkServer}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-gray-300 hover:text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+                >
+                  <FaGithub />
+                  Server
+                </a>
+              )}
+
               <Link
-                to={`/projects/${project.id}`}
-                state={{ project }}
-                className="ml-auto flex items-center gap-1 text-xs font-semibold tracking-wide uppercase"
+                href={`/projects/${project.id}`}
+                className="flex items-center gap-1.5 text-xs font-bold ml-auto transition-colors group"
                 style={{ color: project.accentColor }}
               >
-                Details <FaArrowRight className="text-[10px]" />
+                DETAILS <FaArrowRight className="text-[10px] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
+
         </div>
       </div>
     </motion.div>
@@ -268,8 +233,20 @@ const ProjectCard = ({ project, index }) => {
 /* ── Main Section ── */
 const Projects = () => {
   const sectionRef = useRef(null);
+  const [projectList, setProjectList] = useState(projects);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
+  useEffect(() => {
+    fetch('/api/projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data && data.data.length > 0) {
+          setProjectList(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section
@@ -294,9 +271,8 @@ const Projects = () => {
         }}
       />
 
-      <div className="relative container mx-auto px-6 max-w-6xl">
-
-        {/* ── Section header ── */}
+      <div className="relative container mx-auto px-6 max-w-6xl z-10">
+        {/* Section header */}
         <div className="text-center mb-20">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -317,7 +293,6 @@ const Projects = () => {
           >
             Featured{' '}
             <span
-              className="relative inline-block"
               style={{
                 background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)',
                 WebkitBackgroundClip: 'text',
@@ -335,7 +310,7 @@ const Projects = () => {
             viewport={{ once: true }}
             className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed"
           >
-            A collection of things I've built — from full-stack apps to polished UIs.
+            A collection of things I&apos;ve built — from full-stack apps to polished UIs.
           </motion.p>
 
           {/* Animated underline */}
@@ -349,14 +324,14 @@ const Projects = () => {
           />
         </div>
 
-        {/* ── Project cards ── */}
+        {/* Project cards */}
         <div className="space-y-10">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+          {projectList.map((project, index) => (
+            <ProjectCard key={project._id || project.id} project={project} index={index} />
           ))}
         </div>
 
-        {/* ── View all CTA ── */}
+        {/* View all CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -365,7 +340,7 @@ const Projects = () => {
           className="text-center mt-20"
         >
           <Link
-            to="/projects"
+            href="/projects"
             className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold text-white overflow-hidden group border border-indigo-500/40 hover:border-indigo-400 transition-colors duration-300"
             style={{ background: 'rgba(99,102,241,0.08)' }}
           >

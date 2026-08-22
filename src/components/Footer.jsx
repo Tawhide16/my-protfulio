@@ -1,7 +1,11 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaHeart, FaArrowUp, FaFacebook } from 'react-icons/fa';
-import { SiReact, SiTailwindcss } from 'react-icons/si';
+import { SiNextdotjs, SiTailwindcss } from 'react-icons/si';
 import { useInView } from 'react-intersection-observer';
+import { useRouter, usePathname } from 'next/navigation';
 
 const socialLinks = [
   { icon: <FaGithub size={18} />, url: "https://github.com/Tawhide16", name: "GitHub", color: '#6b7280', rgb: '107,114,128' },
@@ -21,9 +25,42 @@ const navLinks = [
 
 const Footer = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [siteData, setSiteData] = useState(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          setSiteData(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+  const scrollTo = (id) => {
+    if (pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      router.push(`/#${id}`);
+    }
+  };
+
+  const socials = siteData?.contact?.socials;
+  const footerContent = siteData?.footer;
+  const heroContent = siteData?.hero;
+
+  const dynamicSocialLinks = [
+    { icon: <FaGithub size={18} />, url: socials?.github || "https://github.com/Tawhide16", name: "GitHub", color: '#6b7280', rgb: '107,114,128' },
+    { icon: <FaLinkedin size={18} />, url: socials?.linkedin || "https://www.linkedin.com/in/tawhide-hasan-bejoy/", name: "LinkedIn", color: '#3b82f6', rgb: '59,130,246' },
+    { icon: <FaTwitter size={18} />, url: socials?.twitter || "https://x.com/TawhideB64383", name: "Twitter", color: '#38bdf8', rgb: '56,189,248' },
+    { icon: <FaFacebook size={18} />, url: socials?.facebook || "https://www.facebook.com/tawhide.hb", name: "Facebook", color: '#60a5fa', rgb: '96,165,250' },
+    { icon: <FaEnvelope size={18} />, url: `mailto:${siteData?.contact?.email || 'tawhideh.b10@gmail.com'}`, name: "Email", color: '#ef4444', rgb: '239,68,68' },
+  ];
 
   return (
     <footer
@@ -70,11 +107,13 @@ const Footer = () => {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Tawhid Hasan Bejoy
+              {heroContent?.firstName ? `${heroContent.firstName} ${heroContent.lastName || ''}` : 'Tawhid Hasan Bejoy'}
             </h3>
-            <p className="text-indigo-400 text-sm font-semibold mb-3">Web Developer @ Softvence</p>
+            <p className="text-indigo-400 text-sm font-semibold mb-3">
+              {heroContent?.statusBadge || 'Web Developer @ Softvence'}
+            </p>
             <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
-              Crafting clean, performant web experiences — full-stack MERN apps, custom Shopify stores & more.
+              {footerContent?.bio || 'Crafting clean, performant web experiences — full-stack MERN apps, custom Shopify stores & more.'}
             </p>
 
             {/* Availability */}
@@ -85,7 +124,7 @@ const Footer = () => {
               className="inline-flex items-center gap-2 mt-5 px-3 py-1.5 rounded-full border border-green-500/20 bg-green-500/5 text-xs text-gray-400"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              Open to new opportunities
+              {footerContent?.status || 'Open to new opportunities'}
             </motion.div>
           </motion.div>
 
@@ -107,7 +146,7 @@ const Footer = () => {
                 >
                   <button
                     onClick={() => scrollTo(link.id)}
-                    className="group flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors duration-200"
+                    className="group flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors duration-200 cursor-pointer"
                   >
                     <span
                       className="w-1 h-1 rounded-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -116,6 +155,19 @@ const Footer = () => {
                   </button>
                 </motion.li>
               ))}
+              <motion.li
+                initial={{ opacity: 0, x: -10 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.25 + navLinks.length * 0.07 }}
+              >
+                <a
+                  href="/dashboard"
+                  className="group flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition-colors duration-200"
+                >
+                  <span className="w-1 h-1 rounded-full bg-indigo-400" />
+                  Admin Dashboard
+                </a>
+              </motion.li>
             </ul>
           </motion.div>
 
@@ -128,7 +180,7 @@ const Footer = () => {
           >
             <p className="text-xs font-bold tracking-[0.2em] uppercase text-gray-600 mb-5">Connect</p>
             <div className="flex flex-wrap gap-2.5">
-              {socialLinks.map((social, i) => (
+              {dynamicSocialLinks.map((social, i) => (
                 <motion.a
                   key={social.name}
                   href={social.url}
@@ -152,16 +204,16 @@ const Footer = () => {
 
             <div className="mt-6 space-y-1.5">
               <a
-                href="mailto:tawhideh.b10@gmail.com"
+                href={`mailto:${siteData?.contact?.email || 'tawhideh.b10@gmail.com'}`}
                 className="block text-sm text-gray-600 hover:text-indigo-400 transition-colors"
               >
-                tawhideh.b10@gmail.com
+                {siteData?.contact?.email || 'tawhideh.b10@gmail.com'}
               </a>
               <a
-                href="tel:+8801745413122"
+                href={`tel:${(siteData?.contact?.phone || '+880 1745413122').replace(/\s/g, '')}`}
                 className="block text-sm text-gray-600 hover:text-indigo-400 transition-colors"
               >
-                +880 1745413122
+                {siteData?.contact?.phone || '+880 1745413122'}
               </a>
             </div>
           </motion.div>
@@ -182,6 +234,7 @@ const Footer = () => {
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
             transition={{ delay: 0.6 }}
+            suppressHydrationWarning
             className="text-xs text-gray-700 text-center sm:text-left"
           >
             © {new Date().getFullYear()} Tawhid Hasan Bejoy. All rights reserved.
@@ -194,7 +247,7 @@ const Footer = () => {
             className="flex items-center gap-1.5 text-xs text-gray-700"
           >
             Built with
-            <SiReact className="text-cyan-500" size={12} />
+            <SiNextdotjs className="text-white ml-1" size={13} />
             <span className="text-gray-700">&</span>
             <SiTailwindcss className="text-sky-400" size={12} />
             <span className="text-gray-700">with</span>
@@ -209,7 +262,7 @@ const Footer = () => {
             onClick={scrollToTop}
             whileHover={{ y: -3, scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-gray-500 hover:text-white hover:border-indigo-500/40 transition-all duration-200 cursor-pointer"
           >
             Back to top <FaArrowUp className="text-indigo-400" size={10} />
           </motion.button>

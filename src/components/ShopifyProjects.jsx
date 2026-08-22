@@ -1,7 +1,12 @@
-import { useState, useRef } from 'react';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp, FaArrowRight } from 'react-icons/fa';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { SiShopify, SiReact, SiNodedotjs } from 'react-icons/si';
+import { shopifyProjects } from '@/data/projectsData';
+
+export { shopifyProjects };
 
 const shopifyTechIcons = {
   Shopify: <SiShopify className="text-green-400" />,
@@ -11,139 +16,6 @@ const shopifyTechIcons = {
   'Node.js': <SiNodedotjs className="text-green-500" />,
   'Next.js': <span className="text-white font-black text-sm">▲</span>,
 };
-
-const shopifyProjects = [
-  {
-    id: 'shopify-1',
-    title: 'Premium Fashion Store',
-    subtitle: 'Luxury Fashion',
-    description: 'A fully customized Shopify store with advanced product filtering, quick view, and seamless checkout experience.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'React'],
-    features: ['Custom Shopify theme development', 'Advanced product filtering', 'Quick view functionality', 'SEO optimized pages'],
-    accentColor: '#22c55e',
-    accentRgb: '34, 197, 94',
-    liveLink: 'https://semilevi.com/',
-    image1: '/semilevi.png',
-    number: '01',
-  },
-  {
-    id: 'shopify-2',
-    title: 'Ruby Art — Gallery',
-    subtitle: 'Art & Jewelry',
-    description: 'Born from Nuances of the Night, this line reimagines the exhibition\'s world of metal, desire and transformation into wearable contemporary pieces.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'Next.js'],
-    features: ['Product variant management', 'Real-time inventory tracking', 'Customer review system', 'Multi-currency support'],
-    accentColor: '#10b981',
-    accentRgb: '16, 185, 129',
-    liveLink: 'https://rubyart.gr/',
-    image1: '/rubyart.png',
-    number: '02',
-  },
-  {
-    id: 'shopify-3',
-    title: 'Clothing Brand Store',
-    subtitle: 'Fashion & Apparel',
-    description: 'A modern Shopify store for clothing brand with AR preview, smart search functionality, and seamless UX.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['AR preview capability', 'Smart search with filters', 'Wishlist functionality', 'One-click checkout'],
-    accentColor: '#3b82f6',
-    accentRgb: '59, 130, 246',
-    liveLink: 'https://uma-7769023412.myshopify.com/',
-    image1: '/clothing brand.png',
-    number: '03',
-  },
-  {
-    id: 'shopify-4',
-    title: 'Living Furniture Store',
-    subtitle: 'Home & Lifestyle',
-    description: 'Shopify store for modern furniture with delivery scheduling, room visualization, and curated collections.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Room visualization tools', 'Delivery scheduling system', 'Subscription for weekly boxes', 'Farm-to-table tracking'],
-    accentColor: '#84cc16',
-    accentRgb: '132, 204, 22',
-    liveLink: 'https://01living.ae/',
-    image1: '/Living-Furniture.png',
-    number: '04',
-  },
-  {
-    id: 'shopify-5',
-    title: 'Health Care Products',
-    subtitle: 'Health & Wellness',
-    description: 'Shopify store for health and wellness products with subscription plans and nutrition information display.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Subscription plans', 'Nutrition information display', 'Meal planning tools', 'Delivery scheduling system'],
-    accentColor: '#06b6d4',
-    accentRgb: '6, 182, 212',
-    liveLink: 'https://0skuy4-v5.myshopify.com/',
-    image1: '/Health-Care.png',
-    number: '05',
-  },
-  {
-    id: 'shopify-6',
-    title: 'Child Gaming Store',
-    subtitle: 'Kids & Gaming',
-    description: 'Shopify store for children\'s gaming products with fun UI, parental controls and age-based filtering.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Age-based filtering', 'Parental controls', 'Wishlist functionality', 'Gift wrapping options'],
-    accentColor: '#f59e0b',
-    accentRgb: '245, 158, 11',
-    liveLink: 'https://etiano.myshopify.com/en',
-    image1: '/child-gamming.png',
-    number: '06',
-  },
-    {
-    id: 'shopify-7',
-    title: 'Gym Clothing Store (Men & Women)',
-    subtitle: 'FITNESS & APPAREL',
-    description: 'A modern Shopify-based gym clothing store designed for both men and women. Built with a clean UI, fast performance, and a smooth shopping experience using custom Liquid development.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Responsive design for all devices', 'Product filtering & clean shop layout', 'Size guide for better user experience', 'Contact page with user-friendly form','Optimized product pages for conversions','Fast loading & smooth navigation'],
-    accentColor: 'rgb(146, 59, 246)',
-    accentRgb: '146, 59, 246',
-    liveLink: 'https://dan-mass1.myshopify.com/',
-    image1: '/dan_mass.png',
-    number: '07',
-  },
-    {
-    id: 'shopify-8',
-    title: 'Northern Projects – Cycling Clothing Store',
-    subtitle: 'SPORTS & CYCLING APPAREL',
-    description: 'A high-performance cycling clothing website built with Shopify, focused on delivering a smooth and engaging shopping experience. Designed for cyclists with modern UI, structured navigation, and optimized product browsing.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Fully responsive and mobile-friendly design', 'Advanced product organization for cycling gear', 'Clean and minimal UI for better user experience', 'Multi-page structured navigation','Optimized product display with detailed information','Smooth browsing and fast performance'],
-    accentColor: '#C8102E',
-    accentRgb: '200, 16, 46',
-    liveLink: 'https://northernprojects.cc/',
-    image1: '/northern-projects.png',
-    number: '08',
-  },
-  {
-  id: 'shopify-9', // Sequence onusare id set kora hoyeche
-  title: 'Pop - Soda & Energy Drink Store',
-  subtitle: 'Beverages & Soft Drinks',
-  description: 'A vibrant Shopify store for a modern soda brand, featuring high-energy branding, subscription-based savings, and a clean product showcase.',
-  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-  features: ['Product Subscriptions', 'Variant Selectors', 'Interactive Grid Layout', 'Newsletter Integration'],
-  accentColor: '#9d174d',
-  accentRgb: '157, 23, 77',
-  liveLink: 'https://www.fmcgfuture.com/', // Screenshot-er URL mathay rekhe
-  image1: '/por.png',
-  number: '09',
-},
-  {
-  id: 'shopify-10',
-  title: 'FreshMart - Grocery & Daily Essentials Store',
-  subtitle: 'Groceries & Daily Needs',
-  description: 'A modern Shopify grocery store offering fresh produce, pantry essentials, and daily household items with a smooth shopping experience, smart categorization, and fast checkout.',
-  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-  features: ['Smart Product Categories', 'Quick Add to Cart', 'Discount & Coupon System', 'Mobile-Friendly Design'],
-  accentColor: '#2d5a3a',
-  accentRgb: '45, 90, 58',
-  liveLink: 'https://europeanfoodstore.net/',
-  image1: '/europe.png',
-  number: '10',
-}
-];
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -175,7 +47,7 @@ const ShopifyProjectCard = ({ project, index }) => {
         animate={{ opacity: hovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
         style={{
-          background: `linear-gradient(135deg, ${project.accentColor}44, transparent 60%)`,
+          background: `linear-gradient(135deg, ${project.accentColor || '#22c55e'}44, transparent 60%)`,
           borderRadius: '1rem',
         }}
       />
@@ -184,7 +56,7 @@ const ShopifyProjectCard = ({ project, index }) => {
         className="relative rounded-2xl overflow-hidden border border-white/10 bg-gray-900/70 backdrop-blur-md flex flex-col h-full"
         style={{
           boxShadow: hovered
-            ? `0 0 55px 0 rgba(${project.accentRgb}, 0.18)`
+            ? `0 0 55px 0 rgba(${project.accentRgb || '34, 197, 94'}, 0.18)`
             : '0 4px 20px rgba(0,0,0,0.4)',
           transition: 'box-shadow 0.4s',
         }}
@@ -192,7 +64,7 @@ const ShopifyProjectCard = ({ project, index }) => {
         {/* Top accent line */}
         <motion.div
           className="absolute top-0 left-0 h-0.5 rounded-t-2xl z-10"
-          style={{ background: `linear-gradient(90deg, ${project.accentColor}, transparent)` }}
+          style={{ background: `linear-gradient(90deg, ${project.accentColor || '#22c55e'}, transparent)` }}
           initial={{ width: 0 }}
           whileInView={{ width: '100%' }}
           transition={{ duration: 0.8, delay: index * 0.1 + 0.25 }}
@@ -209,7 +81,7 @@ const ShopifyProjectCard = ({ project, index }) => {
             className="absolute inset-0 z-20"
             animate={{ opacity: hovered ? 1 : 0 }}
             transition={{ duration: 0.3 }}
-            style={{ background: `rgba(${project.accentRgb}, 0.12)` }}
+            style={{ background: `rgba(${project.accentRgb || '34, 197, 94'}, 0.12)` }}
           />
 
           {/* Hover preview button */}
@@ -226,7 +98,7 @@ const ShopifyProjectCard = ({ project, index }) => {
               animate={{ scale: hovered ? 1 : 0.85 }}
               transition={{ duration: 0.25 }}
               className="flex items-center gap-2 px-4 py-2 rounded-full text-white text-sm font-bold shadow-xl"
-              style={{ background: project.accentColor }}
+              style={{ background: project.accentColor || '#22c55e' }}
             >
               Visit Store <FaExternalLinkAlt className="text-xs" />
             </motion.a>
@@ -235,7 +107,7 @@ const ShopifyProjectCard = ({ project, index }) => {
           {/* Number watermark */}
           <span
             className="absolute top-3 right-4 text-4xl font-black leading-none select-none z-10 opacity-20"
-            style={{ color: project.accentColor }}
+            style={{ color: project.accentColor || '#22c55e' }}
           >
             {project.number}
           </span>
@@ -252,7 +124,7 @@ const ShopifyProjectCard = ({ project, index }) => {
           <div className="absolute bottom-3 left-4 z-20">
             <span
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold text-white shadow"
-              style={{ background: `rgba(${project.accentRgb}, 0.85)` }}
+              style={{ background: `rgba(${project.accentRgb || '34, 197, 94'}, 0.85)` }}
             >
               <FaShopify />
               Shopify Store
@@ -264,7 +136,7 @@ const ShopifyProjectCard = ({ project, index }) => {
         <div className="flex flex-col flex-1 p-5">
           {/* Title + subtitle */}
           <div className="mb-3">
-            <p className="text-xs font-semibold tracking-widest uppercase mb-1" style={{ color: project.accentColor }}>
+            <p className="text-xs font-semibold tracking-widest uppercase mb-1" style={{ color: project.accentColor || '#22c55e' }}>
               {project.subtitle}
             </p>
             <h3 className="text-lg font-bold text-white leading-tight">{project.title}</h3>
@@ -296,7 +168,7 @@ const ShopifyProjectCard = ({ project, index }) => {
                 viewport={{ once: true }}
                 className="flex items-center gap-2 text-xs text-gray-400"
               >
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: project.accentColor }} />
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: project.accentColor || '#22c55e' }} />
                 {f}
               </motion.li>
             ))}
@@ -309,14 +181,14 @@ const ShopifyProjectCard = ({ project, index }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between w-full px-3 py-2 rounded-xl text-xs font-semibold text-white border border-white/10 hover:border-white/20 transition-all duration-200"
-              style={{ background: `rgba(${project.accentRgb}, 0.1)` }}
+              style={{ background: `rgba(${project.accentRgb || '34, 197, 94'}, 0.1)` }}
             >
               Visit Live Store
               <motion.span
                 animate={{ x: hovered ? 4 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <FaArrowRight style={{ color: project.accentColor }} className="text-xs" />
+                <FaArrowRight style={{ color: project.accentColor || '#22c55e' }} className="text-xs" />
               </motion.span>
             </a>
           </div>
@@ -328,14 +200,25 @@ const ShopifyProjectCard = ({ project, index }) => {
 
 /* ── Main Section ── */
 const ShopifyProjects = () => {
+  const [projectList, setProjectList] = useState(shopifyProjects);
   const [showAll, setShowAll] = useState(false);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
-  // ✅ 3 cards per row — show 6 initially (2 full rows), then all
+  useEffect(() => {
+    fetch('/api/shopify-projects')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data && data.data.length > 0) {
+          setProjectList(data.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const INITIAL_COUNT = 6;
-  const displayed = showAll ? shopifyProjects : shopifyProjects.slice(0, INITIAL_COUNT);
+  const displayed = showAll ? projectList : projectList.slice(0, INITIAL_COUNT);
 
   return (
     <section
@@ -361,8 +244,7 @@ const ShopifyProjects = () => {
       />
 
       <div className="relative container mx-auto px-6 max-w-[1500px]">
-
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="text-center mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -425,21 +307,21 @@ const ShopifyProjects = () => {
             viewport={{ once: true }}
             className="mt-4 text-sm text-gray-600"
           >
-            Showing {displayed.length} of {shopifyProjects.length} projects
+            Showing {displayed.length} of {projectList.length} projects
           </motion.p>
         </div>
 
-        {/* ── 3-column grid ── */}
+        {/* 3-column grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
             {displayed.map((project, index) => (
-              <ShopifyProjectCard key={project.id} project={project} index={index} />
+              <ShopifyProjectCard key={project._id || project.id} project={project} index={index} />
             ))}
           </AnimatePresence>
         </div>
 
-        {/* ── Toggle button ── */}
-        {shopifyProjects.length > INITIAL_COUNT && (
+        {/* Toggle button */}
+        {projectList.length > INITIAL_COUNT && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -451,7 +333,7 @@ const ShopifyProjects = () => {
               onClick={() => setShowAll(!showAll)}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-white border transition-all duration-300"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-white border transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: 'rgba(34,197,94,0.4)',
                 background: 'rgba(34,197,94,0.08)',
@@ -460,7 +342,7 @@ const ShopifyProjects = () => {
               {showAll ? (
                 <>Show Less <FaChevronUp className="text-green-400 text-sm" /></>
               ) : (
-                <>View All {shopifyProjects.length} Projects <FaChevronDown className="text-green-400 text-sm" /></>
+                <>View All {projectList.length} Projects <FaChevronDown className="text-green-400 text-sm" /></>
               )}
             </motion.button>
 
@@ -470,7 +352,7 @@ const ShopifyProjects = () => {
                 animate={{ opacity: 1 }}
                 className="text-gray-600 text-sm mt-3"
               >
-                {shopifyProjects.length - INITIAL_COUNT} more projects waiting
+                {projectList.length - INITIAL_COUNT} more projects waiting
               </motion.p>
             )}
           </motion.div>

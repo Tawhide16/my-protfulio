@@ -1,16 +1,30 @@
+'use client';
+
 import { motion } from 'framer-motion';
-import { FaCode, FaUserGraduate, FaTools, FaEnvelope, FaHome, FaGithub, FaLinkedin, FaTwitter, FaFileDownload, FaArrowRight } from 'react-icons/fa';
+import { FaCode, FaUserGraduate, FaTools, FaEnvelope, FaHome, FaGithub, FaLinkedin, FaTwitter, FaFileDownload, FaArrowRight, FaShopify } from 'react-icons/fa';
 import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
-import { scroller } from 'react-scroll';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingScroll, setPendingScroll] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [resumeUrl, setResumeUrl] = useState('/Tawhide-hasan-bejoy-official(5).pdf');
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.data?.hero?.resumeUrl) {
+          setResumeUrl(data.data.hero.resumeUrl);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,70 +38,57 @@ const Navbar = () => {
     { to: "home", icon: <FaHome />, text: "Home" },
     { to: "about", icon: <FaUserGraduate />, text: "About" },
     { to: "skills", icon: <FaTools />, text: "Skills" },
-    { to: "projects", icon: <FaCode />, text: "Projects" },
+    { to: "projects", icon: <FaCode />, text: "Full Stack" },
+    { to: "shopify-projects", icon: <FaShopify />, text: "Shopify" },
     { to: "contact", icon: <FaEnvelope />, text: "Contact" },
   ];
 
   const socialLinks = [
-    { url: "https://github.com/yourusername", icon: <FaGithub /> },
-    { url: "https://linkedin.com/in/yourusername", icon: <FaLinkedin /> },
-    { url: "https://twitter.com/yourusername", icon: <FaTwitter /> },
+    { url: "https://github.com/Tawhide16", icon: <FaGithub /> },
+    { url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/", icon: <FaLinkedin /> },
+    { url: "https://x.com/TawhideB64383", icon: <FaTwitter /> },
   ];
 
   const handleNavClick = (id) => {
-    if (location.pathname === "/") {
-      scroller.scrollTo(id, {
-        duration: 600,
-        delay: 0,
-        smooth: 'easeInOutQuad',
-        offset: -70
-      });
+    setIsOpen(false);
+    if (pathname === '/') {
+      const el = document.getElementById(id);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 72;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
     } else {
       setPendingScroll(id);
-      navigate("/");
+      router.push('/');
     }
-    setIsOpen(false);
   };
 
   useEffect(() => {
-    if (pendingScroll && location.pathname === "/") {
-      setTimeout(() => {
-        scroller.scrollTo(pendingScroll, {
-          duration: 600,
-          delay: 0,
-          smooth: 'easeInOutQuad',
-          offset: -70
-        });
+    if (pendingScroll && pathname === '/') {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(pendingScroll);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.scrollY - 72;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
         setPendingScroll(null);
-      }, 300);
+      }, 150);
+      return () => clearTimeout(timer);
     }
-  }, [location.pathname, pendingScroll]);
+  }, [pathname, pendingScroll]);
 
   return (
-    /*
-      Outer wrapper:
-      - At top of page: adds 12px top/bottom padding + 50px left/right → pill floats with margin
-      - After scroll: padding collapses to 0 → pill stretches edge-to-edge (full width)
-      Transition is smooth via CSS transition on padding.
-    */
-    <div
-      className="sticky top-0 z-50 flex justify-center"
+    <header
+      className="sticky top-0 z-50 w-full border-b border-white/[0.07] shadow-2xl"
       style={{
-        padding: scrolled ? '0px 0px' : '12px 50px',
-        transition: 'padding 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+        background: 'rgba(8, 8, 15, 0.08)',
+        backdropFilter: 'blur(28px) saturate(200%)',
+        WebkitBackdropFilter: 'blur(28px) saturate(200%)',
+        boxShadow: '0 1px 40px rgba(99,102,241,0.05), 0 0 0 1px rgba(255,255,255,0.05)',
       }}
     >
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-        className="w-full backdrop-blur-lg bg-white/5 border border-white/10 shadow-lg px-6 sm:px-10"
-        style={{
-          borderRadius: scrolled ? '0px' : '9999px',
-          transition: 'border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-      >
-        <div className="flex items-center justify-between h-14">
+      <div className="w-full px-6 sm:px-10 lg:px-16" suppressHydrationWarning>
+        <div className="flex items-center justify-between h-16 sm:h-20" suppressHydrationWarning>
 
           {/* Logo */}
           <motion.div
@@ -103,7 +104,7 @@ const Navbar = () => {
           </motion.div>
 
           {/* Desktop Nav Items */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1" suppressHydrationWarning>
             {navItems.map((item, index) => (
               <motion.div
                 key={item.to}
@@ -126,7 +127,7 @@ const Navbar = () => {
 
           {/* Resume CTA Button */}
           <motion.a
-            href="/Tawhide-hasan-bejoy-official(5).pdf"
+            href={resumeUrl}
             download
             target="_blank"
             rel="noopener noreferrer"
@@ -138,10 +139,11 @@ const Navbar = () => {
           </motion.a>
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center" suppressHydrationWarning>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
+              aria-label="Toggle navigation menu"
             >
               {isOpen ? <HiX size={22} /> : <HiOutlineMenuAlt3 size={22} />}
             </button>
@@ -171,7 +173,7 @@ const Navbar = () => {
 
               {/* Resume Mobile */}
               <a
-                href="/Tawhide-hasan-bejoy-official(5).pdf"
+                href={resumeUrl}
                 download
                 target="_blank"
                 rel="noopener noreferrer"
@@ -197,8 +199,8 @@ const Navbar = () => {
             </div>
           </motion.div>
         )}
-      </motion.nav>
-    </div>
+      </div>
+    </header>
   );
 };
 

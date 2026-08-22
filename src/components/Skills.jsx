@@ -1,8 +1,33 @@
-import { FaReact, FaNodeJs, FaCode, FaShopify } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript } from 'react-icons/si';
+'use client';
+
+import { FaReact, FaNodeJs, FaCode, FaShopify, FaGitAlt, FaHtml5, FaCss3Alt, FaFigma, FaDatabase } from 'react-icons/fa';
+import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript, SiRedux, SiPostman, SiVercel } from 'react-icons/si';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { defaultSkillsList, defaultSiteContent } from '@/data/defaultContent';
+
+const getSkillIcon = (name) => {
+  const n = (name || '').toLowerCase();
+  if (n.includes('react')) return <FaReact size={38} />;
+  if (n.includes('next')) return <SiNextdotjs size={38} />;
+  if (n.includes('javascript') || n === 'js') return <SiJavascript size={38} />;
+  if (n.includes('typescript') || n === 'ts') return <SiTypescript size={38} />;
+  if (n.includes('tailwind')) return <SiTailwindcss size={38} />;
+  if (n.includes('firebase')) return <SiFirebase size={38} />;
+  if (n.includes('node')) return <FaNodeJs size={38} />;
+  if (n.includes('express')) return <SiExpress size={38} />;
+  if (n.includes('mongo')) return <SiMongodb size={38} />;
+  if (n.includes('shopify')) return <FaShopify size={38} />;
+  if (n.includes('redux')) return <SiRedux size={38} />;
+  if (n.includes('git')) return <FaGitAlt size={38} />;
+  if (n.includes('html')) return <FaHtml5 size={38} />;
+  if (n.includes('css')) return <FaCss3Alt size={38} />;
+  if (n.includes('figma')) return <FaFigma size={38} />;
+  if (n.includes('postman')) return <SiPostman size={38} />;
+  if (n.includes('vercel')) return <SiVercel size={38} />;
+  return <FaCode size={38} />;
+};
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -14,153 +39,44 @@ const FloatingOrb = ({ color, style }) => (
   />
 );
 
-const skills = [
-  {
-    name: 'React',
-    icon: <FaReact size={38} />,
-    category: 'Frontend',
-    color: '#22d3ee',
-    accentRgb: '34, 211, 238',
-    level: 90,
-  },
-  {
-    name: 'Next.js',
-    icon: <SiNextdotjs size={38} />,
-    category: 'Frontend',
-    color: '#ffffff',
-    accentRgb: '255, 255, 255',
-    level: 80,
-  },
-  {
-    name: 'JavaScript',
-    icon: <SiJavascript size={38} />,
-    category: 'Frontend',
-    color: '#facc15',
-    accentRgb: '250, 204, 21',
-    level: 92,
-  },
-  {
-    name: 'TypeScript',
-    icon: <SiTypescript size={38} />,
-    category: 'Frontend',
-    color: '#3b82f6',
-    accentRgb: '59, 130, 246',
-    level: 75,
-  },
-  {
-    name: 'Tailwind CSS',
-    icon: <SiTailwindcss size={38} />,
-    category: 'Frontend',
-    color: '#38bdf8',
-    accentRgb: '56, 189, 248',
-    level: 95,
-  },
-  {
-    name: 'Firebase',
-    icon: <SiFirebase size={38} />,
-    category: 'Backend',
-    color: '#f59e0b',
-    accentRgb: '245, 158, 11',
-    level: 82,
-  },
-  {
-    name: 'Node.js',
-    icon: <FaNodeJs size={38} />,
-    category: 'Backend',
-    color: '#22c55e',
-    accentRgb: '34, 197, 94',
-    level: 78,
-  },
-  {
-    name: 'Express',
-    icon: <SiExpress size={38} />,
-    category: 'Backend',
-    color: '#9ca3af',
-    accentRgb: '156, 163, 175',
-    level: 80,
-  },
-  {
-    name: 'MongoDB',
-    icon: <SiMongodb size={38} />,
-    category: 'Database',
-    color: '#10b981',
-    accentRgb: '16, 185, 129',
-    level: 85,
-  },
-  {
-    name: 'Shopify',
-    icon: <FaShopify size={38} />,
-    category: 'E-commerce',
-    color: '#95bf47',
-    accentRgb: '149, 191, 71',
-    level: 88,
-  },
-  {
-    name: 'TanStack Query',
-    icon: <span className="text-3xl font-black leading-none">TQ</span>,
-    category: 'Frontend',
-    color: '#ef4444',
-    accentRgb: '239, 68, 68',
-    level: 78,
-  },
-  {
-    name: 'Axios',
-    icon: <span className="text-3xl font-black leading-none">AX</span>,
-    category: 'Frontend',
-    color: '#a855f7',
-    accentRgb: '168, 85, 247',
-    level: 88,
-  },
-  {
-    name: 'React Hook Form',
-    icon: <span className="text-2xl font-black leading-none">RHF</span>,
-    category: 'Frontend',
-    color: '#ec4899',
-    accentRgb: '236, 72, 153',
-    level: 85,
-  },
-  {
-    name: 'DaisyUI',
-    icon: <span className="text-3xl font-black leading-none">D</span>,
-    category: 'Frontend',
-    color: '#c084fc',
-    accentRgb: '192, 132, 252',
-    level: 90,
-  },
-];
-
-/* ── Skill Card ── */
+/* ── Single skill card ── */
 const SkillCard = ({ skill, index }) => {
   const [hovered, setHovered] = useState(false);
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
+
+  const color = skill.color || '#6366f1';
+  const accentRgb = skill.accentRgb || '99, 102, 241';
+  const icon = skill.icon || getSkillIcon(skill.name);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      layout
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      exit={{ opacity: 0, scale: 0.85 }}
+      transition={{ duration: 0.55, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="relative group"
+      className="relative group cursor-default"
     >
-      {/* Glow border */}
+      {/* Glow aura on hover */}
       <motion.div
         className="absolute -inset-px rounded-2xl pointer-events-none"
         animate={{ opacity: hovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
         style={{
-          background: `linear-gradient(135deg, ${skill.color}50, transparent 65%)`,
-          borderRadius: '1rem',
+          background: `radial-gradient(120px circle at center, rgba(${accentRgb}, 0.35), transparent 70%)`,
         }}
       />
 
       <motion.div
-        className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md p-6 flex flex-col items-center gap-4 cursor-default"
+        className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-6 flex flex-col items-center justify-between gap-4 h-44 overflow-hidden"
         animate={{
           y: hovered ? -6 : 0,
+          borderColor: hovered ? `rgba(${accentRgb}, 0.5)` : 'rgba(255,255,255,0.1)',
           boxShadow: hovered
-            ? `0 12px 28px rgba(${skill.accentRgb}, 0.12)`
+            ? `0 12px 28px rgba(${accentRgb}, 0.12)`
             : '0 4px 20px rgba(0,0,0,0.3)',
         }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
@@ -168,7 +84,7 @@ const SkillCard = ({ skill, index }) => {
         {/* Top accent line */}
         <motion.div
           className="absolute top-0 left-0 h-0.5 rounded-t-2xl"
-          style={{ background: `linear-gradient(90deg, ${skill.color}, transparent)` }}
+          style={{ background: `linear-gradient(90deg, ${color}, transparent)` }}
           initial={{ width: 0 }}
           animate={inView ? { width: '100%' } : {}}
           transition={{ duration: 0.7, delay: index * 0.07 + 0.2 }}
@@ -178,22 +94,22 @@ const SkillCard = ({ skill, index }) => {
         <span
           className="absolute top-3 right-3 text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
           style={{
-            color: skill.color,
-            background: `rgba(${skill.accentRgb}, 0.12)`,
-            border: `1px solid rgba(${skill.accentRgb}, 0.25)`,
+            color: color,
+            background: `rgba(${accentRgb}, 0.12)`,
+            border: `1px solid rgba(${accentRgb}, 0.25)`,
           }}
         >
-          {skill.category}
+          {skill.category || 'Skill'}
         </span>
 
         {/* Icon */}
         <motion.div
           className="flex items-center justify-center w-16 h-16 rounded-2xl"
-          style={{ background: `rgba(${skill.accentRgb}, 0.1)`, color: skill.color }}
+          style={{ background: `rgba(${accentRgb}, 0.1)`, color: color }}
           animate={{ rotate: hovered ? [0, -6, 6, 0] : 0, scale: hovered ? 1.1 : 1 }}
           transition={{ duration: 0.4 }}
         >
-          {skill.icon}
+          {icon}
         </motion.div>
 
         {/* Name */}
@@ -209,15 +125,33 @@ const categories = ['All', 'Frontend', 'Backend', 'Database', 'E-commerce'];
 /* ── Main Section ── */
 const Skills = () => {
   const sectionRef = useRef(null);
+  const [skillsList, setSkillsList] = useState(defaultSkillsList);
+  const [stats, setStats] = useState(defaultSiteContent.skillsStats);
   const [activeCategory, setActiveCategory] = useState('All');
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+
+  useEffect(() => {
+    fetch('/api/content')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          if (data.data.skills && Array.isArray(data.data.skills) && data.data.skills.length > 0) {
+            setSkillsList(data.data.skills);
+          }
+          if (data.data.skillsStats) {
+            setStats((prev) => ({ ...prev, ...data.data.skillsStats }));
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   const filtered = activeCategory === 'All'
-    ? skills
-    : skills.filter(s => s.category === activeCategory);
+    ? skillsList
+    : skillsList.filter(s => s.category?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
     <section
@@ -279,7 +213,7 @@ const Skills = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed"
           >
-            Technologies I've worked with and mastered throughout my development journey.
+            Technologies I&apos;ve worked with and mastered throughout my development journey.
           </motion.p>
 
           <motion.div
@@ -303,7 +237,7 @@ const Skills = () => {
                 onClick={() => setActiveCategory(cat)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.96 }}
-                className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border"
+                className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border cursor-pointer"
                 style={
                   activeCategory === cat
                     ? {
@@ -331,7 +265,7 @@ const Skills = () => {
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5"
         >
           {filtered.map((skill, index) => (
-            <SkillCard key={skill.name} skill={skill} index={index} />
+            <SkillCard key={skill.name || index} skill={skill} index={index} />
           ))}
         </motion.div>
 
@@ -344,10 +278,10 @@ const Skills = () => {
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
           {[
-            { label: 'Technologies', value: `${skills.length}+` },
-            { label: 'Projects Built', value: '10+' },
-            { label: 'Shopify Stores', value: '6+' },
-            { label: 'Years Learning', value: '2+' },
+            { label: 'Technologies', value: stats.technologies || `${skillsList.length}+` },
+            { label: 'Projects Built', value: stats.projectsBuilt || '10+' },
+            { label: 'Shopify Stores', value: stats.shopifyStores || '6+' },
+            { label: 'Years Learning', value: stats.yearsLearning || '2+' },
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
