@@ -21,7 +21,7 @@ const techIconMap = {
   Express: <SiExpress className="text-gray-300" />,
 };
 
-/* ── Floating orb ── */
+/* ── Floating orb ── *//* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
   <motion.div
     className="absolute rounded-full blur-3xl opacity-[0.07] pointer-events-none"
@@ -81,7 +81,7 @@ const About = () => {
           setContent((prev) => ({ ...prev, ...data.data.about }));
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
