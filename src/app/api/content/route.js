@@ -14,6 +14,11 @@ export async function GET() {
         data: {
           hero: { ...defaultSiteContent.hero, ...(content.hero || {}) },
           about: { ...defaultSiteContent.about, ...(content.about || {}) },
+          skills:
+            content.skills && Array.isArray(content.skills) && content.skills.length > 0
+              ? content.skills
+              : defaultSiteContent.skills,
+          skillsStats: { ...defaultSiteContent.skillsStats, ...(content.skillsStats || {}) },
           contact: {
             ...defaultSiteContent.contact,
             ...(content.contact || {}),
@@ -22,6 +27,7 @@ export async function GET() {
               ...((content.contact && content.contact.socials) || {}),
             },
           },
+          footer: { ...defaultSiteContent.footer, ...(content.footer || {}) },
         },
       });
     }
@@ -45,10 +51,15 @@ export async function POST(request) {
     const updated = await SiteContent.findOneAndUpdate(
       { key: 'main_content' },
       {
-        key: 'main_content',
-        hero: body.hero,
-        about: body.about,
-        contact: body.contact,
+        $set: {
+          key: 'main_content',
+          hero: body.hero,
+          about: body.about,
+          skills: body.skills,
+          skillsStats: body.skillsStats,
+          contact: body.contact,
+          footer: body.footer,
+        },
       },
       { upsert: true, new: true }
     );
