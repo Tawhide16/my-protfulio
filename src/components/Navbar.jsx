@@ -1,23 +1,47 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { FaCode, FaUserGraduate, FaTools, FaEnvelope, FaHome, FaGithub, FaLinkedin, FaTwitter, FaFileDownload, FaArrowRight } from 'react-icons/fa';
 import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { scroller } from 'react-scroll';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [pendingScroll, setPendingScroll] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
     };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const [resumeUrl, setResumeUrl] = useState('/Tawhide-hasan-bejoy-official(5).pdf');
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/content')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.hero?.resumeUrl) {
+          setResumeUrl(data.hero.resumeUrl);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const navItems = [
@@ -29,13 +53,13 @@ const Navbar = () => {
   ];
 
   const socialLinks = [
-    { url: "https://github.com/yourusername", icon: <FaGithub /> },
-    { url: "https://linkedin.com/in/yourusername", icon: <FaLinkedin /> },
+    { url: "https://github.com/Tawhide16", icon: <FaGithub /> },
+    { url: "https://linkedin.com/in/tawhide-hasan-bejoy/", icon: <FaLinkedin /> },
     { url: "https://twitter.com/yourusername", icon: <FaTwitter /> },
   ];
 
   const handleNavClick = (id) => {
-    if (location.pathname === "/") {
+    if (pathname === "/") {
       scroller.scrollTo(id, {
         duration: 600,
         delay: 0,
@@ -44,13 +68,13 @@ const Navbar = () => {
       });
     } else {
       setPendingScroll(id);
-      navigate("/");
+      router.push("/");
     }
     setIsOpen(false);
   };
 
   useEffect(() => {
-    if (pendingScroll && location.pathname === "/") {
+    if (pendingScroll && pathname === "/") {
       setTimeout(() => {
         scroller.scrollTo(pendingScroll, {
           duration: 600,
@@ -61,30 +85,35 @@ const Navbar = () => {
         setPendingScroll(null);
       }, 300);
     }
-  }, [location.pathname, pendingScroll]);
+  }, [pathname, pendingScroll]);
+
+  // Hide the public portfolio navbar on the dashboard
+  if (pathname === '/dashboard') {
+    return null;
+  }
 
   return (
-    /*
-      Outer wrapper:
-      - At top of page: adds 12px top/bottom padding + 50px left/right → pill floats with margin
-      - After scroll: padding collapses to 0 → pill stretches edge-to-edge (full width)
-      Transition is smooth via CSS transition on padding.
-    */
     <div
-      className="sticky top-0 z-50 flex justify-center"
+      className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
       style={{
-        padding: scrolled ? '0px 0px' : '12px 50px',
-        transition: 'padding 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+        padding: scrolled ? '0px 0px' : (isMobile ? '0px 0px' : '14px 50px'),
+        backgroundColor: scrolled ? 'rgba(8, 7, 17, 0.85)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        transition: 'padding 0.45s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-        className="w-full backdrop-blur-lg bg-white/5 border border-white/10 shadow-lg px-6 sm:px-10"
+        className="w-full border border-white/15 px-6 sm:px-10 pointer-events-auto"
         style={{
-          borderRadius: scrolled ? '0px' : '9999px',
-          transition: 'border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+          borderRadius: scrolled ? '0px' : (isMobile ? '0px' : '9999px'),
+          backgroundColor: 'rgba(13, 13, 24, 0.45)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18)',
+          transition: 'all 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         <div className="flex items-center justify-between h-14">
@@ -126,7 +155,7 @@ const Navbar = () => {
 
           {/* Resume CTA Button */}
           <motion.a
-            href="/Tawhide-hasan-bejoy-official(5).pdf"
+            href={resumeUrl}
             download
             target="_blank"
             rel="noopener noreferrer"
@@ -171,7 +200,7 @@ const Navbar = () => {
 
               {/* Resume Mobile */}
               <a
-                href="/Tawhide-hasan-bejoy-official(5).pdf"
+                href={resumeUrl}
                 download
                 target="_blank"
                 rel="noopener noreferrer"

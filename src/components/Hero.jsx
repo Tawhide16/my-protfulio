@@ -1,292 +1,268 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { TypeAnimation } from 'react-type-animation';
-import profileImg from '../assets/profile-img-2.jpg';
-import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaFileDownload, FaArrowRight, FaMapMarkerAlt } from 'react-icons/fa';
-import { useRef } from 'react';
+'use client';
 
-/* ── Floating orb ── */
-const FloatingOrb = ({ color, style, duration = 9 }) => (
-  <motion.div
-    className="absolute rounded-full blur-3xl pointer-events-none"
-    style={{ background: color, ...style }}
-    animate={{ y: [0, -30, 0], scale: [1, 1.07, 1] }}
-    transition={{ duration, repeat: Infinity, ease: 'easeInOut' }}
-  />
-);
+import { motion } from 'framer-motion';
+import profileImg from '../assets/profile-new.jpg';
+import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaArrowRight } from 'react-icons/fa';
+import { FiMapPin, FiFileText } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 
 const socialLinks = [
-  { icon: <FaGithub size={18} />, url: "https://github.com/Tawhide16", name: "GitHub" },
-  { icon: <FaTwitter size={18} />, url: "https://x.com/TawhideB64383", name: "Twitter" },
-  { icon: <FaLinkedin size={18} />, url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/", name: "LinkedIn" },
-  { icon: <FaFacebook size={18} />, url: "https://www.facebook.com/tawhide.hb", name: "Facebook" },
+  { icon: <FaGithub size={16} />, url: "https://github.com/Tawhide16", name: "GitHub" },
+  { icon: <FaTwitter size={16} />, url: "https://x.com/TawhideB64383", name: "Twitter" },
+  { icon: <FaLinkedin size={16} />, url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/", name: "LinkedIn" },
+  { icon: <FaFacebook size={16} />, url: "https://www.facebook.com/tawhide.hb", name: "Facebook" },
 ];
 
 const Hero = () => {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const [heroContent, setHeroContent] = useState(null);
+  const [processedImg, setProcessedImg] = useState(profileImg);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/content')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.hero) setHeroContent(data.hero);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = profileImg;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imgData.data;
+      const width = canvas.width;
+      const height = canvas.height;
+
+      const visited = new Uint8Array(width * height);
+      const queue = [];
+
+      const enqueue = (x, y) => {
+        const idx = y * width + x;
+        if (!visited[idx]) {
+          visited[idx] = 1;
+          queue.push(idx);
+        }
+      };
+
+      for (let x = 0; x < width; x++) {
+        enqueue(x, 0);
+        enqueue(x, height - 1);
+      }
+      for (let y = 0; y < height; y++) {
+        enqueue(0, y);
+        enqueue(width - 1, y);
+      }
+
+      let head = 0;
+      while (head < queue.length) {
+        const idx = queue[head++];
+        const x = idx % width;
+        const y = Math.floor(idx / width);
+        const rIdx = idx * 4;
+
+        const r = data[rIdx];
+        const g = data[rIdx + 1];
+        const b = data[rIdx + 2];
+
+        if (r > 200 && g > 200 && b > 200) {
+          data[rIdx + 3] = 0;
+          if (x > 0) enqueue(x - 1, y);
+          if (x < width - 1) enqueue(x + 1, y);
+          if (y > 0) enqueue(x, y - 1);
+          if (y < height - 1) enqueue(x, y + 1);
+        }
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+      setProcessedImg(canvas.toDataURL('image/png'));
+    };
+  }, []);
+
+  // Motion animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: [0.25, 1, 0.5, 1] },
+    },
+  };
 
   return (
     <section
       id="home"
-      ref={sectionRef}
-      className="relative min-h-screen overflow-hidden flex items-center"
-      style={{ background: 'linear-gradient(160deg, #08080f 0%, #0d0b18 50%, #080c10 100%)' }}
+      className="relative min-h-[90vh] lg:min-h-screen w-full bg-[#080711] text-white flex items-center justify-center overflow-hidden font-jakarta pt-24 pb-16 lg:py-24 bg-hero-grid"
     >
-      {/* ── Background orbs ── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <FloatingOrb color="#6366f1" style={{ width: 600, height: 600, top: -150, left: -150, opacity: 0.12 }} duration={10} />
-        <FloatingOrb color="#a855f7" style={{ width: 450, height: 450, bottom: -100, right: -100, opacity: 0.1 }} duration={12} />
-        <FloatingOrb color="#22d3ee" style={{ width: 300, height: 300, top: '40%', left: '40%', opacity: 0.07 }} duration={8} />
-        <FloatingOrb color="#ec4899" style={{ width: 250, height: 250, bottom: '20%', left: '20%', opacity: 0.06 }} duration={11} />
+      {/* ── Ambient Radial Glow background ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Violet glow behind right avatar */}
+        <div className="absolute right-[-5%] lg:right-[5%] top-1/2 -translate-y-1/2 w-[450px] lg:w-[600px] h-[450px] lg:h-[600px] bg-purple-600/20 rounded-full blur-[140px] transform-gpu" />
+        {/* Soft blue glow on top-left */}
+        <div className="absolute left-[-10%] top-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[130px] transform-gpu" />
       </div>
 
-      {/* ── Grid texture ── */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-        }}
-      />
-
-      {/* ── Radial spotlight ── */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.08) 0%, transparent 70%)',
-        }}
-      />
-
-      {/* ── Main content ── */}
-      <motion.div
-        style={{ opacity }}
-        className="relative z-10 w-full mx-auto px-6 py-20"
-        style={{ maxWidth: '1515px' }}
-      >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
-
-          {/* ── Left: Text ── */}
+      {/* ── Main Content Container ── */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* ── Left Column: Content & Details ── */}
           <motion.div
-            style={{ y: textY }}
-            className="flex-1 text-center lg:text-left order-2 lg:order-1"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="lg:col-span-7 flex flex-col items-start text-left z-10"
           >
-            {/* Status badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-6 text-sm"
-            >
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-gray-300 font-medium">Web Developer @ Softvence</span>
-              <span className="text-gray-600">·</span>
-              <span className="flex items-center gap-1 text-gray-500 text-xs">
-                <FaMapMarkerAlt className="text-indigo-400" /> Dhaka, BD
-              </span>
+            {/* Top Badge */}
+            <motion.div variants={itemVariants} className="mb-6">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#141424]/90 border border-white/10 text-xs sm:text-sm text-gray-300 backdrop-blur-md shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span className="font-medium text-gray-200">{heroContent?.badge || "Web Developer @ Softvence"}</span>
+                <span className="text-gray-500 font-bold">·</span>
+                <div className="flex items-center gap-1.5 text-purple-400">
+                  <FiMapPin className="text-xs sm:text-sm text-purple-400" />
+                  <span className="text-gray-300">{heroContent?.location || "Dhaka, BD"}</span>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Name */}
+            {/* Main Name Heading */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-4 md:mb-6"
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] font-extrabold text-white tracking-tight leading-[1.1] mb-4"
             >
-              Tawhid Hasan <span
-                style={{
-                  background: 'linear-gradient(135deg, #6366f1, #a855f7, #22d3ee)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >Bejoy</span>
+              {heroContent?.name || "Tawhid Hasan"}{' '}
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-fuchsia-500 bg-clip-text text-transparent">
+                {heroContent?.highlightedName || "Bejoy"}
+              </span>
             </motion.h1>
 
-            {/* Type animation */}
+            {/* Role Subheading */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="text-xl md:text-2xl lg:text-3xl font-mono text-gray-300 mb-6 md:mb-8 h-10 md:h-12 flex items-center justify-center lg:justify-start gap-2"
+              variants={itemVariants}
+              className="flex items-center gap-3 text-xl sm:text-2xl md:text-3xl font-fira text-gray-200 font-medium mb-6 tracking-wide"
             >
-              <span className="text-indigo-400">{'>'}</span>
-              <TypeAnimation
-                sequence={[
-                  'Frontend Developer', 2000,
-                  'MERN Stack Developer', 2000,
-                  'Shopify Expert', 2000,
-                  'React.js Developer', 2000,
-                  'UI/UX Enthusiast', 2000,
-                ]}
-                wrapper="span"
-                cursor={true}
-                repeat={Infinity}
-              />
+              <span className="text-purple-400 font-bold">&gt;</span>
+              <span>{heroContent?.role || "React.js Developer"}</span>
             </motion.div>
 
-            {/* Short bio */}
+            {/* Bio Description */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="text-gray-500 text-sm leading-relaxed max-w-lg mx-auto lg:mx-0 mb-10"
+              variants={itemVariants}
+              className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-xl mb-8 font-normal"
             >
-              Building clean, performant web experiences — from full-stack MERN apps to custom Shopify stores.
-              Currently working on-site at <span className="text-indigo-400 font-medium">Softvence Agency</span>.
+              {heroContent?.bio || "Building clean, performant web experiences — from full-stack MERN apps to custom Shopify stores. Currently working on-site at Softvence Agency."}
             </motion.p>
 
             {/* CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10"
+              variants={itemVariants}
+              className="flex flex-wrap items-center gap-4 mb-10"
             >
-              <motion.button
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex items-center justify-center gap-2 px-7 py-3 rounded-full font-bold text-white text-sm shadow-xl"
-                style={{
-                  background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                  boxShadow: '0 0 30px rgba(99,102,241,0.35)',
-                }}
+              <a
+                href="#projects"
+                className="px-7 py-3.5 rounded-full bg-gradient-to-r from-[#6366f1] via-[#7c3aed] to-[#8b5cf6] text-white font-semibold text-sm sm:text-base flex items-center gap-2 shadow-[0_0_25px_rgba(124,58,237,0.45)] hover:shadow-[0_0_35px_rgba(124,58,237,0.75)] hover:scale-[1.02] transition-all duration-300 active:scale-95"
               >
-                View My Work
-                <motion.span
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <FaArrowRight className="text-xs" />
-                </motion.span>
-              </motion.button>
-
-              <motion.a
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                href="/Tawhide-hasan-bejoy-official(5).pdf"
-                download
+                <span>View My Work</span>
+                <FaArrowRight className="text-xs" />
+              </a>
+              <a
+                href={heroContent?.resumeUrl || "/resume.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-7 py-3 rounded-full font-bold text-sm border border-white/15 bg-white/5 backdrop-blur-sm text-gray-300 hover:text-white hover:border-white/30 transition-all duration-300"
+                className="px-6 py-3.5 rounded-full bg-[#151526] hover:bg-[#1d1d34] border border-white/10 hover:border-white/25 text-white font-medium text-sm sm:text-base flex items-center gap-2.5 transition-all duration-200"
               >
-                <FaFileDownload className="text-indigo-400" />
-                Resume
-              </motion.a>
+                <FiFileText className="text-base text-gray-300" />
+                <span>Resume</span>
+              </a>
             </motion.div>
 
-            {/* Social links */}
+            {/* Social Links Row */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex items-center gap-3 justify-center lg:justify-start"
+              variants={itemVariants}
+              className="flex items-center gap-4 pt-2"
             >
-              <span className="text-xs text-gray-700 font-semibold tracking-widest uppercase mr-1">Follow</span>
-              {socialLinks.map((social, i) => (
-                <motion.a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={social.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + i * 0.08 }}
-                  whileHover={{ y: -4, scale: 1.15 }}
-                  className="w-10 h-10 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-white hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-200"
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
+              <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase font-mono">
+                FOLLOW
+              </span>
+              <div className="flex items-center gap-3">
+                {socialLinks.map((social) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.name}
+                    whileHover={{ y: -2, scale: 1.08 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-9 h-9 rounded-full bg-[#141424] border border-white/10 hover:border-purple-500/50 flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-950/40 transition-all duration-200"
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
 
-          {/* ── Right: Profile image ── */}
+          {/* ── Right Column: Avatar Widget ── */}
           <motion.div
-            style={{ y: imgY }}
-            className="order-1 lg:order-2 flex-shrink-0"
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex justify-center lg:justify-end relative"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
-            >
-              {/* Outer decorative ring */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                className="absolute -inset-4 rounded-full"
-                style={{
-                  background: 'conic-gradient(from 0deg, #6366f1, #a855f7, #22d3ee, #6366f1)',
-                  opacity: 0.2,
-                  filter: 'blur(2px)',
-                }}
-              />
+            <div className="relative group">
+              {/* Outer Glowing Gradient Ring */}
+              <div className="relative p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-600 shadow-[0_0_55px_rgba(168,85,247,0.4)]">
+                {/* Circle Container with Dynamic Background Color */}
+                <div
+                  className="w-72 h-72 sm:w-88 sm:h-88 md:w-[380px] md:h-[380px] rounded-full overflow-hidden flex items-end justify-center relative transition-colors duration-300"
+                  style={{ backgroundColor: heroContent?.avatarBgColor || '#ff9900' }}
+                >
+                  <img
+                    src={heroContent?.avatarUrl || processedImg}
+                    alt={heroContent?.name || "Tawhid Hasan Bejoy"}
+                    className="h-auto block drop-shadow-xl transform group-hover:scale-105 transition-all duration-300"
+                    style={{
+                      width: `${heroContent?.avatarScale || 88}%`,
+                      transform: `translate(${heroContent?.avatarOffsetX || 0}px, ${heroContent?.avatarOffsetY || 0}px)`,
+                      objectFit: heroContent?.avatarFit || 'cover',
+                      objectPosition: 'top',
+                    }}
+                  />
+                </div>
+              </div>
 
-              {/* Glow pulse */}
-              <motion.div
-                animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute inset-0 rounded-full blur-2xl"
-                style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
-              />
-
-              {/* Profile image */}
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="relative w-56 h-56 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl"
-              >
-                <img
-                  src={profileImg}
-                  alt="Tawhid Hasan Bejoy"
-                  className="w-full h-full object-cover"
-                />
-                {/* Inner overlay gradient */}
-                <div className="absolute inset-0 rounded-full"
-                  style={{ background: 'linear-gradient(to bottom, transparent 60%, rgba(99,102,241,0.15))' }}
-                />
-              </motion.div>
-
-              {/* Floating cards around image */}
-
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.0 }}
-                whileHover={{ scale: 1.05 }}
-                className="absolute -bottom-4 -left-6 sm:-bottom-6 sm:-left-10 flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-gray-900/90 backdrop-blur-sm shadow-xl text-xs font-bold text-white"
-              >
-                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                Seeking Growth Opportunities
-              </motion.div>
-            </motion.div>
+              {/* Status Badge floating at bottom */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 z-20">
+                <div className="inline-flex items-center gap-2 bg-[#0c0d18]/95 backdrop-blur-md border border-white/15 px-4 py-2 rounded-full text-xs font-semibold text-white shadow-2xl whitespace-nowrap">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>{heroContent?.statusText || "Seeking Growth Opportunities"}</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
         </div>
-      </motion.div>
-
-      {/* ── Scroll indicator ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-      >
-        <span className="text-[10px] text-gray-700 tracking-[0.2em] uppercase font-semibold">Scroll</span>
-        <div className="w-5 h-9 border border-white/15 rounded-full flex justify-center pt-1.5">
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-1 rounded-full bg-indigo-400"
-          />
-        </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

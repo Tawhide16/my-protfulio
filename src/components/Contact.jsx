@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaPaperPlane, FaArrowRight } from 'react-icons/fa';
 import { SiGmail, SiMessenger } from 'react-icons/si';
@@ -29,8 +31,16 @@ const Contact = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
+  const [contactContent, setContactContent] = useState(null);
+
   useEffect(() => {
     setSentTime(new Date().toLocaleString());
+    fetch('http://localhost:5000/api/content')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.contact) setContactContent(data.contact);
+      })
+      .catch(() => {});
   }, []);
 
   const sendEmail = (e) => {
@@ -57,7 +67,7 @@ const Contact = () => {
   const socialLinks = [
     { icon: <FaGithub size={18} />, url: "https://github.com/Tawhide16", name: "GitHub", color: '#6b7280', hoverColor: '#ffffff', bg: 'rgba(107,114,128,0.12)' },
     { icon: <FaLinkedin size={18} />, url: "https://www.linkedin.com/in/tawhide-hasan-bejoy/", name: "LinkedIn", color: '#3b82f6', hoverColor: '#ffffff', bg: 'rgba(59,130,246,0.12)' },
-    { icon: <SiGmail size={18} />, url: "mailto:tawhideh.b10@gmail.com", name: "Gmail", color: '#ef4444', hoverColor: '#ffffff', bg: 'rgba(239,68,68,0.12)' },
+    { icon: <SiGmail size={18} />, url: `mailto:${contactContent?.email || 'tawhideh.b10@gmail.com'}`, name: "Gmail", color: '#ef4444', hoverColor: '#ffffff', bg: 'rgba(239,68,68,0.12)' },
     { icon: <SiMessenger size={18} />, url: "https://www.facebook.com/tawhide.hb", name: "Messenger", color: '#60a5fa', hoverColor: '#ffffff', bg: 'rgba(96,165,250,0.12)' },
   ];
 
@@ -65,16 +75,16 @@ const Contact = () => {
     {
       icon: <FaEnvelope size={18} />,
       label: 'Email',
-      value: 'tawhideh.b10@gmail.com',
-      href: 'mailto:tawhideh.b10@gmail.com',
+      value: contactContent?.email || 'tawhideh.b10@gmail.com',
+      href: `mailto:${contactContent?.email || 'tawhideh.b10@gmail.com'}`,
       color: '#6366f1',
       colorRgb: '99,102,241',
     },
     {
       icon: <FaPhone size={18} />,
       label: 'Phone',
-      value: '+880 1745413122',
-      href: 'tel:+8801745413122',
+      value: contactContent?.phone || '+880 1836-817816',
+      href: `tel:${(contactContent?.phone || '+880 1836-817816').replace(/\s+/g, '')}`,
       color: '#22c55e',
       colorRgb: '34,197,94',
     },

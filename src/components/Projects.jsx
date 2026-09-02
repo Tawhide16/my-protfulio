@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
-import { FaExternalLinkAlt, FaGithub, FaArrowRight } from 'react-icons/fa';
+'use client';
+
+import Link from 'next/link';
+import { FaExternalLinkAlt, FaGithub, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   SiReact, SiExpress, SiMongodb, SiFirebase, SiTailwindcss, SiNodedotjs,
 } from 'react-icons/si';
@@ -16,7 +18,7 @@ const techIcons = {
   'Node.js': <SiNodedotjs className="text-green-500" />,
 };
 
-export const projects = [
+export const staticProjects = [
   {
     id: 3,
     title: 'Next Class',
@@ -101,7 +103,7 @@ const ProjectCard = ({ project, index }) => {
       viewport={{ once: true, margin: '-80px' }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="relative group"
+      className="relative group flex-shrink-0 w-[85vw] sm:w-[450px] md:w-full snap-center whitespace-normal"
     >
       {/* Glow border */}
       <motion.div
@@ -250,8 +252,7 @@ const ProjectCard = ({ project, index }) => {
                 GitHub
               </a>
               <Link
-                to={`/projects/${project.id}`}
-                state={{ project }}
+                href={`/projects/${project._id || project.id}`}
                 className="ml-auto flex items-center gap-1 text-xs font-semibold tracking-wide uppercase"
                 style={{ color: project.accentColor }}
               >
@@ -270,6 +271,39 @@ const Projects = () => {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const projectsContainerRef = useRef(null);
+
+  const scrollProjects = (direction) => {
+    if (projectsContainerRef.current) {
+      const scrollAmount = window.innerWidth < 768 ? window.innerWidth * 0.85 + 24 : 400;
+      projectsContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/projects')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const sorted = [...data].sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+            if (a.number && b.number) return a.number.localeCompare(b.number);
+            return 0;
+          });
+          setProjects(sorted);
+        } else {
+          setProjects(staticProjects);
+        }
+        setLoading(false);
+      })
+      .catch(() => { setProjects(staticProjects); setLoading(false); });
+  }, []);
 
   return (
     <section
@@ -350,10 +384,44 @@ const Projects = () => {
         </div>
 
         {/* ── Project cards ── */}
-        <div className="space-y-10">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+        <div className="relative w-full">
+          {/* Left Arrow (Mobile only) */}
+          <button
+            onClick={() => scrollProjects('left')}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/70 border border-white/10 flex items-center justify-center text-white backdrop-blur-sm shadow-lg active:scale-95 transition-all md:hidden cursor-pointer"
+            aria-label="Scroll left"
+          >
+            <FaChevronLeft size={14} />
+          </button>
+
+          {/* Right Arrow (Mobile only) */}
+          <button
+            onClick={() => scrollProjects('right')}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/70 border border-white/10 flex items-center justify-center text-white backdrop-blur-sm shadow-lg active:scale-95 transition-all md:hidden cursor-pointer"
+            aria-label="Scroll right"
+          >
+            <FaChevronRight size={14} />
+          </button>
+
+          <div
+            ref={projectsContainerRef}
+            className="flex flex-row overflow-x-auto whitespace-nowrap scrollbar-none scroll-smooth snap-x snap-mandatory gap-6 pb-8 md:flex-col md:space-y-10 md:overflow-x-visible md:whitespace-normal md:pb-0"
+          >
+            {loading ? (
+              <div className="flex items-center justify-center py-16 gap-3 text-gray-500 w-full">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="w-6 h-6 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full"
+                />
+                <span className="text-sm">Loading projects...</span>
+              </div>
+            ) : (
+              projects.map((project, index) => (
+                <ProjectCard key={project._id || project.id} project={project} index={index} />
+              ))
+            )}
+          </div>
         </div>
 
         {/* ── View all CTA ── */}
@@ -365,7 +433,7 @@ const Projects = () => {
           className="text-center mt-20"
         >
           <Link
-            to="/projects"
+            href="/projects"
             className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold text-white overflow-hidden group border border-indigo-500/40 hover:border-indigo-400 transition-colors duration-300"
             style={{ background: 'rgba(99,102,241,0.08)' }}
           >

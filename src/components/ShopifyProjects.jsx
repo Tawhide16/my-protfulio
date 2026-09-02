@@ -1,5 +1,7 @@
-import { useState, useRef } from 'react';
-import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp, FaArrowRight } from 'react-icons/fa';
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { SiShopify, SiReact, SiNodedotjs } from 'react-icons/si';
 
@@ -167,7 +169,7 @@ const ShopifyProjectCard = ({ project, index }) => {
       viewport={{ once: true, margin: '-60px' }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="relative group"
+      className="relative group flex-shrink-0 w-[85vw] sm:w-[380px] md:w-full snap-center whitespace-normal"
     >
       {/* Glow border */}
       <motion.div
@@ -274,12 +276,12 @@ const ShopifyProjectCard = ({ project, index }) => {
 
           {/* Tech pills */}
           <div className="flex flex-wrap gap-1 mb-3">
-            {project.technologies.map(tech => (
+            {(project.technologies || []).map(tech => (
               <span
                 key={tech}
                 className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-gray-300"
               >
-                {shopifyTechIcons[tech]}
+                {shopifyTechIcons[tech] || <FaShopify className="text-green-400" />}
                 {tech}
               </span>
             ))}
@@ -287,7 +289,7 @@ const ShopifyProjectCard = ({ project, index }) => {
 
           {/* Features */}
           <ul className="space-y-1 mb-4 flex-1">
-            {project.features.map((f, i) => (
+            {(project.features || []).map((f, i) => (
               <motion.li
                 key={i}
                 initial={{ opacity: 0, x: -8 }}
@@ -329,13 +331,42 @@ const ShopifyProjectCard = ({ project, index }) => {
 /* ── Main Section ── */
 const ShopifyProjects = () => {
   const [showAll, setShowAll] = useState(false);
+  const [projectsList, setProjectsList] = useState(shopifyProjects);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
+  const shopifyContainerRef = useRef(null);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/shopify-projects')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const sorted = [...data].sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+            if (a.number && b.number) return a.number.localeCompare(b.number);
+            return 0;
+          });
+          setProjectsList(sorted);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const scrollShopify = (direction) => {
+    if (shopifyContainerRef.current) {
+      const scrollAmount = window.innerWidth < 768 ? window.innerWidth * 0.85 + 24 : 400;
+      shopifyContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   // ✅ 3 cards per row — show 6 initially (2 full rows), then all
   const INITIAL_COUNT = 6;
-  const displayed = showAll ? shopifyProjects : shopifyProjects.slice(0, INITIAL_COUNT);
+  const displayed = showAll ? projectsList : projectsList.slice(0, INITIAL_COUNT);
 
   return (
     <section
@@ -430,16 +461,39 @@ const ShopifyProjects = () => {
         </div>
 
         {/* ── 3-column grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence>
-            {displayed.map((project, index) => (
-              <ShopifyProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </AnimatePresence>
+        <div className="relative w-full">
+          {/* Left Arrow (Mobile only) */}
+          <button
+            onClick={() => scrollShopify('left')}
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/70 border border-white/10 flex items-center justify-center text-white backdrop-blur-sm shadow-lg active:scale-95 transition-all md:hidden cursor-pointer"
+            aria-label="Scroll left"
+          >
+            <FaChevronLeft size={14} />
+          </button>
+
+          {/* Right Arrow (Mobile only) */}
+          <button
+            onClick={() => scrollShopify('right')}
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-950/70 border border-white/10 flex items-center justify-center text-white backdrop-blur-sm shadow-lg active:scale-95 transition-all md:hidden cursor-pointer"
+            aria-label="Scroll right"
+          >
+            <FaChevronRight size={14} />
+          </button>
+
+          <div
+            ref={shopifyContainerRef}
+            className="flex flex-row overflow-x-auto whitespace-nowrap scrollbar-none scroll-smooth snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-x-visible md:whitespace-normal md:pb-0"
+          >
+            <AnimatePresence>
+              {displayed.map((project, index) => (
+                <ShopifyProjectCard key={project._id || project.id} project={project} index={index} />
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* ── Toggle button ── */}
-        {shopifyProjects.length > INITIAL_COUNT && (
+        {projectsList.length > INITIAL_COUNT && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -460,7 +514,7 @@ const ShopifyProjects = () => {
               {showAll ? (
                 <>Show Less <FaChevronUp className="text-green-400 text-sm" /></>
               ) : (
-                <>View All {shopifyProjects.length} Projects <FaChevronDown className="text-green-400 text-sm" /></>
+                <>View All {projectsList.length} Projects <FaChevronDown className="text-green-400 text-sm" /></>
               )}
             </motion.button>
 
@@ -470,7 +524,7 @@ const ShopifyProjects = () => {
                 animate={{ opacity: 1 }}
                 className="text-gray-600 text-sm mt-3"
               >
-                {shopifyProjects.length - INITIAL_COUNT} more projects waiting
+                {projectsList.length - INITIAL_COUNT} more projects waiting
               </motion.p>
             )}
           </motion.div>

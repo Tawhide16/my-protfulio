@@ -1,7 +1,10 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaHeart, FaArrowUp, FaFacebook } from 'react-icons/fa';
 import { SiReact, SiTailwindcss } from 'react-icons/si';
 import { useInView } from 'react-intersection-observer';
+import { usePathname } from 'next/navigation';
 
 const socialLinks = [
   { icon: <FaGithub size={18} />, url: "https://github.com/Tawhide16", name: "GitHub", color: '#6b7280', rgb: '107,114,128' },
@@ -20,7 +23,12 @@ const navLinks = [
 ];
 
 const Footer = () => {
+  const pathname = usePathname();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  if (pathname === '/dashboard') {
+    return null;
+  }
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });

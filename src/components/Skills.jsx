@@ -1,8 +1,10 @@
+'use client';
+
 import { FaReact, FaNodeJs, FaCode, FaShopify } from 'react-icons/fa';
 import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript } from 'react-icons/si';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -129,6 +131,22 @@ const skills = [
   },
 ];
 
+const resolveIcon = (name, existingIcon) => {
+  if (existingIcon) return existingIcon;
+  const n = name?.toLowerCase() || '';
+  if (n.includes('react')) return <FaReact size={38} />;
+  if (n.includes('next')) return <SiNextdotjs size={38} />;
+  if (n.includes('javascript') || n === 'js') return <SiJavascript size={38} />;
+  if (n.includes('typescript') || n === 'ts') return <SiTypescript size={38} />;
+  if (n.includes('tailwind')) return <SiTailwindcss size={38} />;
+  if (n.includes('node')) return <FaNodeJs size={38} />;
+  if (n.includes('express')) return <SiExpress size={38} />;
+  if (n.includes('mongo')) return <SiMongodb size={38} />;
+  if (n.includes('firebase')) return <SiFirebase size={38} />;
+  if (n.includes('shopify')) return <FaShopify size={38} />;
+  return <FaCode size={38} />;
+};
+
 /* ── Skill Card ── */
 const SkillCard = ({ skill, index }) => {
   const [hovered, setHovered] = useState(false);
@@ -189,11 +207,11 @@ const SkillCard = ({ skill, index }) => {
         {/* Icon */}
         <motion.div
           className="flex items-center justify-center w-16 h-16 rounded-2xl"
-          style={{ background: `rgba(${skill.accentRgb}, 0.1)`, color: skill.color }}
+          style={{ background: `rgba(${skill.accentRgb || '99,102,241'}, 0.1)`, color: skill.color || '#6366f1' }}
           animate={{ rotate: hovered ? [0, -6, 6, 0] : 0, scale: hovered ? 1.1 : 1 }}
           transition={{ duration: 0.4 }}
         >
-          {skill.icon}
+          {resolveIcon(skill.name, skill.icon)}
         </motion.div>
 
         {/* Name */}
@@ -211,13 +229,26 @@ const Skills = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [dynamicSkills, setDynamicSkills] = useState(skills);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
+  useEffect(() => {
+    fetch('http://localhost:5000/api/content')
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.skills) && data.skills.length > 0) {
+          setDynamicSkills(data.skills);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activeSkills = dynamicSkills.length > 0 ? dynamicSkills : skills;
   const filtered = activeCategory === 'All'
-    ? skills
-    : skills.filter(s => s.category === activeCategory);
+    ? activeSkills
+    : activeSkills.filter(s => s.category?.toLowerCase() === activeCategory.toLowerCase());
 
   return (
     <section
