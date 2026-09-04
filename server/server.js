@@ -77,16 +77,20 @@ mongoose.connect(process.env.MONGODB_URI)
 // Seeding Default Admin
 const seedAdmin = async () => {
   try {
-    const count = await Admin.countDocuments();
-    if (count === 0) {
+    const adminPassword = process.env.ADMIN_PASSWORD || 'adminpassword';
+    let admin = await Admin.findOne({ username: 'admin' });
+    if (!admin) {
       console.log('Seeding default admin user...');
-      const adminPassword = process.env.ADMIN_PASSWORD || 'adminpassword';
-      const defaultAdmin = new Admin({
+      admin = new Admin({
         username: 'admin',
         password: adminPassword
       });
-      await defaultAdmin.save();
+      await admin.save();
       console.log('Default admin user seeded successfully.');
+    } else if (process.env.ADMIN_PASSWORD) {
+      admin.password = adminPassword;
+      await admin.save();
+      console.log('Admin password synchronized with ADMIN_PASSWORD.');
     }
   } catch (err) {
     console.error('Error seeding admin:', err.message);
