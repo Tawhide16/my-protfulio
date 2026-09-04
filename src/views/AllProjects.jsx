@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaExternalLinkAlt, FaGithub, FaArrowLeft, FaLayerGroup, FaGlobe } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { API_BASE } from '../config/api';
 
-const API_URL = 'http://localhost:5000/api/projects';
+const API_URL = `${API_BASE}/projects`;
 
 const AllProjects = () => {
   const [projects, setProjects] = useState([]);

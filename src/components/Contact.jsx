@@ -6,6 +6,7 @@ import { SiGmail, SiMessenger } from 'react-icons/si';
 import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
+import { API_BASE } from '../config/api';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -35,7 +36,7 @@ const Contact = () => {
 
   useEffect(() => {
     setSentTime(new Date().toLocaleString());
-    fetch('http://localhost:5000/api/content')
+    fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data && data.contact) setContactContent(data.contact);

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaExternalLinkAlt, FaGithub, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 import {
   SiReact, SiExpress, SiMongodb, SiFirebase, SiTailwindcss, SiNodedotjs,
 } from 'react-icons/si';
@@ -287,7 +288,7 @@ const Projects = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/projects')
+    fetch(`${API_BASE}/projects`)
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {

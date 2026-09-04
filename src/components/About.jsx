@@ -6,6 +6,7 @@ import { SiReact, SiNextdotjs, SiNodedotjs, SiMongodb, SiShopify } from 'react-i
 import { TypeAnimation } from 'react-type-animation';
 import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { API_BASE } from '../config/api';
 
 /* ── Floating orb ── */
 
@@ -63,7 +64,7 @@ const About = () => {
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/content')
+    fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data && data.about) setAboutContent(data.about);

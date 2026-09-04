@@ -6,6 +6,7 @@ import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { scroller } from 'react-scroll';
 import { useRouter, usePathname } from 'next/navigation';
+import { API_BASE } from '../config/api';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +35,7 @@ const Navbar = () => {
   const [resumeUrl, setResumeUrl] = useState('/Tawhide-hasan-bejoy-official(5).pdf');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/content')
+    fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data?.hero?.resumeUrl) {

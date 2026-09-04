@@ -5,6 +5,7 @@ import profileImg from '../assets/profile-new.jpg';
 import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaArrowRight } from 'react-icons/fa';
 import { FiMapPin, FiFileText } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 
 const socialLinks = [
   { icon: <FaGithub size={16} />, url: "https://github.com/Tawhide16", name: "GitHub" },
@@ -18,7 +19,7 @@ const Hero = () => {
   const [processedImg, setProcessedImg] = useState(profileImg);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/content')
+    fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data && data.hero) setHeroContent(data.hero);

@@ -13,8 +13,8 @@ import {
 } from 'react-icons/fa';
 import { FiMapPin, FiFileText } from 'react-icons/fi';
 import Link from 'next/link';
+import { API_BASE } from '../config/api';
 
-const API_BASE = 'http://localhost:5000/api';
 const API_URL = `${API_BASE}/projects`;
 
 const defaultForm = {

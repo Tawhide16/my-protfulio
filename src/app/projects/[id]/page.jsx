@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { API_BASE } from '../../../config/api';
 
 export default function ProjectDetailsPage() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function ProjectDetailsPage() {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/projects/${id}`)
+      fetch(`${API_BASE}/projects/${id}`)
         .then((res) => {
           if (!res.ok) {
             throw new Error('Project not found or failed to load');

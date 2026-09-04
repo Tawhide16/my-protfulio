@@ -5,6 +5,7 @@ import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdo
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef, useState, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -235,7 +236,7 @@ const Skills = () => {
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/content')
+    fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data && Array.isArray(data.skills) && data.skills.length > 0) {

@@ -2,6 +2,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { API_BASE } from '../config/api';
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     // If we don't have project in state, fetch it from the database
     if (!project && id) {
-      fetch(`http://localhost:5000/api/projects/${id}`)
+      fetch(`${API_BASE}/projects/${id}`)
         .then((res) => {
           if (!res.ok) {
             throw new Error('Project not found or failed to load');

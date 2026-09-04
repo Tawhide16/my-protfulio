@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { API_BASE } from '../config/api';
 import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { SiShopify, SiReact, SiNodedotjs } from 'react-icons/si';
@@ -339,7 +340,7 @@ const ShopifyProjects = () => {
   const shopifyContainerRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/shopify-projects')
+    fetch(`${API_BASE}/shopify-projects`)
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
