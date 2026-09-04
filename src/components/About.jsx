@@ -8,6 +8,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 /* ── Floating orb ── */
+
 const FloatingOrb = ({ color, style }) => (
   <motion.div
     className="absolute rounded-full blur-3xl opacity-[0.07] pointer-events-none"
@@ -67,7 +68,7 @@ const About = () => {
       .then(data => {
         if (data && data.about) setAboutContent(data.about);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
