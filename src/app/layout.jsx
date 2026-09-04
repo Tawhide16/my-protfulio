@@ -7,7 +7,18 @@ export const metadata = {
   title: 'Tawhid Hasan Bejoy | React.js Developer',
   description: 'Personal Portfolio of Tawhid Hasan Bejoy, a passionate React.js and MERN Stack Developer.',
   icons: {
-    icon: '/logo.png',
+    icon: [
+      {
+        url: '/favicon-light.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/favicon-dark.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+    shortcut: '/favicon-dark.png',
+    apple: '/favicon-dark.png',
   },
 };
 
@@ -15,6 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon-light.png" media="(prefers-color-scheme: light)" />
+        <link rel="icon" href="/favicon-dark.png" media="(prefers-color-scheme: dark)" />
+        <link rel="apple-touch-icon" href="/favicon-dark.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
