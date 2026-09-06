@@ -194,9 +194,10 @@ const Hero = () => {
                 <FaArrowRight className="text-xs" />
               </a>
               <a
-                href={heroContent?.resumeUrl || "/resume.pdf"}
+                href={heroContent?.resumeUrl || "/Tawhide-hasan-bejoy-official(5).pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
+                download="Tawhid-Hasan-Bejoy-Resume.pdf"
                 className="px-6 py-3.5 rounded-full bg-[#151526] hover:bg-[#1d1d34] border border-white/10 hover:border-white/25 text-white font-medium text-sm sm:text-base flex items-center gap-2.5 transition-all duration-200"
               >
                 <FiFileText className="text-base text-gray-300" />

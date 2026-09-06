@@ -57,11 +57,17 @@ const upload = multer({
 // Helper: upload buffer to Cloudinary and return secure URL
 const uploadToCloudinary = (buffer, mimetype, originalname) => {
   return new Promise((resolve, reject) => {
-    const isPdf = /pdf|doc|docx/.test(path.extname(originalname).toLowerCase().replace('.', ''));
+    const ext = path.extname(originalname).toLowerCase(); // e.g. '.pdf'
+    const isPdf = /\.(pdf|doc|docx)$/.test(ext);
+    const baseName = path.parse(originalname).name;
+
     const options = {
       folder: 'portfolio',
       resource_type: isPdf ? 'raw' : 'image',
-      public_id: `${Date.now()}-${path.parse(originalname).name}`,
+      // For raw files, include the extension in public_id so Cloudinary URL ends with .pdf
+      public_id: isPdf
+        ? `${Date.now()}-${baseName}${ext}`
+        : `${Date.now()}-${baseName}`,
       overwrite: true,
     };
     const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
