@@ -506,7 +506,7 @@ app.post('/api/admin/login', async (req, res) => {
   }
 });
 
-// 2. File & Resume Upload (Protected) — uploads to Cloudinary for persistent storage
+// 2. File & Resume Upload (Protected) — images → Cloudinary, PDFs → Cloudinary with force-download flag
 app.post('/api/upload', auth, (req, res) => {
   upload.any()(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });
@@ -515,7 +515,19 @@ app.post('/api/upload', auth, (req, res) => {
     }
     try {
       const file = req.files[0];
-      const cloudUrl = await uploadToCloudinary(file.buffer, file.mimetype, file.originalname);
+      const ext = path.extname(file.originalname).toLowerCase();
+      const isPdf = /\.(pdf|doc|docx)$/.test(ext);
+
+      let cloudUrl = await uploadToCloudinary(file.buffer, file.mimetype, file.originalname);
+
+      // For PDF/DOC files: inject fl_attachment into the Cloudinary URL
+      // This makes the browser download the file instead of trying to render it inline
+      if (isPdf) {
+        // Transform: /raw/upload/v.../portfolio/file.pdf
+        //        →  /raw/upload/fl_attachment/v.../portfolio/file.pdf
+        cloudUrl = cloudUrl.replace('/raw/upload/', '/raw/upload/fl_attachment/');
+      }
+
       res.json({ url: cloudUrl, filename: file.originalname });
     } catch (uploadErr) {
       console.error('Cloudinary upload error:', uploadErr);
