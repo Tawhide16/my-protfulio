@@ -249,6 +249,9 @@ const ShopifyProjectCard = ({ project, index }) => {
             className="w-full h-full object-cover object-top"
             animate={{ scale: hovered ? 1.07 : 1 }}
             transition={{ duration: 0.55, ease: 'easeOut' }}
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
           />
 
           {/* Shopify badge */}

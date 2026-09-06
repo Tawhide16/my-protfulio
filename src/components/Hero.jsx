@@ -17,12 +17,20 @@ const socialLinks = [
 const Hero = () => {
   const [heroContent, setHeroContent] = useState(null);
   const [processedImg, setProcessedImg] = useState(profileImg);
+  const [imgSrc, setImgSrc] = useState(null);
 
   useEffect(() => {
     fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
-        if (data && data.hero) setHeroContent(data.hero);
+        if (data && data.hero) {
+          setHeroContent(data.hero);
+          // Use avatarUrl if present (Cloudinary URLs are permanent)
+          const url = data.hero.avatarUrl;
+          if (url) {
+            setImgSrc(url);
+          }
+        }
       })
       .catch(() => {});
   }, []);
@@ -236,12 +244,13 @@ const Hero = () => {
                 {/* Circle Container with Dynamic Background Color */}
                 <div
                   className="w-72 h-72 sm:w-88 sm:h-88 md:w-[380px] md:h-[380px] rounded-full overflow-hidden flex items-end justify-center relative transition-colors duration-300"
-                  style={{ backgroundColor: heroContent?.avatarBgColor || '#ff9900' }}
+                  style={{ backgroundColor: heroContent?.avatarBgColor || 'transparent' }}
                 >
                   <img
-                    src={heroContent?.avatarUrl || processedImg}
+                    src={imgSrc || processedImg}
                     alt={heroContent?.name || "Tawhid Hasan Bejoy"}
                     className="h-auto block drop-shadow-xl transform group-hover:scale-105 transition-all duration-300"
+                    onError={(e) => { e.currentTarget.src = processedImg; }}
                     style={{
                       width: `${heroContent?.avatarScale || 88}%`,
                       transform: `translate(${heroContent?.avatarOffsetX || 0}px, ${heroContent?.avatarOffsetY || 0}px)`,

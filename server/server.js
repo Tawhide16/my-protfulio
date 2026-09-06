@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
+import { v2 as cloudinary } from 'cloudinary';
 import Project from './models/Project.js';
 import ShopifyProject from './models/ShopifyProject.js';
 import Admin from './models/Admin.js';
@@ -14,6 +15,13 @@ import SiteContent from './models/SiteContent.js';
 import auth from './middleware/auth.js';
 
 dotenv.config();
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,25 +33,16 @@ const __dirname = path.dirname(__filename);
 app.use(cors());
 app.use(express.json());
 
-// Configure Uploads Folder
+// Keep local uploads folder as fallback (for PDF resume etc.)
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 app.use('/uploads', express.static(uploadDir));
 
-// Configure Multer storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  }
-});
-
+// Multer uses memory storage — files go to Cloudinary, not disk
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB limit
   fileFilter: (req, file, cb) => {
     const filetypes = /jpeg|jpg|png|webp|gif|pdf|doc|docx/;
@@ -54,6 +53,24 @@ const upload = multer({
     cb(new Error('Allowed formats: images (jpg, png, webp, gif) and documents (pdf, doc, docx)!'));
   }
 });
+
+// Helper: upload buffer to Cloudinary and return secure URL
+const uploadToCloudinary = (buffer, mimetype, originalname) => {
+  return new Promise((resolve, reject) => {
+    const isPdf = /pdf|doc|docx/.test(path.extname(originalname).toLowerCase().replace('.', ''));
+    const options = {
+      folder: 'portfolio',
+      resource_type: isPdf ? 'raw' : 'image',
+      public_id: `${Date.now()}-${path.parse(originalname).name}`,
+      overwrite: true,
+    };
+    const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (error) return reject(error);
+      resolve(result.secure_url);
+    });
+    stream.end(buffer);
+  });
+};
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -483,16 +500,21 @@ app.post('/api/admin/login', async (req, res) => {
   }
 });
 
-// 2. File & Resume Upload (Protected)
+// 2. File & Resume Upload (Protected) — uploads to Cloudinary for persistent storage
 app.post('/api/upload', auth, (req, res) => {
-  upload.any()(req, res, (err) => {
+  upload.any()(req, res, async (err) => {
     if (err) return res.status(400).json({ message: err.message });
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
-    const file = req.files[0];
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${file.filename}`;
-    res.json({ url: fileUrl, filename: file.originalname });
+    try {
+      const file = req.files[0];
+      const cloudUrl = await uploadToCloudinary(file.buffer, file.mimetype, file.originalname);
+      res.json({ url: cloudUrl, filename: file.originalname });
+    } catch (uploadErr) {
+      console.error('Cloudinary upload error:', uploadErr);
+      res.status(500).json({ message: 'Image upload failed. Please try again.' });
+    }
   });
 });
 
