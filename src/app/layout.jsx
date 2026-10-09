@@ -24,7 +24,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon-light.png" media="(prefers-color-scheme: light)" />
         <link rel="icon" href="/favicon-dark.png" media="(prefers-color-scheme: dark)" />
@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-[#080711] text-white">
+      <body className="min-h-screen flex flex-col bg-[#080711] text-white" suppressHydrationWarning>
         <SmoothScroll>
           <div className="min-h-screen flex flex-col bg-[#080711]">
             <Navbar />

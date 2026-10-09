@@ -32,7 +32,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const [resumeUrl, setResumeUrl] = useState('/Tawhide-hasan-bejoy-official(5).pdf');
+  const [resumeUrl, setResumeUrl] = useState('/Tawhid-Hasan-Bejoy-Resume.pdf');
 
   useEffect(() => {
     fetch(`${API_BASE}/content`)

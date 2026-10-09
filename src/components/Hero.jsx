@@ -1,11 +1,28 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import profileImg from '../assets/profile-new.jpg';
+import profileImg from '../assets/profile.png';
 import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaArrowRight } from 'react-icons/fa';
 import { FiMapPin, FiFileText } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
+
+const DEFAULT_HERO = {
+  name: "Tawhid Hasan",
+  highlightedName: "Bejoy",
+  role: "Full-stack Developer & Shopify expert",
+  badge: "Web Developer @ Softvence",
+  location: "Dhaka, BD",
+  bio: "Building clean, performant web experiences — from full-stack MERN apps to custom Shopify stores. Currently working on-site at Softvence Agency.",
+  statusText: "Seeking Growth Opportunities",
+  avatarUrl: "/profile.png",
+  avatarBgColor: "#a855f7",
+  avatarScale: 74,
+  avatarOffsetX: 0,
+  avatarOffsetY: 0,
+  avatarFit: "cover",
+  resumeUrl: "https://res.cloudinary.com/dcgtp8crl/raw/upload/fl_attachment/v1788709315/portfolio/1788709315407-Tawhide-hasan-bejoy-Resume.pdf",
+};
 
 const socialLinks = [
   { icon: <FaGithub size={16} />, url: "https://github.com/Tawhide16", name: "GitHub" },
@@ -15,84 +32,22 @@ const socialLinks = [
 ];
 
 const Hero = () => {
-  const [heroContent, setHeroContent] = useState(null);
-  const [processedImg, setProcessedImg] = useState(profileImg);
-  const [imgSrc, setImgSrc] = useState(null);
+  const defaultImg = profileImg.src || profileImg || '/profile.png';
+  const [heroContent, setHeroContent] = useState(DEFAULT_HERO);
+  const [imgSrc, setImgSrc] = useState(defaultImg);
 
   useEffect(() => {
     fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
         if (data && data.hero) {
-          setHeroContent(data.hero);
-          // Use avatarUrl if present (Cloudinary URLs are permanent)
-          const url = data.hero.avatarUrl;
-          if (url) {
-            setImgSrc(url);
+          setHeroContent(prev => ({ ...prev, ...data.hero }));
+          if (data.hero.avatarUrl) {
+            setImgSrc(data.hero.avatarUrl);
           }
         }
       })
       .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = profileImg;
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imgData.data;
-      const width = canvas.width;
-      const height = canvas.height;
-
-      const visited = new Uint8Array(width * height);
-      const queue = [];
-
-      const enqueue = (x, y) => {
-        const idx = y * width + x;
-        if (!visited[idx]) {
-          visited[idx] = 1;
-          queue.push(idx);
-        }
-      };
-
-      for (let x = 0; x < width; x++) {
-        enqueue(x, 0);
-        enqueue(x, height - 1);
-      }
-      for (let y = 0; y < height; y++) {
-        enqueue(0, y);
-        enqueue(width - 1, y);
-      }
-
-      let head = 0;
-      while (head < queue.length) {
-        const idx = queue[head++];
-        const x = idx % width;
-        const y = Math.floor(idx / width);
-        const rIdx = idx * 4;
-
-        const r = data[rIdx];
-        const g = data[rIdx + 1];
-        const b = data[rIdx + 2];
-
-        if (r > 200 && g > 200 && b > 200) {
-          data[rIdx + 3] = 0;
-          if (x > 0) enqueue(x - 1, y);
-          if (x < width - 1) enqueue(x + 1, y);
-          if (y > 0) enqueue(x, y - 1);
-          if (y < height - 1) enqueue(x, y + 1);
-        }
-      }
-
-      ctx.putImageData(imgData, 0, 0);
-      setProcessedImg(canvas.toDataURL('image/png'));
-    };
   }, []);
 
   // Motion animation variants
@@ -194,7 +149,7 @@ const Hero = () => {
                 <FaArrowRight className="text-xs" />
               </a>
               <a
-                href={heroContent?.resumeUrl || "/Tawhide-hasan-bejoy-official(5).pdf"}
+                href={heroContent?.resumeUrl || "/Tawhid-Hasan-Bejoy-Resume.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
                 download="Tawhid-Hasan-Bejoy-Resume.pdf"
@@ -245,15 +200,15 @@ const Hero = () => {
                 {/* Circle Container with Dynamic Background Color */}
                 <div
                   className="w-72 h-72 sm:w-88 sm:h-88 md:w-[380px] md:h-[380px] rounded-full overflow-hidden flex items-end justify-center relative transition-colors duration-300"
-                  style={{ backgroundColor: heroContent?.avatarBgColor || 'transparent' }}
+                  style={{ backgroundColor: heroContent?.avatarBgColor || '#a855f7' }}
                 >
                   <img
-                    src={imgSrc || processedImg}
+                    src={imgSrc || defaultImg}
                     alt={heroContent?.name || "Tawhid Hasan Bejoy"}
                     className="h-auto block drop-shadow-xl transform group-hover:scale-105 transition-all duration-300"
-                    onError={(e) => { e.currentTarget.src = processedImg; }}
+                    onError={(e) => { e.currentTarget.src = defaultImg; }}
                     style={{
-                      width: `${heroContent?.avatarScale || 88}%`,
+                      width: `${heroContent?.avatarScale || 74}%`,
                       transform: `translate(${heroContent?.avatarOffsetX || 0}px, ${heroContent?.avatarOffsetY || 0}px)`,
                       objectFit: heroContent?.avatarFit || 'cover',
                       objectPosition: 'top',
