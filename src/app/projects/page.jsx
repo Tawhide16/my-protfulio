@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { FaExternalLinkAlt, FaGithub, FaArrowLeft, FaLayerGroup, FaGlobe } from 'react-icons/fa';
 import Link from 'next/link';
 import { API_BASE } from '../../config/api';
+import { staticProjects } from '../../components/Projects';
 
 const API_URL = `${API_BASE}/projects`;
 
@@ -16,17 +17,22 @@ export default function AllProjectsPage() {
     fetch(API_URL)
       .then(r => r.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const sorted = [...data].sort((a, b) => {
             if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
             if (a.number && b.number) return a.number.localeCompare(b.number);
             return 0;
           });
           setProjects(sorted);
+        } else {
+          setProjects(staticProjects);
         }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setProjects(staticProjects);
+        setLoading(false);
+      });
   }, []);
 
   return (

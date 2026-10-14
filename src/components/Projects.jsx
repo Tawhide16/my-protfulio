@@ -7,19 +7,51 @@ import { useRef, useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
 import {
   SiReact, SiExpress, SiMongodb, SiFirebase, SiTailwindcss, SiNodedotjs,
+  SiNextdotjs, SiTypescript, SiPostgresql, SiPrisma, SiDocker,
 } from 'react-icons/si';
 
 const techIcons = {
   React: <SiReact className="text-sky-400" />,
+  'Next.js 14': <SiNextdotjs className="text-white" />,
+  'Next.js': <SiNextdotjs className="text-white" />,
+  TypeScript: <SiTypescript className="text-blue-400" />,
   Express: <SiExpress className="text-gray-300" />,
   'Express.js': <SiExpress className="text-gray-300" />,
   MongoDB: <SiMongodb className="text-green-400" />,
+  PostgreSQL: <SiPostgresql className="text-sky-400" />,
+  'Prisma ORM': <SiPrisma className="text-teal-400" />,
+  'Neon DB': (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline-block" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.2"/>
+      <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
+    </svg>
+  ),
   Firebase: <SiFirebase className="text-yellow-400" />,
   'Tailwind CSS': <SiTailwindcss className="text-cyan-400" />,
   'Node.js': <SiNodedotjs className="text-green-500" />,
+  Docker: <SiDocker className="text-blue-500" />,
 };
 
 export const staticProjects = [
+  {
+    id: 'the-revolution',
+    title: 'The Revolution',
+    subtitle: 'Editorial Newsroom & Publishing Engine',
+    description: 'A modern digital broadsheet and editorial news portal inspired by premier institutions (BBC, NYT). Features multi-role RBAC, editorial approval queues, 4 custom layouts, and serverless Postgres.',
+    technologies: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Neon DB', 'Prisma ORM'],
+    features: [
+      'Broadsheet editorial design with breaking news ticker',
+      'Role-based access control (Admin, Editor, Writer)',
+      'Multi-layout publishing studio with 390px mobile simulator',
+      'Serverless PostgreSQL (Neon) with Prisma ORM migrations',
+    ],
+    accentColor: '#e11d48',
+    accentRgb: '225, 29, 72',
+    liveLink: 'https://the-revolution-news-portal.vercel.app/',
+    gitLinkClient: 'https://github.com/Tawhide16/The-revolution-news-portal',
+    image1: '/revolution-news.png',
+    number: '01',
+  },
   {
     id: 3,
     title: 'Next Class',
@@ -32,7 +64,7 @@ export const staticProjects = [
     liveLink: 'https://my-school-b2c91.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Next-class-client',
     image1: '/NEXT-CLASS.png',
-    number: '01',
+    number: '02',
   },
   {
     id: 1,
@@ -46,7 +78,7 @@ export const staticProjects = [
     liveLink: 'https://my-assignment-10-a4262.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
     image1: '/vibe.png',
-    number: '02',
+    number: '03',
   },
   {
     id: 2,
@@ -60,7 +92,7 @@ export const staticProjects = [
     liveLink: 'https://my-hotel-a3994.web.app/',
     gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
     image1: '/hotel-booke.png',
-    number: '03',
+    number: '04',
   },
   {
     id: 4,
@@ -74,7 +106,7 @@ export const staticProjects = [
     liveLink: 'https://fluffy-clafoutis-ef0d5e.netlify.app/',
     gitLinkClient: 'https://github.com/Tawhide16/event-explorer-client',
     image1: '/event.png',
-    number: '04',
+    number: '05',
   },
 ];
 
@@ -350,11 +382,11 @@ const Projects = () => {
             viewport={{ once: true }}
             className="text-5xl md:text-6xl font-black text-white mb-5 leading-tight"
           >
-            Featured{' '}
+            Full-Stack{' '}
             <span
               className="relative inline-block"
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #a855f7, #ec4899)',
+                background: 'linear-gradient(135deg, #e11d48, #6366f1, #a855f7)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -370,7 +402,7 @@ const Projects = () => {
             viewport={{ once: true }}
             className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed"
           >
-            A collection of things I've built — from full-stack apps to polished UIs.
+            Production-grade web apps, editorial publishing engines, and modern digital platforms.
           </motion.p>
 
           {/* Animated underline */}

@@ -1,7 +1,7 @@
 'use client';
 
 import { FaReact, FaNodeJs, FaCode, FaShopify } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript } from 'react-icons/si';
+import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript, SiPostgresql, SiSupabase, SiPrisma, SiReactquery } from 'react-icons/si';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef, useState, useEffect } from 'react';
@@ -100,7 +100,7 @@ const skills = [
   },
   {
     name: 'TanStack Query',
-    icon: <span className="text-3xl font-black leading-none">TQ</span>,
+    icon: <SiReactquery size={38} />,
     category: 'Frontend',
     color: '#ef4444',
     accentRgb: '239, 68, 68',
@@ -130,7 +130,45 @@ const skills = [
     accentRgb: '192, 132, 252',
     level: 90,
   },
+  {
+    name: 'PostgreSQL',
+    icon: <SiPostgresql size={38} />,
+    category: 'Database',
+    color: '#336791',
+    accentRgb: '51, 103, 145',
+    level: 75,
+  },
+  {
+    name: 'NeonDB',
+    icon: (
+      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.15"/>
+        <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
+      </svg>
+    ),
+    category: 'Database',
+    color: '#00E599',
+    accentRgb: '0, 229, 153',
+    level: 72,
+  },
+  {
+    name: 'Supabase',
+    icon: <SiSupabase size={38} />,
+    category: 'Database',
+    color: '#3ECF8E',
+    accentRgb: '62, 207, 142',
+    level: 74,
+  },
+  {
+    name: 'Prisma',
+    icon: <SiPrisma size={38} />,
+    category: 'Database',
+    color: '#5a67d8',
+    accentRgb: '90, 103, 216',
+    level: 76,
+  },
 ];
+
 
 const resolveIcon = (name, existingIcon) => {
   if (existingIcon) return existingIcon;
@@ -145,6 +183,16 @@ const resolveIcon = (name, existingIcon) => {
   if (n.includes('mongo')) return <SiMongodb size={38} />;
   if (n.includes('firebase')) return <SiFirebase size={38} />;
   if (n.includes('shopify')) return <FaShopify size={38} />;
+  if (n.includes('postgres') || n === 'postgresql') return <SiPostgresql size={38} />;
+  if (n.includes('tanstack') || n.includes('react query') || n.includes('reactquery')) return <SiReactquery size={38} />;
+  if (n.includes('neon')) return (
+    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.15"/>
+      <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
+    </svg>
+  );
+  if (n.includes('supabase')) return <SiSupabase size={38} />;
+  if (n.includes('prisma')) return <SiPrisma size={38} />;
   return <FaCode size={38} />;
 };
 

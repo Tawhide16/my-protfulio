@@ -1346,27 +1346,26 @@ const Dashboard = () => {
   });
 
   const [aboutData, setAboutData] = useState({
-    currentPosition: 'Web Developer',
-    employmentStatus: 'Currently Working',
+    currentPosition: 'Full-Stack Developer & Shopify Expert',
+    employmentStatus: 'Currently Working · Seeking Opportunities',
     company: 'Softvence Agency',
-    location: 'On-Site, Dhaka, BD',
-    duration: '2025 – Present',
-    bioText: 'Working as a professional web developer at Softvence, building and delivering high-quality client projects.',
-    techAtWork: ['React', 'Next.js', 'Node.js', 'MongoDB', 'Shopify'],
+    location: 'Mohakhali, Gulshan 1, Dhaka',
+    duration: '2025 – Present (1 Year)',
+    bioText: 'Hands-on experience building and customizing 60+ Shopify stores using Liquid, custom sections & blocks, Schema JSON, and theme frameworks (Dawn, Minimog, FoxEcom), alongside modern web technologies including React.js, Next.js, Express.js, MongoDB, Tailwind CSS, Firebase Authentication, JWT, and REST APIs to build fast, responsive, and conversion-focused eCommerce experiences.',
+    techAtWork: ['Shopify Liquid', 'Custom Sections', 'React.js', 'Next.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Prisma', 'GSAP'],
     education: {
       degree: 'Diploma in Computer Science',
-      institute: 'Borak Polytechnic Institute',
-      semester: '7th Semester',
-      cgpa: 'CGPA: 3.85 / 4.00 — Top 5% of class',
-      graduation: 'Expected Graduation: December 2026',
-      coreSubjects: 'Core subjects: DSA, Networking, Web Technology'
+      institute: 'Borak Polytechnic Institute, Dhaka',
+      timeline: 'Jan 2022 – Present',
+      ssc: 'SSC (Science) — Khatgora High School, Dhaka (GPA: 4.44)',
+      coreSubjects: 'Focus: Full-Stack Web Development, Data Structures & Networking'
     }
   });
 
   const [skillsData, setSkillsData] = useState([]);
   const [contactData, setContactData] = useState({
     email: 'tawhideh.b10@gmail.com',
-    phone: '+880 1836-817816',
+    phone: '+880 1745413122',
     location: 'Dhaka, Bangladesh',
     heading: "Let's create something great together",
     description: 'Have a project in mind, need a full-stack developer, or just want to chat? Reach out anytime!'

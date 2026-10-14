@@ -86,15 +86,14 @@ const Hero = () => {
 
       {/* ── Main Content Container ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           {/* ── Left Column: Content & Details ── */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="lg:col-span-7 flex flex-col items-start text-left z-10"
-          >
+            className="lg:col-span-7 flex flex-col items-center text-center lg:items-start lg:text-left z-10 order-2 lg:order-1">
             {/* Top Badge */}
             <motion.div variants={itemVariants} className="mb-6">
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#141424]/90 border border-white/10 text-xs sm:text-sm text-gray-300 backdrop-blur-md shadow-sm">
@@ -139,7 +138,7 @@ const Hero = () => {
             {/* CTA Buttons */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap items-center gap-4 mb-10"
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10"
             >
               <a
                 href="#projects"
@@ -163,7 +162,7 @@ const Hero = () => {
             {/* Social Links Row */}
             <motion.div
               variants={itemVariants}
-              className="flex items-center gap-4 pt-2"
+              className="flex items-center justify-center lg:justify-start gap-4 pt-2"
             >
               <span className="text-xs font-semibold tracking-widest text-gray-500 uppercase font-mono">
                 FOLLOW
@@ -192,8 +191,7 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex justify-center lg:justify-end relative"
-          >
+            className="lg:col-span-5 flex justify-center lg:justify-end relative order-1 lg:order-2">
             <div className="relative group">
               {/* Outer Glowing Gradient Ring */}
               <div className="relative p-1.5 sm:p-2 rounded-full bg-gradient-to-tr from-purple-600 via-pink-500 to-indigo-600 shadow-[0_0_55px_rgba(168,85,247,0.4)]">

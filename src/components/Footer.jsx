@@ -5,6 +5,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaHeart, FaArrowUp, FaFace
 import { SiReact, SiTailwindcss } from 'react-icons/si';
 import { useInView } from 'react-intersection-observer';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const socialLinks = [
   { icon: <FaGithub size={18} />, url: "https://github.com/Tawhide16", name: "GitHub", color: '#6b7280', rgb: '107,114,128' },
@@ -25,6 +26,11 @@ const navLinks = [
 const Footer = () => {
   const pathname = usePathname();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [year, setYear] = useState(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   if (pathname === '/dashboard') {
     return null;
@@ -192,7 +198,7 @@ const Footer = () => {
             transition={{ delay: 0.6 }}
             className="text-xs text-gray-700 text-center sm:text-left"
           >
-            © {new Date().getFullYear()} Tawhid Hasan Bejoy. All rights reserved.
+            © {year ?? ''} Tawhid Hasan Bejoy. All rights reserved.
           </motion.p>
 
           <motion.p

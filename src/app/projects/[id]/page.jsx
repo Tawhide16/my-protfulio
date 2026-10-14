@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { API_BASE } from '../../../config/api';
+import { staticProjects } from '../../../components/Projects';
 
 export default function ProjectDetailsPage() {
   const { id } = useParams();
@@ -27,8 +28,15 @@ export default function ProjectDetailsPage() {
           setProject(data);
           setLoading(false);
         })
-        .catch((err) => {
-          setError(err.message);
+        .catch(() => {
+          const fallback = staticProjects.find(
+            (p) => String(p.id) === String(id) || String(p._id) === String(id)
+          );
+          if (fallback) {
+            setProject(fallback);
+          } else {
+            setError('Project not found');
+          }
           setLoading(false);
         });
     }

@@ -56,8 +56,25 @@ const Bullet = ({ text, color = '#6366f1' }) => (
   </li>
 );
 
+const DEFAULT_ABOUT = {
+  currentPosition: "Full-Stack Developer & Shopify Expert",
+  employmentStatus: "Currently Working · Seeking Opportunities",
+  company: "Softvence Agency",
+  location: "Mohakhali, Gulshan 1, Dhaka",
+  duration: "2025 – Present (1 Year)",
+  bioText: "Hands-on experience building and customizing 60+ Shopify stores using Liquid, custom sections & blocks, Schema JSON, and theme frameworks (Dawn, Minimog, FoxEcom), alongside modern web technologies including React.js, Next.js, Express.js, MongoDB, Tailwind CSS, Firebase Authentication, JWT, and REST APIs to build fast, responsive, and conversion-focused eCommerce experiences.",
+  techAtWork: ['Shopify Liquid', 'Custom Sections', 'React.js', 'Next.js', 'Node.js', 'Express.js', 'MongoDB', 'Tailwind CSS', 'Prisma', 'GSAP'],
+  education: {
+    degree: 'Diploma in Computer Science',
+    institute: 'Borak Polytechnic Institute, Dhaka',
+    timeline: 'Jan 2022 – Present',
+    ssc: 'SSC (Science) — Khatgora High School, Dhaka (GPA: 4.44)',
+    coreSubjects: 'Focus: Full-Stack Web Development, Data Structures & Networking'
+  }
+};
+
 const About = () => {
-  const [aboutContent, setAboutContent] = useState(null);
+  const [aboutContent, setAboutContent] = useState(DEFAULT_ABOUT);
   const sectionRef = useRef(null);
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
@@ -67,7 +84,7 @@ const About = () => {
     fetch(`${API_BASE}/content`)
       .then(res => res.json())
       .then(data => {
-        if (data && data.about) setAboutContent(data.about);
+        if (data && data.about) setAboutContent(prev => ({ ...prev, ...data.about }));
       })
       .catch(() => { });
   }, []);
@@ -130,7 +147,7 @@ const About = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed"
           >
-            A passionate web developer crafting clean, performant digital experiences.
+            Full-stack web & Shopify developer crafting high-converting, performant digital experiences.
           </motion.p>
 
           <motion.div
@@ -149,22 +166,22 @@ const About = () => {
               <CardLabel icon={<FaBriefcase size={18} />} label="Current Position" color="#6366f1" colorRgb="99,102,241" />
               <div className="pl-1">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h4 className="text-xl font-bold text-white">{aboutContent?.currentPosition || "Web Developer"}</h4>
+                  <h4 className="text-xl font-bold text-white">{aboutContent?.currentPosition || DEFAULT_ABOUT.currentPosition}</h4>
                   <span
                     className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
                     style={{ background: 'rgba(34,197,94,0.12)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.25)' }}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                    {aboutContent?.employmentStatus || "Currently Working"}
+                    {aboutContent?.employmentStatus || DEFAULT_ABOUT.employmentStatus}
                   </span>
                 </div>
-                <p className="text-indigo-300 font-semibold mb-1">{aboutContent?.company || "Softvence Agency"}</p>
+                <p className="text-indigo-300 font-semibold mb-1">{aboutContent?.company || DEFAULT_ABOUT.company}</p>
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500 mb-4">
-                  <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="text-indigo-400" /> {aboutContent?.location || "On-Site, Dhaka, BD"}</span>
-                  <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-indigo-400" /> {aboutContent?.duration || "2025 – Present"}</span>
+                  <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="text-indigo-400" /> {aboutContent?.location || DEFAULT_ABOUT.location}</span>
+                  <span className="flex items-center gap-1.5"><FaCalendarAlt className="text-indigo-400" /> {aboutContent?.duration || DEFAULT_ABOUT.duration}</span>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed max-w-2xl">
-                  {aboutContent?.bioText || "Working as a professional web developer at Softvence, building and delivering high-quality client projects — including custom Shopify stores, full-stack MERN applications, and responsive UI/UX implementations."}
+                  {aboutContent?.bioText || DEFAULT_ABOUT.bioText}
                 </p>
               </div>
             </div>
@@ -173,7 +190,7 @@ const About = () => {
             <div className="lg:border-l lg:border-white/10 lg:pl-8 flex-shrink-0">
               <p className="text-xs font-semibold tracking-widest uppercase text-gray-600 mb-3">Tech at Work</p>
               <div className="flex flex-wrap gap-2">
-                {(aboutContent?.techAtWork || ['React', 'Next.js', 'Node.js', 'MongoDB', 'Shopify']).map((name) => (
+                {(aboutContent?.techAtWork || DEFAULT_ABOUT.techAtWork).map((name) => (
                   <span key={name} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-300 text-xs font-medium">
                     {name}
                   </span>
@@ -191,12 +208,12 @@ const About = () => {
             <CardLabel icon={<FaGraduationCap size={18} />} label="Education" color="#a855f7" colorRgb="168,85,247" />
             <div className="pl-1 space-y-3">
               <p className="text-gray-400 text-sm leading-relaxed">
-                Pursuing <span className="text-indigo-300 font-semibold">{aboutContent?.education?.degree || "Diploma in Computer Science"}</span> at {aboutContent?.education?.institute || "Borak Polytechnic Institute"}.
+                Pursuing <span className="text-indigo-300 font-semibold">{aboutContent?.education?.degree || DEFAULT_ABOUT.education.degree}</span> at {aboutContent?.education?.institute || DEFAULT_ABOUT.education.institute}.
               </p>
               <ul className="space-y-2 mt-3">
-                <Bullet text={aboutContent?.education?.cgpa || "CGPA: 3.85 / 4.00 — Top 5% of class"} color="#a855f7" />
-                <Bullet text={aboutContent?.education?.graduation || "Expected Graduation: December 2026"} color="#a855f7" />
-                <Bullet text={aboutContent?.education?.coreSubjects || "Core subjects: DSA, Networking, Web Technology"} color="#a855f7" />
+                <Bullet text={aboutContent?.education?.timeline || DEFAULT_ABOUT.education.timeline} color="#a855f7" />
+                <Bullet text={aboutContent?.education?.ssc || DEFAULT_ABOUT.education.ssc} color="#a855f7" />
+                <Bullet text={aboutContent?.education?.coreSubjects || DEFAULT_ABOUT.education.coreSubjects} color="#a855f7" />
               </ul>
             </div>
           </Card>
@@ -209,10 +226,10 @@ const About = () => {
                 Passionate about building{' '}
                 <TypeAnimation
                   sequence={[
-                    'web applications', 2000,
-                    'responsive UIs', 2000,
-                    'full-stack projects', 2000,
-                    'Shopify stores', 2000,
+                    'custom Shopify storefronts', 2000,
+                    'full-stack MERN & Next.js apps', 2000,
+                    'responsive conversion-focused UIs', 2000,
+                    'custom Liquid sections & blocks', 2000,
                   ]}
                   wrapper="span"
                   cursor={true}
@@ -221,9 +238,9 @@ const About = () => {
                 />
               </p>
               <ul className="space-y-2 mt-3">
-                <Bullet text="500+ hours of coding in 2024–2025" color="#22d3ee" />
-                <Bullet text="10+ full-stack & e-commerce projects delivered" color="#22d3ee" />
-                <Bullet text="Worked with international clients via Softvence" color="#22d3ee" />
+                <Bullet text="Built & customized 60+ Shopify stores using Liquid & Schema JSON" color="#22d3ee" />
+                <Bullet text="1+ year professional experience on-site at Softvence Agency" color="#22d3ee" />
+                <Bullet text="Architecting responsive full-stack apps with React, Next.js, Node & MongoDB" color="#22d3ee" />
               </ul>
             </div>
           </Card>
