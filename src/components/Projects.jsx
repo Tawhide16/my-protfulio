@@ -33,7 +33,8 @@ const techIcons = {
   Docker: <SiDocker className="text-blue-500" />,
 };
 
-export { staticProjects } from '../data/staticData';
+import { staticProjects } from '../data/staticData';
+export { staticProjects };
 
 /* ── Floating orb background ── */
 const FloatingOrb = ({ color, style }) => (

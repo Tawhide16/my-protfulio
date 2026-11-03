@@ -16,7 +16,8 @@ const shopifyTechIcons = {
   'Next.js': <span className="text-white font-black text-sm">▲</span>,
 };
 
-export { shopifyProjects } from '../data/staticData';
+import { shopifyProjects } from '../data/staticData';
+export { shopifyProjects };
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -320,7 +321,7 @@ const ShopifyProjects = () => {
             viewport={{ once: true }}
             className="mt-4 text-sm text-gray-600"
           >
-            Showing {displayed.length} of {shopifyProjects.length} projects
+            Showing {displayed.length} of {projectsList.length} projects
           </motion.p>
         </div>
 
