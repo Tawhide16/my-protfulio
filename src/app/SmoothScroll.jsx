@@ -15,6 +15,22 @@ export default function SmoothScroll({ children }) {
       touchMultiplier: 2,
     });
 
+    // Suppress third-party browser extension errors from popping up in Next.js dev overlay
+    const handleExtensionErrors = (event) => {
+      const filename = event?.filename || '';
+      const message = event?.message || '';
+      if (
+        filename.includes('chrome-extension://') ||
+        filename.includes('moz-extension://') ||
+        message.includes('M_ID')
+      ) {
+        event.stopImmediatePropagation?.();
+        event.preventDefault?.();
+      }
+    };
+
+    window.addEventListener('error', handleExtensionErrors, true);
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -23,6 +39,7 @@ export default function SmoothScroll({ children }) {
     requestAnimationFrame(raf);
 
     return () => {
+      window.removeEventListener('error', handleExtensionErrors, true);
       lenis.destroy();
     };
   }, []);
