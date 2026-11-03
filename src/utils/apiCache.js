@@ -218,7 +218,7 @@ export function clearPortfolioCache(key) {
   if (key) {
     memoryCache.delete(key);
     if (typeof window !== 'undefined') {
-      try { localStorage.removeItem(key); } catch {}
+      try { localStorage.removeItem(key); } catch { }
     }
   } else {
     memoryCache.clear();
@@ -227,7 +227,7 @@ export function clearPortfolioCache(key) {
         localStorage.removeItem(CACHE_KEYS.PROJECTS);
         localStorage.removeItem(CACHE_KEYS.SHOPIFY);
         localStorage.removeItem(CACHE_KEYS.CONTENT);
-      } catch {}
+      } catch { }
     }
   }
 }
