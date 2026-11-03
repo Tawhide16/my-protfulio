@@ -1,7 +1,49 @@
 'use client';
 
-import { FaReact, FaNodeJs, FaCode, FaShopify } from 'react-icons/fa';
-import { SiTailwindcss, SiExpress, SiMongodb, SiFirebase, SiTypescript, SiNextdotjs, SiJavascript, SiPostgresql, SiSupabase, SiPrisma, SiReactquery } from 'react-icons/si';
+import { FaReact, FaNodeJs, FaCode, FaShopify, FaGitAlt } from 'react-icons/fa';
+import {
+  SiTailwindcss,
+  SiExpress,
+  SiMongodb,
+  SiFirebase,
+  SiTypescript,
+  SiNextdotjs,
+  SiJavascript,
+  SiPostgresql,
+  SiSupabase,
+  SiPrisma,
+  SiReactquery,
+  SiAxios,
+  SiReacthookform,
+  SiDaisyui,
+  SiHtml5,
+  SiCss3,
+  SiGit,
+  SiGithub,
+  SiDocker,
+  SiPostman,
+  SiFigma,
+  SiGraphql,
+  SiVite,
+  SiRedux,
+  SiStripe,
+  SiGreensock,
+  SiFramer,
+  SiJsonwebtokens,
+  SiBootstrap,
+  SiSass,
+  SiPython,
+  SiCplusplus,
+  SiWordpress,
+  SiPhp,
+  SiMysql,
+  SiRedis,
+  SiVercel,
+  SiNetlify,
+  SiLinux,
+  SiNpm,
+  SiPnpm,
+} from 'react-icons/si';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef, useState, useEffect } from 'react';
@@ -16,6 +58,14 @@ const FloatingOrb = ({ color, style }) => (
     animate={{ y: [0, -28, 0], scale: [1, 1.06, 1] }}
     transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
   />
+);
+
+/* ── NeonDB SVG ── */
+const NeonIcon = ({ size = 38 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.15"/>
+    <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
+  </svg>
 );
 
 const skills = [
@@ -109,15 +159,15 @@ const skills = [
   },
   {
     name: 'Axios',
-    icon: <span className="text-3xl font-black leading-none">AX</span>,
+    icon: <SiAxios size={38} />,
     category: 'Frontend',
-    color: '#a855f7',
-    accentRgb: '168, 85, 247',
+    color: '#5a29e4',
+    accentRgb: '90, 41, 228',
     level: 88,
   },
   {
     name: 'React Hook Form',
-    icon: <span className="text-2xl font-black leading-none">RHF</span>,
+    icon: <SiReacthookform size={38} />,
     category: 'Frontend',
     color: '#ec4899',
     accentRgb: '236, 72, 153',
@@ -125,10 +175,10 @@ const skills = [
   },
   {
     name: 'DaisyUI',
-    icon: <span className="text-3xl font-black leading-none">D</span>,
+    icon: <SiDaisyui size={38} />,
     category: 'Frontend',
-    color: '#c084fc',
-    accentRgb: '192, 132, 252',
+    color: '#1ad1a5',
+    accentRgb: '26, 209, 165',
     level: 90,
   },
   {
@@ -141,12 +191,7 @@ const skills = [
   },
   {
     name: 'NeonDB',
-    icon: (
-      <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.15"/>
-        <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
-      </svg>
-    ),
+    icon: <NeonIcon size={38} />,
     category: 'Database',
     color: '#00E599',
     accentRgb: '0, 229, 153',
@@ -168,32 +213,106 @@ const skills = [
     accentRgb: '90, 103, 216',
     level: 76,
   },
+  {
+    name: 'HTML5',
+    icon: <SiHtml5 size={38} />,
+    category: 'Frontend',
+    color: '#e34f26',
+    accentRgb: '227, 79, 38',
+    level: 95,
+  },
+  {
+    name: 'CSS3',
+    icon: <SiCss3 size={38} />,
+    category: 'Frontend',
+    color: '#1572b6',
+    accentRgb: '21, 114, 182',
+    level: 92,
+  },
+  {
+    name: 'Git',
+    icon: <SiGit size={38} />,
+    category: 'Tools',
+    color: '#f05032',
+    accentRgb: '240, 80, 50',
+    level: 88,
+  },
+  {
+    name: 'GitHub',
+    icon: <SiGithub size={38} />,
+    category: 'Tools',
+    color: '#ffffff',
+    accentRgb: '255, 255, 255',
+    level: 88,
+  },
+  {
+    name: 'Redux',
+    icon: <SiRedux size={38} />,
+    category: 'Frontend',
+    color: '#764abc',
+    accentRgb: '118, 74, 188',
+    level: 80,
+  },
 ];
 
-
 const resolveIcon = (name, existingIcon) => {
-  if (existingIcon) return existingIcon;
-  const n = name?.toLowerCase() || '';
-  if (n.includes('react')) return <FaReact size={38} />;
+  const n = (name || '').toLowerCase().trim();
+
+  // Multi-word or specific matches first to prevent false substring overlaps
+  if (n.includes('hook form') || n === 'rhf' || n.includes('reacthookform')) return <SiReacthookform size={38} />;
+  if (n.includes('tanstack') || n.includes('react query') || n.includes('reactquery') || n === 'query') return <SiReactquery size={38} />;
   if (n.includes('next')) return <SiNextdotjs size={38} />;
-  if (n.includes('javascript') || n === 'js') return <SiJavascript size={38} />;
-  if (n.includes('typescript') || n === 'ts') return <SiTypescript size={38} />;
   if (n.includes('tailwind')) return <SiTailwindcss size={38} />;
+  if (n.includes('bootstrap')) return <SiBootstrap size={38} />;
+  if (n.includes('sass') || n === 'scss') return <SiSass size={38} />;
+  if (n.includes('redux') || n === 'rtk') return <SiRedux size={38} />;
+  if (n.includes('axios')) return <SiAxios size={38} />;
+  if (n.includes('daisy')) return <SiDaisyui size={38} />;
+  if (n.includes('framer') || n.includes('motion')) return <SiFramer size={38} />;
+  if (n.includes('gsap') || n.includes('greensock')) return <SiGreensock size={38} />;
+  if (n.includes('jwt') || n.includes('json web token') || n.includes('token')) return <SiJsonwebtokens size={38} />;
+  if (n.includes('github')) return <SiGithub size={38} />;
+  if (n.includes('git')) return <SiGit size={38} />;
+  if (n.includes('docker')) return <SiDocker size={38} />;
+  if (n.includes('postman')) return <SiPostman size={38} />;
+  if (n.includes('figma')) return <SiFigma size={38} />;
+  if (n.includes('graphql') || n.includes('apollo')) return <SiGraphql size={38} />;
+  if (n.includes('vite')) return <SiVite size={38} />;
+  if (n.includes('stripe')) return <SiStripe size={38} />;
+  if (n.includes('html')) return <SiHtml5 size={38} />;
+  if (n.includes('css')) return <SiCss3 size={38} />;
+  if (n.includes('javascript') || n === 'js' || n.includes('es6')) return <SiJavascript size={38} />;
+  if (n.includes('typescript') || n === 'ts') return <SiTypescript size={38} />;
+  if (n.includes('react')) return <FaReact size={38} />;
   if (n.includes('node')) return <FaNodeJs size={38} />;
   if (n.includes('express')) return <SiExpress size={38} />;
   if (n.includes('mongo')) return <SiMongodb size={38} />;
   if (n.includes('firebase')) return <SiFirebase size={38} />;
-  if (n.includes('shopify')) return <FaShopify size={38} />;
-  if (n.includes('postgres') || n === 'postgresql') return <SiPostgresql size={38} />;
-  if (n.includes('tanstack') || n.includes('react query') || n.includes('reactquery')) return <SiReactquery size={38} />;
-  if (n.includes('neon')) return (
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="#00E599" fillOpacity="0.15"/>
-      <path d="M7 8.5C7 7.672 7.672 7 8.5 7h7C16.328 7 17 7.672 17 8.5v3.75c0 .966-.784 1.75-1.75 1.75H14l3 3.5h-2l-3-3.5H9v3.5H7V8.5zm2 .5v3h4.25a.25.25 0 00.25-.25V9.25A.25.25 0 0013.25 9H9z" fill="#00E599"/>
-    </svg>
-  );
+  if (n.includes('shopify') || n.includes('liquid')) return <FaShopify size={38} />;
+  if (n.includes('postgres') || n.includes('psql')) return <SiPostgresql size={38} />;
+  if (n.includes('mysql')) return <SiMysql size={38} />;
+  if (n.includes('redis')) return <SiRedis size={38} />;
+  if (n.includes('neon')) return <NeonIcon size={38} />;
   if (n.includes('supabase')) return <SiSupabase size={38} />;
   if (n.includes('prisma')) return <SiPrisma size={38} />;
+  if (n.includes('python')) return <SiPython size={38} />;
+  if (n.includes('c++') || n.includes('cpp') || n.includes('cplusplus')) return <SiCplusplus size={38} />;
+  if (n.includes('wordpress')) return <SiWordpress size={38} />;
+  if (n.includes('php')) return <SiPhp size={38} />;
+  if (n.includes('vercel')) return <SiVercel size={38} />;
+  if (n.includes('netlify')) return <SiNetlify size={38} />;
+  if (n.includes('linux')) return <SiLinux size={38} />;
+  if (n.includes('pnpm')) return <SiPnpm size={38} />;
+  if (n.includes('npm')) return <SiNpm size={38} />;
+
+  // If none matched, check if existingIcon is a valid non-placeholder element
+  const isPlaceholder = !existingIcon ||
+    typeof existingIcon === 'string' ||
+    existingIcon?.type === 'span' ||
+    existingIcon?.props?.className?.includes?.('text-');
+
+  if (!isPlaceholder) return existingIcon;
+
   return <FaCode size={38} />;
 };
 
@@ -272,7 +391,7 @@ const SkillCard = ({ skill, index }) => {
 };
 
 /* ── Category filter tabs ── */
-const categories = ['All', 'Frontend', 'Backend', 'Database', 'E-commerce'];
+const categories = ['All', 'Frontend', 'Backend', 'Database', 'E-commerce', 'Tools'];
 
 /* ── Main Section ── */
 const Skills = () => {

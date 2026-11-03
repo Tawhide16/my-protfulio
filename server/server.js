@@ -360,7 +360,20 @@ export const defaultSiteContent = {
     { name: 'Express.js', category: 'Backend', color: '#94a3b8', accentRgb: '148, 163, 184', level: 88 },
     { name: 'MongoDB', category: 'Database', color: '#10b981', accentRgb: '16, 185, 129', level: 85 },
     { name: 'Firebase', category: 'Backend', color: '#f59e0b', accentRgb: '245, 158, 11', level: 82 },
-    { name: 'Shopify', category: 'E-Commerce', color: '#10b981', accentRgb: '16, 185, 129', level: 80 }
+    { name: 'Shopify', category: 'E-Commerce', color: '#95bf47', accentRgb: '149, 191, 71', level: 88 },
+    { name: 'TanStack Query', category: 'Frontend', color: '#ef4444', accentRgb: '239, 68, 68', level: 78 },
+    { name: 'Axios', category: 'Frontend', color: '#5a29e4', accentRgb: '90, 41, 228', level: 88 },
+    { name: 'React Hook Form', category: 'Frontend', color: '#ec4899', accentRgb: '236, 72, 153', level: 85 },
+    { name: 'DaisyUI', category: 'Frontend', color: '#1ad1a5', accentRgb: '26, 209, 165', level: 90 },
+    { name: 'PostgreSQL', category: 'Database', color: '#336791', accentRgb: '51, 103, 145', level: 75 },
+    { name: 'NeonDB', category: 'Database', color: '#00E599', accentRgb: '0, 229, 153', level: 72 },
+    { name: 'Supabase', category: 'Database', color: '#3ECF8E', accentRgb: '62, 207, 142', level: 74 },
+    { name: 'Prisma', category: 'Database', color: '#5a67d8', accentRgb: '90, 103, 216', level: 76 },
+    { name: 'HTML5', category: 'Frontend', color: '#e34f26', accentRgb: '227, 79, 38', level: 95 },
+    { name: 'CSS3', category: 'Frontend', color: '#1572b6', accentRgb: '21, 114, 182', level: 92 },
+    { name: 'Git', category: 'Tools', color: '#f05032', accentRgb: '240, 80, 50', level: 88 },
+    { name: 'GitHub', category: 'Tools', color: '#ffffff', accentRgb: '255, 255, 255', level: 88 },
+    { name: 'Redux', category: 'Frontend', color: '#764abc', accentRgb: '118, 74, 188', level: 80 }
   ],
   contact: {
     email: 'tawhideh.b10@gmail.com',
