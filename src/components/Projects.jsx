@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { FaExternalLinkAlt, FaGithub, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { FaExternalLinkAlt, FaGithub, FaArrowRight, FaChevronLeft, FaChevronRight, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
 import { getInitialProjects, fetchProjectsFast } from '../utils/apiCache';
@@ -231,9 +231,13 @@ const Projects = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
 
+  const [showAll, setShowAll] = useState(false);
   const [projects, setProjects] = useState(staticProjects);
   const [loading, setLoading] = useState(false);
   const projectsContainerRef = useRef(null);
+
+  const INITIAL_COUNT = 4;
+  const displayed = showAll ? projects : projects.slice(0, INITIAL_COUNT);
 
   const scrollProjects = (direction) => {
     if (projectsContainerRef.current) {
@@ -328,6 +332,16 @@ const Projects = () => {
             className="mx-auto mt-6 h-px w-24 origin-center"
             style={{ background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }}
           />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-4 text-sm text-gray-500"
+          >
+            Showing {displayed.length} of {projects.length} projects
+          </motion.p>
         </div>
 
         {/* ── Project cards ── */}
@@ -364,40 +378,67 @@ const Projects = () => {
                 <span className="text-sm">Loading projects...</span>
               </div>
             ) : (
-              projects.map((project, index) => (
-                <ProjectCard key={project._id || project.id} project={project} index={index} />
-              ))
+              <AnimatePresence>
+                {displayed.map((project, index) => (
+                  <ProjectCard key={project._id || project.id} project={project} index={index} />
+                ))}
+              </AnimatePresence>
             )}
           </div>
         </div>
 
-        {/* ── View all CTA ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center mt-20"
-        >
-          <Link
-            href="/projects"
-            className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold text-white overflow-hidden group border border-indigo-500/40 hover:border-indigo-400 transition-colors duration-300"
-            style={{ background: 'rgba(99,102,241,0.08)' }}
+        {/* ── View all / Toggle CTA ── */}
+        {projects.length > INITIAL_COUNT && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center mt-16 flex flex-col items-center gap-3"
           >
-            <motion.span
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.1))' }}
-            />
-            <span className="relative z-10">View All Projects</span>
-            <motion.span
-              className="relative z-10"
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            <motion.button
+              onClick={() => setShowAll(!showAll)}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-white border transition-all duration-300 cursor-pointer shadow-lg group"
+              style={{
+                borderColor: 'rgba(99,102,241,0.4)',
+                background: 'rgba(99,102,241,0.08)',
+              }}
             >
-              <FaArrowRight className="text-indigo-400 text-sm" />
-            </motion.span>
-          </Link>
-        </motion.div>
+              <motion.span
+                className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.15))' }}
+              />
+              <span className="relative z-10 flex items-center gap-2">
+                {showAll ? (
+                  <>Show Less <FaChevronUp className="text-indigo-400 text-sm" /></>
+                ) : (
+                  <>View All {projects.length} Projects <FaChevronDown className="text-indigo-400 text-sm" /></>
+                )}
+              </span>
+            </motion.button>
+
+            {!showAll && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-gray-500 text-sm"
+              >
+                Showing {displayed.length} of {projects.length} projects · {projects.length - INITIAL_COUNT} more projects waiting
+              </motion.p>
+            )}
+
+            <div className="mt-2">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-indigo-400 transition-colors uppercase tracking-wider"
+              >
+                Open full projects archive <FaArrowRight className="text-[10px]" />
+              </Link>
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FaCode, FaUserGraduate, FaTools, FaEnvelope, FaHome, FaGithub, FaLinkedin, FaTwitter, FaFileDownload, FaArrowRight } from 'react-icons/fa';
+import { FaCode, FaUserGraduate, FaTools, FaEnvelope, FaHome, FaGithub, FaLinkedin, FaTwitter, FaFileDownload, FaArrowRight, FaShopify } from 'react-icons/fa';
 import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { scroller } from 'react-scroll';
@@ -47,7 +47,8 @@ const Navbar = () => {
     { to: "home", icon: <FaHome />, text: "Home" },
     { to: "about", icon: <FaUserGraduate />, text: "About" },
     { to: "skills", icon: <FaTools />, text: "Skills" },
-    { to: "projects", icon: <FaCode />, text: "Projects" },
+    { to: "projects", icon: <FaCode />, text: "Fullstack" },
+    { to: "shopify-projects", icon: <FaShopify />, text: "Shopify" },
     { to: "contact", icon: <FaEnvelope />, text: "Contact" },
   ];
 
