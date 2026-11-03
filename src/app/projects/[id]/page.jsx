@@ -12,8 +12,12 @@ export default function ProjectDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
 
-  const [project, setProject] = useState(() => getInitialSingleProject(id));
-  const [loading, setLoading] = useState(() => !getInitialSingleProject(id));
+  const [project, setProject] = useState(() => 
+    staticProjects.find((p) => String(p.id) === String(id) || String(p._id) === String(id)) || null
+  );
+  const [loading, setLoading] = useState(() => 
+    !staticProjects.some((p) => String(p.id) === String(id) || String(p._id) === String(id))
+  );
   const [error, setError] = useState(null);
 
   useEffect(() => {

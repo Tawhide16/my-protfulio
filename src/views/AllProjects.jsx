@@ -3,12 +3,13 @@ import { motion } from 'framer-motion';
 import { FaExternalLinkAlt, FaGithub, FaArrowLeft, FaLayerGroup, FaGlobe } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API_BASE } from '../config/api';
-import { getInitialProjects, fetchProjectsFast } from '../utils/apiCache';
+import { fetchProjectsFast } from '../utils/apiCache';
+import { staticProjects } from '../data/staticData';
 
 const API_URL = `${API_BASE}/projects`;
 
 const AllProjects = () => {
-  const [projects, setProjects] = useState(getInitialProjects);
+  const [projects, setProjects] = useState(staticProjects);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

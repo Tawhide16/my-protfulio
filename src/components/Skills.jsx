@@ -279,10 +279,7 @@ const Skills = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
-  const [dynamicSkills, setDynamicSkills] = useState(() => {
-    const cachedSkills = getInitialSiteContent('skills');
-    return (Array.isArray(cachedSkills) && cachedSkills.length > 0) ? cachedSkills : skills;
-  });
+  const [dynamicSkills, setDynamicSkills] = useState(skills);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);

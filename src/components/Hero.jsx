@@ -34,14 +34,8 @@ const socialLinks = [
 
 const Hero = () => {
   const defaultImg = profileImg.src || profileImg || '/profile.png';
-  const [heroContent, setHeroContent] = useState(() => {
-    const cached = getInitialSiteContent('hero');
-    return cached ? { ...DEFAULT_HERO, ...cached } : DEFAULT_HERO;
-  });
-  const [imgSrc, setImgSrc] = useState(() => {
-    const cached = getInitialSiteContent('hero');
-    return cached?.avatarUrl || defaultImg;
-  });
+  const [heroContent, setHeroContent] = useState(DEFAULT_HERO);
+  const [imgSrc, setImgSrc] = useState(defaultImg);
 
   useEffect(() => {
     fetchSiteContentFast('hero', (freshHero) => {

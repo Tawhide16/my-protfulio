@@ -11,7 +11,7 @@ import { getInitialProjects, fetchProjectsFast } from '../../utils/apiCache';
 const API_URL = `${API_BASE}/projects`;
 
 export default function AllProjectsPage() {
-  const [projects, setProjects] = useState(getInitialProjects);
+  const [projects, setProjects] = useState(staticProjects);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

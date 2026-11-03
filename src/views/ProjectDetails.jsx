@@ -3,16 +3,17 @@ import { useState, useEffect } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { API_BASE } from '../config/api';
-import { getInitialSingleProject, fetchSingleProjectFast } from '../utils/apiCache';
+import { fetchSingleProjectFast } from '../utils/apiCache';
+import { staticProjects } from '../data/staticData';
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // Use state.project or cached project if available
-  const [project, setProject] = useState(() => state?.project || getInitialSingleProject(id));
-  const [loading, setLoading] = useState(() => !state?.project && !getInitialSingleProject(id));
+  // Use state.project or static project if available
+  const [project, setProject] = useState(() => state?.project || staticProjects.find(p => String(p.id) === String(id) || String(p._id) === String(id)) || null);
+  const [loading, setLoading] = useState(() => !state?.project && !staticProjects.some(p => String(p.id) === String(id) || String(p._id) === String(id)));
   const [error, setError] = useState(null);
 
   useEffect(() => {

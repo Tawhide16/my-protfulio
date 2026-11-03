@@ -81,6 +81,12 @@ export function getInitialProjects() {
 }
 
 export async function fetchProjectsFast(onUpdate) {
+  // 1. Immediately provide cached data from localStorage/memory if available
+  const cached = getInitialProjects();
+  if (cached && cached !== staticProjects && onUpdate) {
+    onUpdate(cached);
+  }
+
   try {
     const data = await deduplicatedFetch(`${API_BASE}/projects`);
     if (Array.isArray(data) && data.length > 0) {
@@ -116,6 +122,12 @@ export function getInitialShopifyProjects() {
 }
 
 export async function fetchShopifyProjectsFast(onUpdate) {
+  // 1. Immediately provide cached data from localStorage/memory if available
+  const cached = getInitialShopifyProjects();
+  if (cached && cached !== shopifyProjects && onUpdate) {
+    onUpdate(cached);
+  }
+
   try {
     const data = await deduplicatedFetch(`${API_BASE}/shopify-projects`);
     if (Array.isArray(data) && data.length > 0) {

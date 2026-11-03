@@ -206,7 +206,7 @@ const ShopifyProjectCard = ({ project, index }) => {
 /* ── Main Section ── */
 const ShopifyProjects = () => {
   const [showAll, setShowAll] = useState(false);
-  const [projectsList, setProjectsList] = useState(getInitialShopifyProjects);
+  const [projectsList, setProjectsList] = useState(shopifyProjects);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);

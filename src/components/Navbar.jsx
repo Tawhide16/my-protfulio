@@ -33,10 +33,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const [resumeUrl, setResumeUrl] = useState(() => {
-    const cachedHero = getInitialSiteContent('hero');
-    return cachedHero?.resumeUrl || '/Tawhid-Hasan-Bejoy-Resume.pdf';
-  });
+  const [resumeUrl, setResumeUrl] = useState('/Tawhid-Hasan-Bejoy-Resume.pdf');
 
   useEffect(() => {
     fetchSiteContentFast('hero', (freshHero) => {

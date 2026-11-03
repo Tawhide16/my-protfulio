@@ -75,10 +75,7 @@ const DEFAULT_ABOUT = {
 };
 
 const About = () => {
-  const [aboutContent, setAboutContent] = useState(() => {
-    const cached = getInitialSiteContent('about');
-    return cached ? { ...DEFAULT_ABOUT, ...cached } : DEFAULT_ABOUT;
-  });
+  const [aboutContent, setAboutContent] = useState(DEFAULT_ABOUT);
   const sectionRef = useRef(null);
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });

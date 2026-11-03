@@ -231,7 +231,7 @@ const Projects = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
 
-  const [projects, setProjects] = useState(getInitialProjects);
+  const [projects, setProjects] = useState(staticProjects);
   const [loading, setLoading] = useState(false);
   const projectsContainerRef = useRef(null);
 
