@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
 import { API_BASE } from '../config/api';
+import { getInitialSiteContent, fetchSiteContentFast } from '../utils/apiCache';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -32,16 +33,13 @@ const Contact = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
-  const [contactContent, setContactContent] = useState(null);
+  const [contactContent, setContactContent] = useState(() => getInitialSiteContent('contact'));
 
   useEffect(() => {
     setSentTime(new Date().toLocaleString());
-    fetch(`${API_BASE}/content`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.contact) setContactContent(data.contact);
-      })
-      .catch(() => {});
+    fetchSiteContentFast('contact', (freshContact) => {
+      if (freshContact) setContactContent(freshContact);
+    });
   }, []);
 
   const sendEmail = (e) => {

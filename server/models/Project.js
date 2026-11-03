@@ -18,5 +18,7 @@ const projectSchema = new mongoose.Schema({
   timestamps: true
 });
 
+projectSchema.index({ order: 1, number: 1, createdAt: -1 });
+
 const Project = mongoose.model('Project', projectSchema);
 export default Project;

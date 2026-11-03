@@ -393,8 +393,34 @@ const seedContent = async () => {
 };
 
 // API Routes
+app.get('/api/health', (req, res) => res.json({ status: 'ok', uptime: process.uptime() }));
 
 const isDbConnected = () => mongoose.connection.readyState === 1;
+
+// In-memory cache for ultra-fast API responses (<1ms)
+const serverCache = {
+  projects: null,
+  projectsTime: 0,
+  shopifyProjects: null,
+  shopifyTime: 0,
+  content: null,
+  contentTime: 0,
+};
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes TTL
+
+const clearServerCache = (key) => {
+  if (key) {
+    serverCache[key] = null;
+    serverCache[key + 'Time'] = 0;
+  } else {
+    serverCache.projects = null;
+    serverCache.projectsTime = 0;
+    serverCache.shopifyProjects = null;
+    serverCache.shopifyTime = 0;
+    serverCache.content = null;
+    serverCache.contentTime = 0;
+  }
+};
 
 let memoryProjects = [
   {
@@ -539,8 +565,15 @@ app.post('/api/upload', auth, (req, res) => {
 // 3. Get all projects (sorted by custom drag & drop order)
 app.get('/api/projects', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
+    const now = Date.now();
+    if (serverCache.projects && (now - serverCache.projectsTime < CACHE_TTL_MS)) {
+      return res.json(serverCache.projects);
+    }
     if (isDbConnected()) {
-      const projects = await Project.find().sort({ order: 1, number: 1, createdAt: -1 });
+      const projects = await Project.find().sort({ order: 1, number: 1, createdAt: -1 }).lean();
+      serverCache.projects = projects;
+      serverCache.projectsTime = now;
       return res.json(projects);
     }
     const sorted = [...memoryProjects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -565,6 +598,7 @@ app.put('/api/projects/reorder', auth, async (req, res) => {
       });
       await Promise.all(updates);
       const updatedProjects = await Project.find().sort({ order: 1, number: 1, createdAt: -1 });
+      clearServerCache("projects");
       return res.json(updatedProjects);
     }
 
@@ -618,6 +652,7 @@ app.post('/api/projects', auth, async (req, res) => {
       }
       const project = new Project(req.body);
       const savedProject = await project.save();
+      clearServerCache("projects");
       return res.status(201).json(savedProject);
     }
 
@@ -648,6 +683,7 @@ app.put('/api/projects/:id', auth, async (req, res) => {
         { new: true, runValidators: true }
       );
       if (!updatedProject) return res.status(404).json({ message: 'Project not found' });
+      clearServerCache("projects");
       return res.json(updatedProject);
     }
 
@@ -666,6 +702,7 @@ app.delete('/api/projects/:id', auth, async (req, res) => {
     if (isDbConnected()) {
       const deletedProject = await Project.findByIdAndDelete(req.params.id);
       if (!deletedProject) return res.status(404).json({ message: 'Project not found' });
+      clearServerCache("projects");
       return res.json({ message: 'Project deleted successfully' });
     }
 
@@ -681,19 +718,27 @@ app.delete('/api/projects/:id', auth, async (req, res) => {
 // 9. Get all site section content (Hero, About, Skills, Contact)
 app.get('/api/content', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
+    const now = Date.now();
+    if (serverCache.content && (now - serverCache.contentTime < CACHE_TTL_MS)) {
+      return res.json(serverCache.content);
+    }
     if (isDbConnected()) {
-      const contents = await SiteContent.find();
+      const contents = await SiteContent.find().lean();
       const contentMap = {};
       contents.forEach(item => {
         contentMap[item.section] = item.data;
       });
 
-      return res.json({
+      const result = {
         hero: contentMap.hero || defaultSiteContent.hero,
         about: contentMap.about || defaultSiteContent.about,
         skills: contentMap.skills || defaultSiteContent.skills,
         contact: contentMap.contact || defaultSiteContent.contact
-      });
+      };
+      serverCache.content = result;
+      serverCache.contentTime = now;
+      return res.json(result);
     }
 
     res.json({
@@ -722,6 +767,7 @@ app.put('/api/content/:section', auth, async (req, res) => {
         { section, data },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+      clearServerCache("content");
       return res.json({ section: updated.section, data: updated.data });
     }
 
@@ -736,8 +782,15 @@ app.put('/api/content/:section', auth, async (req, res) => {
 // 11. Get all Shopify projects
 app.get('/api/shopify-projects', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=86400');
+    const now = Date.now();
+    if (serverCache.shopifyProjects && (now - serverCache.shopifyTime < CACHE_TTL_MS)) {
+      return res.json(serverCache.shopifyProjects);
+    }
     if (isDbConnected()) {
-      const projects = await ShopifyProject.find().sort({ order: 1, number: 1, createdAt: -1 });
+      const projects = await ShopifyProject.find().sort({ order: 1, number: 1, createdAt: -1 }).lean();
+      serverCache.shopifyProjects = projects;
+      serverCache.shopifyTime = now;
       return res.json(projects);
     }
     const sorted = [...memoryShopifyProjects].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -762,6 +815,8 @@ app.put('/api/shopify-projects/reorder', auth, async (req, res) => {
       });
       await Promise.all(updates);
       const updated = await ShopifyProject.find().sort({ order: 1, number: 1, createdAt: -1 });
+      clearServerCache("shopifyProjects");
+      clearServerCache("shopifyProjects");
       return res.json(updated);
     }
 
@@ -813,6 +868,7 @@ app.post('/api/shopify-projects', auth, async (req, res) => {
       }
       const project = new ShopifyProject(req.body);
       const saved = await project.save();
+      clearServerCache("shopifyProjects");
       return res.status(201).json(saved);
     }
 
@@ -860,6 +916,7 @@ app.delete('/api/shopify-projects/:id', auth, async (req, res) => {
     if (isDbConnected()) {
       const deleted = await ShopifyProject.findByIdAndDelete(req.params.id);
       if (!deleted) return res.status(404).json({ message: 'Shopify project not found' });
+      clearServerCache("shopifyProjects");
       return res.json({ message: 'Shopify project deleted successfully' });
     }
 

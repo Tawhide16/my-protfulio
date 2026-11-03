@@ -5,6 +5,7 @@ import { FaExternalLinkAlt, FaGithub, FaArrowRight, FaChevronLeft, FaChevronRigh
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
+import { getInitialProjects, fetchProjectsFast } from '../utils/apiCache';
 import {
   SiReact, SiExpress, SiMongodb, SiFirebase, SiTailwindcss, SiNodedotjs,
   SiNextdotjs, SiTypescript, SiPostgresql, SiPrisma, SiDocker,
@@ -32,83 +33,7 @@ const techIcons = {
   Docker: <SiDocker className="text-blue-500" />,
 };
 
-export const staticProjects = [
-  {
-    id: 'the-revolution',
-    title: 'The Revolution',
-    subtitle: 'Editorial Newsroom & Publishing Engine',
-    description: 'A modern digital broadsheet and editorial news portal inspired by premier institutions (BBC, NYT). Features multi-role RBAC, editorial approval queues, 4 custom layouts, and serverless Postgres.',
-    technologies: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Neon DB', 'Prisma ORM'],
-    features: [
-      'Broadsheet editorial design with breaking news ticker',
-      'Role-based access control (Admin, Editor, Writer)',
-      'Multi-layout publishing studio with 390px mobile simulator',
-      'Serverless PostgreSQL (Neon) with Prisma ORM migrations',
-    ],
-    accentColor: '#e11d48',
-    accentRgb: '225, 29, 72',
-    liveLink: 'https://the-revolution-news-portal.vercel.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/The-revolution-news-portal',
-    image1: '/revolution-news.png',
-    number: '01',
-  },
-  {
-    id: 3,
-    title: 'Next Class',
-    subtitle: 'Education Management Platform',
-    description: 'A full-stack MERN app for smooth class management, secure login, and seamless payments.',
-    technologies: ['MongoDB', 'Express.js', 'React', 'Node.js', 'Firebase'],
-    features: ['Role-based dashboards', 'Stripe-powered enrollments', 'Assignment creation & submission', 'JWT-secured private routes'],
-    accentColor: '#6366f1',
-    accentRgb: '99, 102, 241',
-    liveLink: 'https://my-school-b2c91.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Next-class-client',
-    image1: '/NEXT-CLASS.png',
-    number: '02',
-  },
-  {
-    id: 1,
-    title: 'VibeCircle',
-    subtitle: 'Social Media Platform',
-    description: 'Social media platform for connecting with like-minded people and sharing experiences.',
-    technologies: ['React', 'Firebase', 'Tailwind CSS'],
-    features: ['User authentication', 'Real-time posts', 'Like and comment system', 'Responsive design'],
-    accentColor: '#8b5cf6',
-    accentRgb: '139, 92, 246',
-    liveLink: 'https://my-assignment-10-a4262.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Vibe-Circle',
-    image1: '/vibe.png',
-    number: '03',
-  },
-  {
-    id: 2,
-    title: 'Hotel Booking',
-    subtitle: 'Reservation System',
-    description: 'Complete hotel reservation system with room selection and booking management.',
-    technologies: ['React', 'Node.js', 'MongoDB'],
-    features: ['Room availability calendar', 'User dashboard', 'Booking history', 'Admin panel'],
-    accentColor: '#10b981',
-    accentRgb: '16, 185, 129',
-    liveLink: 'https://my-hotel-a3994.web.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/Hotel-booking-client',
-    image1: '/hotel-booke.png',
-    number: '04',
-  },
-  {
-    id: 4,
-    title: 'Event Explorer',
-    subtitle: 'Event Discovery Platform',
-    description: 'Platform for discovering and registering for local events and activities.',
-    technologies: ['React', 'Express', 'MongoDB', 'Firebase'],
-    features: ['Location-based search', 'Event filtering', 'Ticket purchasing', 'User reviews'],
-    accentColor: '#f43f5e',
-    accentRgb: '244, 63, 94',
-    liveLink: 'https://fluffy-clafoutis-ef0d5e.netlify.app/',
-    gitLinkClient: 'https://github.com/Tawhide16/event-explorer-client',
-    image1: '/event.png',
-    number: '05',
-  },
-];
+export { staticProjects } from '../data/staticData';
 
 /* ── Floating orb background ── */
 const FloatingOrb = ({ color, style }) => (
@@ -305,8 +230,8 @@ const Projects = () => {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
 
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(getInitialProjects);
+  const [loading, setLoading] = useState(false);
   const projectsContainerRef = useRef(null);
 
   const scrollProjects = (direction) => {
@@ -320,22 +245,10 @@ const Projects = () => {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE}/projects`)
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const sorted = [...data].sort((a, b) => {
-            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-            if (a.number && b.number) return a.number.localeCompare(b.number);
-            return 0;
-          });
-          setProjects(sorted);
-        } else {
-          setProjects(staticProjects);
-        }
-        setLoading(false);
-      })
-      .catch(() => { setProjects(staticProjects); setLoading(false); });
+    fetchProjectsFast((freshProjects) => {
+      setProjects(freshProjects);
+      setLoading(false);
+    });
   }, []);
 
   return (

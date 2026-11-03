@@ -16,5 +16,7 @@ const shopifyProjectSchema = new mongoose.Schema({
   timestamps: true
 });
 
+shopifyProjectSchema.index({ order: 1, number: 1, createdAt: -1 });
+
 const ShopifyProject = mongoose.model('ShopifyProject', shopifyProjectSchema);
 export default ShopifyProject;

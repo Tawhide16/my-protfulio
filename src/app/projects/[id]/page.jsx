@@ -6,39 +6,29 @@ import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/
 import { motion } from 'framer-motion';
 import { API_BASE } from '../../../config/api';
 import { staticProjects } from '../../../components/Projects';
+import { getInitialSingleProject, fetchSingleProjectFast } from '../../../utils/apiCache';
 
 export default function ProjectDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
 
-  const [project, setProject] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [project, setProject] = useState(() => getInitialSingleProject(id));
+  const [loading, setLoading] = useState(() => !getInitialSingleProject(id));
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (id) {
-      fetch(`${API_BASE}/projects/${id}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Project not found or failed to load');
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setProject(data);
+      fetchSingleProjectFast(id, (freshProject) => {
+        if (freshProject) {
+          setProject(freshProject);
           setLoading(false);
-        })
-        .catch(() => {
-          const fallback = staticProjects.find(
-            (p) => String(p.id) === String(id) || String(p._id) === String(id)
-          );
-          if (fallback) {
-            setProject(fallback);
-          } else {
-            setError('Project not found');
-          }
-          setLoading(false);
-        });
+        }
+      }).then((result) => {
+        if (!result && !project && !getInitialSingleProject(id)) {
+          setError('Project not found');
+        }
+        setLoading(false);
+      });
     }
   }, [id]);
 

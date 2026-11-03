@@ -7,6 +7,7 @@ import { TypeAnimation } from 'react-type-animation';
 import { useRef, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { API_BASE } from '../config/api';
+import { getInitialSiteContent, fetchSiteContentFast } from '../utils/apiCache';
 
 /* ── Floating orb ── */
 
@@ -74,19 +75,19 @@ const DEFAULT_ABOUT = {
 };
 
 const About = () => {
-  const [aboutContent, setAboutContent] = useState(DEFAULT_ABOUT);
+  const [aboutContent, setAboutContent] = useState(() => {
+    const cached = getInitialSiteContent('about');
+    return cached ? { ...DEFAULT_ABOUT, ...cached } : DEFAULT_ABOUT;
+  });
   const sectionRef = useRef(null);
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   useEffect(() => {
-    fetch(`${API_BASE}/content`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.about) setAboutContent(prev => ({ ...prev, ...data.about }));
-      })
-      .catch(() => { });
+    fetchSiteContentFast('about', (freshAbout) => {
+      if (freshAbout) setAboutContent(prev => ({ ...prev, ...freshAbout }));
+    });
   }, []);
 
   return (

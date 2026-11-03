@@ -3,28 +3,19 @@ import { motion } from 'framer-motion';
 import { FaExternalLinkAlt, FaGithub, FaArrowLeft, FaLayerGroup, FaGlobe } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { API_BASE } from '../config/api';
+import { getInitialProjects, fetchProjectsFast } from '../utils/apiCache';
 
 const API_URL = `${API_BASE}/projects`;
 
 const AllProjects = () => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(getInitialProjects);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const sorted = [...data].sort((a, b) => {
-            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-            if (a.number && b.number) return a.number.localeCompare(b.number);
-            return 0;
-          });
-          setProjects(sorted);
-        }
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    fetchProjectsFast((freshProjects) => {
+      setProjects(freshProjects);
+      setLoading(false);
+    });
   }, []);
 
   return (

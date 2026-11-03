@@ -3,37 +3,33 @@ import { useState, useEffect } from 'react';
 import { FaGithub, FaExternalLinkAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { API_BASE } from '../config/api';
+import { getInitialSingleProject, fetchSingleProjectFast } from '../utils/apiCache';
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // Use state.project if available, otherwise fetch from API
-  const [project, setProject] = useState(state?.project || null);
-  const [loading, setLoading] = useState(!state?.project);
+  // Use state.project or cached project if available
+  const [project, setProject] = useState(() => state?.project || getInitialSingleProject(id));
+  const [loading, setLoading] = useState(() => !state?.project && !getInitialSingleProject(id));
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // If we don't have project in state, fetch it from the database
-    if (!project && id) {
-      fetch(`${API_BASE}/projects/${id}`)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error('Project not found or failed to load');
-          }
-          return res.json();
-        })
-        .then((data) => {
-          setProject(data);
+    if (id) {
+      fetchSingleProjectFast(id, (fresh) => {
+        if (fresh) {
+          setProject(fresh);
           setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading(false);
-        });
+        }
+      }).then((result) => {
+        if (!result && !project && !getInitialSingleProject(id)) {
+          setError('Project not found or failed to load');
+        }
+        setLoading(false);
+      });
     }
-  }, [project, id]);
+  }, [id]);
 
   if (loading) {
     return (

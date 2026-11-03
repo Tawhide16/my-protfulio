@@ -6,6 +6,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaFacebook, FaArrowRight } from 'react
 import { FiMapPin, FiFileText } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
+import { getInitialSiteContent, fetchSiteContentFast } from '../utils/apiCache';
 
 const DEFAULT_HERO = {
   name: "Tawhid Hasan",
@@ -33,21 +34,24 @@ const socialLinks = [
 
 const Hero = () => {
   const defaultImg = profileImg.src || profileImg || '/profile.png';
-  const [heroContent, setHeroContent] = useState(DEFAULT_HERO);
-  const [imgSrc, setImgSrc] = useState(defaultImg);
+  const [heroContent, setHeroContent] = useState(() => {
+    const cached = getInitialSiteContent('hero');
+    return cached ? { ...DEFAULT_HERO, ...cached } : DEFAULT_HERO;
+  });
+  const [imgSrc, setImgSrc] = useState(() => {
+    const cached = getInitialSiteContent('hero');
+    return cached?.avatarUrl || defaultImg;
+  });
 
   useEffect(() => {
-    fetch(`${API_BASE}/content`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.hero) {
-          setHeroContent(prev => ({ ...prev, ...data.hero }));
-          if (data.hero.avatarUrl) {
-            setImgSrc(data.hero.avatarUrl);
-          }
+    fetchSiteContentFast('hero', (freshHero) => {
+      if (freshHero) {
+        setHeroContent(prev => ({ ...prev, ...freshHero }));
+        if (freshHero.avatarUrl) {
+          setImgSrc(freshHero.avatarUrl);
         }
-      })
-      .catch(() => {});
+      }
+    });
   }, []);
 
   // Motion animation variants

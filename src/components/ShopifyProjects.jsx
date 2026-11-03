@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { API_BASE } from '../config/api';
+import { getInitialShopifyProjects, fetchShopifyProjectsFast } from '../utils/apiCache';
 import { FaExternalLinkAlt, FaShopify, FaChevronDown, FaChevronUp, FaArrowRight, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { SiShopify, SiReact, SiNodedotjs } from 'react-icons/si';
@@ -15,138 +16,7 @@ const shopifyTechIcons = {
   'Next.js': <span className="text-white font-black text-sm">▲</span>,
 };
 
-const shopifyProjects = [
-  {
-    id: 'shopify-1',
-    title: 'Premium Fashion Store',
-    subtitle: 'Luxury Fashion',
-    description: 'A fully customized Shopify store with advanced product filtering, quick view, and seamless checkout experience.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'React'],
-    features: ['Custom Shopify theme development', 'Advanced product filtering', 'Quick view functionality', 'SEO optimized pages'],
-    accentColor: '#22c55e',
-    accentRgb: '34, 197, 94',
-    liveLink: 'https://semilevi.com/',
-    image1: '/semilevi.png',
-    number: '01',
-  },
-  {
-    id: 'shopify-2',
-    title: 'Ruby Art — Gallery',
-    subtitle: 'Art & Jewelry',
-    description: 'Born from Nuances of the Night, this line reimagines the exhibition\'s world of metal, desire and transformation into wearable contemporary pieces.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API', 'Next.js'],
-    features: ['Product variant management', 'Real-time inventory tracking', 'Customer review system', 'Multi-currency support'],
-    accentColor: '#10b981',
-    accentRgb: '16, 185, 129',
-    liveLink: 'https://rubyart.gr/',
-    image1: '/rubyart.png',
-    number: '02',
-  },
-  {
-    id: 'shopify-3',
-    title: 'Clothing Brand Store',
-    subtitle: 'Fashion & Apparel',
-    description: 'A modern Shopify store for clothing brand with AR preview, smart search functionality, and seamless UX.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['AR preview capability', 'Smart search with filters', 'Wishlist functionality', 'One-click checkout'],
-    accentColor: '#3b82f6',
-    accentRgb: '59, 130, 246',
-    liveLink: 'https://uma-7769023412.myshopify.com/',
-    image1: '/clothing brand.png',
-    number: '03',
-  },
-  {
-    id: 'shopify-4',
-    title: 'Living Furniture Store',
-    subtitle: 'Home & Lifestyle',
-    description: 'Shopify store for modern furniture with delivery scheduling, room visualization, and curated collections.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Room visualization tools', 'Delivery scheduling system', 'Subscription for weekly boxes', 'Farm-to-table tracking'],
-    accentColor: '#84cc16',
-    accentRgb: '132, 204, 22',
-    liveLink: 'https://01living.ae/',
-    image1: '/Living-Furniture.png',
-    number: '04',
-  },
-  {
-    id: 'shopify-5',
-    title: 'Health Care Products',
-    subtitle: 'Health & Wellness',
-    description: 'Shopify store for health and wellness products with subscription plans and nutrition information display.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Subscription plans', 'Nutrition information display', 'Meal planning tools', 'Delivery scheduling system'],
-    accentColor: '#06b6d4',
-    accentRgb: '6, 182, 212',
-    liveLink: 'https://0skuy4-v5.myshopify.com/',
-    image1: '/Health-Care.png',
-    number: '05',
-  },
-  {
-    id: 'shopify-6',
-    title: 'Child Gaming Store',
-    subtitle: 'Kids & Gaming',
-    description: 'Shopify store for children\'s gaming products with fun UI, parental controls and age-based filtering.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Age-based filtering', 'Parental controls', 'Wishlist functionality', 'Gift wrapping options'],
-    accentColor: '#f59e0b',
-    accentRgb: '245, 158, 11',
-    liveLink: 'https://etiano.myshopify.com/en',
-    image1: '/child-gamming.png',
-    number: '06',
-  },
-    {
-    id: 'shopify-7',
-    title: 'Gym Clothing Store (Men & Women)',
-    subtitle: 'FITNESS & APPAREL',
-    description: 'A modern Shopify-based gym clothing store designed for both men and women. Built with a clean UI, fast performance, and a smooth shopping experience using custom Liquid development.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Responsive design for all devices', 'Product filtering & clean shop layout', 'Size guide for better user experience', 'Contact page with user-friendly form','Optimized product pages for conversions','Fast loading & smooth navigation'],
-    accentColor: 'rgb(146, 59, 246)',
-    accentRgb: '146, 59, 246',
-    liveLink: 'https://dan-mass1.myshopify.com/',
-    image1: '/dan_mass.png',
-    number: '07',
-  },
-    {
-    id: 'shopify-8',
-    title: 'Northern Projects – Cycling Clothing Store',
-    subtitle: 'SPORTS & CYCLING APPAREL',
-    description: 'A high-performance cycling clothing website built with Shopify, focused on delivering a smooth and engaging shopping experience. Designed for cyclists with modern UI, structured navigation, and optimized product browsing.',
-    technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-    features: ['Fully responsive and mobile-friendly design', 'Advanced product organization for cycling gear', 'Clean and minimal UI for better user experience', 'Multi-page structured navigation','Optimized product display with detailed information','Smooth browsing and fast performance'],
-    accentColor: '#C8102E',
-    accentRgb: '200, 16, 46',
-    liveLink: 'https://northernprojects.cc/',
-    image1: '/northern-projects.png',
-    number: '08',
-  },
-  {
-  id: 'shopify-9', // Sequence onusare id set kora hoyeche
-  title: 'Pop - Soda & Energy Drink Store',
-  subtitle: 'Beverages & Soft Drinks',
-  description: 'A vibrant Shopify store for a modern soda brand, featuring high-energy branding, subscription-based savings, and a clean product showcase.',
-  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-  features: ['Product Subscriptions', 'Variant Selectors', 'Interactive Grid Layout', 'Newsletter Integration'],
-  accentColor: '#9d174d',
-  accentRgb: '157, 23, 77',
-  liveLink: 'https://www.fmcgfuture.com/', // Screenshot-er URL mathay rekhe
-  image1: '/por.png',
-  number: '09',
-},
-  {
-  id: 'shopify-10',
-  title: 'FreshMart - Grocery & Daily Essentials Store',
-  subtitle: 'Groceries & Daily Needs',
-  description: 'A modern Shopify grocery store offering fresh produce, pantry essentials, and daily household items with a smooth shopping experience, smart categorization, and fast checkout.',
-  technologies: ['Shopify', 'Liquid Template', 'Shopify API'],
-  features: ['Smart Product Categories', 'Quick Add to Cart', 'Discount & Coupon System', 'Mobile-Friendly Design'],
-  accentColor: '#2d5a3a',
-  accentRgb: '45, 90, 58',
-  liveLink: 'https://europeanfoodstore.net/',
-  image1: '/europe.png',
-  number: '10',
-}
-];
+export { shopifyProjects } from '../data/staticData';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -335,7 +205,7 @@ const ShopifyProjectCard = ({ project, index }) => {
 /* ── Main Section ── */
 const ShopifyProjects = () => {
   const [showAll, setShowAll] = useState(false);
-  const [projectsList, setProjectsList] = useState(shopifyProjects);
+  const [projectsList, setProjectsList] = useState(getInitialShopifyProjects);
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
@@ -343,19 +213,9 @@ const ShopifyProjects = () => {
   const shopifyContainerRef = useRef(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/shopify-projects`)
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          const sorted = [...data].sort((a, b) => {
-            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-            if (a.number && b.number) return a.number.localeCompare(b.number);
-            return 0;
-          });
-          setProjectsList(sorted);
-        }
-      })
-      .catch(() => {});
+    fetchShopifyProjectsFast((fresh) => {
+      setProjectsList(fresh);
+    });
   }, []);
 
   const scrollShopify = (direction) => {

@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { scroller } from 'react-scroll';
 import { useRouter, usePathname } from 'next/navigation';
 import { API_BASE } from '../config/api';
+import { getInitialSiteContent, fetchSiteContentFast } from '../utils/apiCache';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,17 +33,17 @@ const Navbar = () => {
     };
   }, []);
 
-  const [resumeUrl, setResumeUrl] = useState('/Tawhid-Hasan-Bejoy-Resume.pdf');
+  const [resumeUrl, setResumeUrl] = useState(() => {
+    const cachedHero = getInitialSiteContent('hero');
+    return cachedHero?.resumeUrl || '/Tawhid-Hasan-Bejoy-Resume.pdf';
+  });
 
   useEffect(() => {
-    fetch(`${API_BASE}/content`)
-      .then(res => res.json())
-      .then(data => {
-        if (data?.hero?.resumeUrl) {
-          setResumeUrl(data.hero.resumeUrl);
-        }
-      })
-      .catch(() => {});
+    fetchSiteContentFast('hero', (freshHero) => {
+      if (freshHero?.resumeUrl) {
+        setResumeUrl(freshHero.resumeUrl);
+      }
+    });
   }, []);
 
   const navItems = [

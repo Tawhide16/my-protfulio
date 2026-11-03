@@ -14,6 +14,7 @@ import {
 import { FiMapPin, FiFileText } from 'react-icons/fi';
 import Link from 'next/link';
 import { API_BASE } from '../config/api';
+import { clearPortfolioCache } from '../utils/apiCache';
 
 const API_URL = `${API_BASE}/projects`;
 
@@ -1397,6 +1398,7 @@ const Dashboard = () => {
       if (!res.ok) throw new Error('Failed to fetch projects');
       const data = await res.json();
       setProjects(data);
+      clearPortfolioCache();
     } catch {
       showToast('Could not connect to server.', 'error');
     } finally {
@@ -1411,6 +1413,7 @@ const Dashboard = () => {
       const res = await fetch(`${API_BASE}/content`);
       if (!res.ok) throw new Error('Failed to fetch site content');
       const data = await res.json();
+      clearPortfolioCache();
       if (data.hero) setHeroData(data.hero);
       if (data.about) setAboutData(data.about);
       if (data.skills) setSkillsData(data.skills);
@@ -1436,6 +1439,7 @@ const Dashboard = () => {
           return 0;
         });
         setShopifyProjects(sorted);
+        clearPortfolioCache();
       }
     } catch {
       console.warn('Could not fetch Shopify projects.');

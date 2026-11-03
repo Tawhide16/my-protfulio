@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRef, useState, useEffect } from 'react';
 import { API_BASE } from '../config/api';
+import { getInitialSiteContent, fetchSiteContentFast } from '../utils/apiCache';
 
 /* ── Floating orb ── */
 const FloatingOrb = ({ color, style }) => (
@@ -278,20 +279,20 @@ const Skills = () => {
   const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [headerRef, headerInView] = useInView({ triggerOnce: true, threshold: 0.2 });
-  const [dynamicSkills, setDynamicSkills] = useState(skills);
+  const [dynamicSkills, setDynamicSkills] = useState(() => {
+    const cachedSkills = getInitialSiteContent('skills');
+    return (Array.isArray(cachedSkills) && cachedSkills.length > 0) ? cachedSkills : skills;
+  });
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
 
   useEffect(() => {
-    fetch(`${API_BASE}/content`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && Array.isArray(data.skills) && data.skills.length > 0) {
-          setDynamicSkills(data.skills);
-        }
-      })
-      .catch(() => {});
+    fetchSiteContentFast('skills', (freshSkills) => {
+      if (Array.isArray(freshSkills) && freshSkills.length > 0) {
+        setDynamicSkills(freshSkills);
+      }
+    });
   }, []);
 
   const activeSkills = dynamicSkills.length > 0 ? dynamicSkills : skills;
